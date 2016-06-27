@@ -1,0 +1,19 @@
+Metadata-Version: 1.1
+Name: template
+Version: 0.2.1
+Summary: mpl-template: matplotlib report template constructor
+Home-page: UNKNOWN
+Author: Austin Orr (Geosyntec Consultants)
+Author-email: aorr@geosyntec.com
+License: BSD 3-clause
+Description: mpl-template: matplotlib report template constructor
+Platform: Python 2.7
+Platform: 3.4 and later.
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5

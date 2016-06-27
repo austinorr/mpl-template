@@ -1,0 +1,15 @@
+mpl_template.egg-info/PKG-INFO
+mpl_template.egg-info/SOURCES.txt
+mpl_template.egg-info/dependency_links.txt
+mpl_template.egg-info/not-zip-safe
+mpl_template.egg-info/requires.txt
+mpl_template.egg-info/top_level.txt
+template/__init__.py
+template/template.py
+template/tests/__init__.py
+template/tests/test_template.py
+template/tests/BaselineImages/__init__.py
+template/tests/BaselineImages/test_blank.png
+template/tests/BaselineImages/test_custom_spans.png
+template/tests/BaselineImages/test_insert_image_from_file.png
+template/tests/BaselineImages/test_insert_image_from_url.png

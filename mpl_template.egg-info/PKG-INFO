@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: mpl-template
+Version: 0.2.1
+Summary: mpl-template: matplotlib template constructor utility
+Home-page: https://github.com/phobson/mpl-probscale
+Author: Austin Orr (Geosyntec Consultants)
+Author-email: aorr@geosyntec.com
+License: BSD 3-clause
+Download-URL: https://github.com/phobson/mpl-probscale/archive/master.zip
+Description: mpl-template: matplotlib template constructor utility
+Platform: Python 2.7
+Platform: 3.4 and later.
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
