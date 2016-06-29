@@ -75,7 +75,8 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand = False):
         in which it is embedded. Use expand = True if the 
         boundary of the enclosing axes is the desired crop boundary.
         Use expand = False if the image should be scaled in-place
-        with it's original aspect ratio.
+        with it's original aspect ratio. This option only affects 
+        images that have been zoomed (scale>1).
 
     Notes
     -----
@@ -140,7 +141,7 @@ def _get_default_tb_spans(rows, cols):
         {'span' : [0, rows[0], 0,sum(cols)]},
         {'span' : [rows[0], rows[0]+rows[1], 0, cols[0]+cols[1]]},
         {'span' : [rows[0]+rows[1], sum(rows), 0, cols[0]]},
-        {'span' : [rows[0]+rows[1], sum(rows), cols[1], cols[0]+cols[1]]},
+        {'span' : [rows[0]+rows[1], sum(rows), cols[0], cols[0]+cols[1]]},
         {'span' : [rows[0], sum(rows), cols[0]+cols[1], sum(cols)]},
         ]
     return spans
@@ -185,8 +186,9 @@ class Template(object):
                                 },
                         ],
                     
-                            #`image` must refer to dict with `path` key and 
-                            # optional key `scale` which defaults to 1.
+                            #`image` must refer to dict with `path` key (required),
+                            # and optional keys `scale` and `expand` which default
+                            # to 1 and False, respectively.
                     'image': {
                         'path':'img//logo.png',
                         'scale': 1,
@@ -276,6 +278,7 @@ class Template(object):
     @margins.setter
     def margins(self, value):
         self._margins = _validate_margins(value)
+        self.left, self.right, self.top, self.bottom = self._margins
     
     @property 
     def titleblock_content(self):
@@ -325,7 +328,7 @@ class Template(object):
     @property
     def path_text(self):
         if self._path_text is None:
-            self._path_text = self.add_path_text()
+            self._path_text = os.path.join(os.getcwd(), self.script_name)
         return self._path_text
     
     @path_text.setter
@@ -410,10 +413,11 @@ class Template(object):
     def add_path_text(self):
         x = self.left/(10.*self.fig.get_figwidth())
         y = abs((self.bottom-1.5)/(10*self.fig.get_figheight()))
-        text = 'Source:   '+ os.path.join(os.getcwd(), self.script_name)
+        text = 'Source:   '+ self.path_text
         textobj = self.fig.text(x, y, text, fontsize=5,
                                 horizontalalignment='left',
                                 verticalalignment='center')
+        
         return textobj
     
     def populate_titleblock(self):
@@ -434,21 +438,25 @@ class Template(object):
                                 raise ValueError('`text` key must map to dict or list of dicts')
                         if 'image' in dct:
                             scale = 1
+                            expand = False
                             if 'scale' in dct['image']:
                                 scale = dct['image']['scale']
+                            if 'expand' in dct['image']:
+                                expand = dct['image']['expand']
                             img_ax = insert_image(ax, dct['image']['path'],
-                                                  scale = scale, dpi = ax.get_figure().get_dpi())
+                                                  scale = scale, 
+                                                  dpi = ax.get_figure().get_dpi(), 
+                                                  expand = expand)
                             img_ax.set_label('img_b_{}'.format(i))
                             img_ax.axis('off')
 
 
     def setup_figure(self):
+
         frame = self.add_frame()
         block = self.add_titleblock()
         path = self.add_path_text()
         self.populate_titleblock()
-        if self.is_draft:
-            self.watermark = self.add_watermark('DRAFT')
 
         return self.fig
 
