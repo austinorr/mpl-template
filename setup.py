@@ -27,7 +27,7 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
 ]
-INSTALL_REQUIRES = ['numpy', 'matplotlib', 'pillow']
+INSTALL_REQUIRES = ['numpy', 'matplotlib', 'pillow', 'pytest']
 PACKAGE_DATA = {
     'template.tests.baseline_images': ['*png'],
     'template.tests.img': ['*png'],
