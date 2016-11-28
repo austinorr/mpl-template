@@ -52,7 +52,7 @@ def _validate_image_path(path):
             raise ValueError("Supported web image types include: {}".format(valid_types))
     return path
 
-def insert_image(ax, image_path, scale=1, dpi=300, expand = False):
+def insert_image(ax, image_path, scale=1, dpi=300, expand = False, **kwargs):
     """
     Centers an image within an axes object
 
@@ -77,12 +77,21 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand = False):
         Use expand = False if the image should be scaled in-place
         with it's original aspect ratio. This option only affects 
         images that have been zoomed (scale>1).
+    kwargs : keyword arguments to pass to the figure.add_axes() 
+        constructor.
 
     Notes
     -----
     Use scale parameter to zoom image relative to axes boundary.
     """
-    imgaxes = ax.figure.add_axes(ax.get_position(), xticks=[], yticks=[], zorder = 1)
+    if 'xticks' not in kwargs:
+        kwargs['xticks'] = []
+    if 'yticks' not in kwargs:
+        kwargs['yticks'] = []
+    if 'zorder' not in kwargs:
+        kwargs['zorder'] = 1
+    
+    imgaxes = ax.figure.add_axes(ax.get_position(), **kwargs)
     bbox = ax.get_window_extent().transformed(ax.get_figure().dpi_scale_trans.inverted())
     width, height = bbox.width, bbox.height
     width *= dpi
