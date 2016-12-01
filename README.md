@@ -4,4 +4,4 @@ A python class for creating full report figures, including borders, titleblocks,
 ## Dependencies:
 `numpy`, `matplotlib`, `pillow`, `pytest`
 
-<script src="https://gist.github.com/austinorr/e2ec865d0f94bbe4fcd59f6f7ebcb575.js"></script>
+[jupyter notebook documentation](https://gist.github.com/austinorr/e2ec865d0f94bbe4fcd59f6f7ebcb575.js)
