@@ -1,9 +1,9 @@
 # Created by Austin Orr 4/26/2016
 from __future__ import division
 
-__all__ = ["insert_image","Template"]
-
-import os, io, requests
+import os
+import io
+import requests
 import copy
 import warnings
 
@@ -13,46 +13,51 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
+__all__ = ["insert_image", "Template"]
+
 
 def _calc_extents(size, scale):
     """
-    Calculates the view limits needed to see a 
+    Calculates the view limits needed to see a
     centered image at the desired scale.
     E.g.
     Before: image spans whole width
     scale = 0.5
     |________________________|
     0                        size
-    
-    After: upper and lower boundaries are 
-    identified to make the original size 
+
+    After: upper and lower boundaries are
+    identified to make the original size
     appear scaled and centered.
-    
+
     |......____________......|
     lower  0           size  upper
-    
+
     Parameters
     ----------
     size : int
         Number of pixels in x or y dimension
     scale : float
-        The relative scale of the desired output. 
+        The relative scale of the desired output.
     """
     lower = (1-scale) * size * (1/scale) / 2.
     upper = size + lower
     return -lower, upper
 
+
 def _validate_image_path(path):
-    valid_types = ['.png','.jpg', '.jpeg']
+    valid_types = ['.png', '.jpg', '.jpeg']
     if ('http' in path):
         if any(ftype in path for ftype in valid_types):
             r = requests.get(path)
             path = io.BytesIO(r.content)
         else:
-            raise ValueError("Supported web image types include: {}".format(valid_types))
+            raise ValueError("Supported web image "
+                             "types include: {}".format(valid_types))
     return path
 
-def insert_image(ax, image_path, scale=1, dpi=300, expand = False, **kwargs):
+
+def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
     """
     Centers an image within an axes object
 
@@ -62,22 +67,22 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand = False, **kwargs):
     image_path : str
         Path to an existing image file.
     scale : float, optional
-        The relative scale of the desired output. 
-        Values should be positive floats. 
+        The relative scale of the desired output.
+        Values should be positive floats.
         E.g. scale = 2 will double the image's size
         relative to the given matplotlib.Axes object.
-        scale = 0.5 will scale the image to half of the 
+        scale = 0.5 will scale the image to half of the
         given matplotlib.Axes object.
     dpi : int, optonal (default = 300)
         The Dots (pixel) Per Inch of the image.
     expand : bool, option (default = False)
-        If true, the image will expand to fill the axes 
-        in which it is embedded. Use expand = True if the 
+        If true, the image will expand to fill the axes
+        in which it is embedded. Use expand = True if the
         boundary of the enclosing axes is the desired crop boundary.
         Use expand = False if the image should be scaled in-place
-        with it's original aspect ratio. This option only affects 
+        with it's original aspect ratio. This option only affects
         images that have been zoomed (scale>1).
-    kwargs : keyword arguments to pass to the figure.add_axes() 
+    kwargs : keyword arguments to pass to the figure.add_axes()
         constructor.
 
     Notes
@@ -90,7 +95,7 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand = False, **kwargs):
         kwargs['yticks'] = []
     if 'zorder' not in kwargs:
         kwargs['zorder'] = 1
-    
+
     imgaxes = ax.figure.add_axes(ax.get_position(), **kwargs)
     bbox = ax.get_window_extent().transformed(ax.get_figure().dpi_scale_trans.inverted())
     width, height = bbox.width, bbox.height
@@ -105,7 +110,7 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand = False, **kwargs):
         aspect_ax = width/height
         adjy = (hpx/scale)/2
         adjx = (wpx/scale)/2
-        
+
         if scale > 1:
             if expand and (aspect_im < aspect_ax):
                 adjx = (width/height)*adjy
@@ -119,10 +124,10 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand = False, **kwargs):
                  int(hpx/2+adjy)
                  )
                 )
-            
+
             if expand:
                 image = image.resize((int(width), int(height)), Image.BICUBIC)
-            
+
             else:
                 if width >= height:
                     width = int(wpx * (height/hpx))
@@ -183,9 +188,9 @@ class Template(object):
 
             tbk = [{
                     'name' : 'Title',
-                    
+
                             #`text` must be a dict or a list of dicts
-                    'text' : [{  
+                    'text' : [{
                                 's' : 'Figure Title',
                                 'weight' : 'bold',
                                 },
@@ -194,7 +199,7 @@ class Template(object):
                                 'weight' : 'light',
                                 },
                         ],
-                    
+
                             #`image` must refer to dict with `path` key (required),
                             # and optional keys `scale` and `expand` which default
                             # to 1 and False, respectively.
@@ -202,18 +207,18 @@ class Template(object):
                         'path':'img//logo.png',
                         'scale': 1,
                         },
-                    
-                            #`span` must be a list of integers for the 
-                            # gridspec columns that the titleblock element will 
+
+                            #`span` must be a list of integers for the
+                            # gridspec columns that the titleblock element will
                             # span in tenths of an inch. The following span
                             # will give a titleblock element that is 0.8 inches tall
-                            # and 3.2 inches wide. It will be the top left element 
+                            # and 3.2 inches wide. It will be the top left element
                             # of the block because its height and width begin at zero.
                     'span' : [0,8,0,32],
                     },
                    {...#specify keys for next tbk element
                     },
-                    
+
                     ]
 
     titleblock_cols : tuple of int, optional (default = (16, 16, 8))
@@ -228,12 +233,12 @@ class Template(object):
         Resolution of the final figure in dots per inch.
     **figkwargs
         Additional keyword arguments passed to ``plt.figure``
-    
+
     Examples
     --------
-    To produce an empty figure containing a border object, 
+    To produce an empty figure containing a border object,
     and 5 title block objects:
-    
+
     >>> from template import Template
     >>> t = Template(figsize(8.5,11),scriptpath = "path//to//script.py"
     >>> fig = t.setup_figure()
@@ -279,26 +284,26 @@ class Template(object):
         self._fig_options = figkwargs
         self._fig_options['dpi'] = dpi
         self._titleblock_content = titleblock_content
-        
+
     @property
     def margins(self):
         return self._margins
-    
+
     @margins.setter
     def margins(self, value):
         self._margins = _validate_margins(value)
         self.left, self.right, self.top, self.bottom = self._margins
-    
-    @property 
+
+    @property
     def titleblock_content(self):
         if self._titleblock_content is None:
             self._titleblock_content = self.default_spans
         return self._titleblock_content
-    
+
     @titleblock_content.setter
     def titleblock_content(self,value):
         self._titleblock_content = value
-    
+
     @property
     def fig(self):
         if self._fig is None:
@@ -306,8 +311,8 @@ class Template(object):
             if self.is_draft:
                 self.add_watermark()
         return self._fig
-        
-    @fig.setter 
+
+    @fig.setter
     def fig(self, value):
         self._fig = value
 
@@ -319,7 +324,7 @@ class Template(object):
             self._gsfig = gridspec.GridSpec(row, col, left=0, right=1, bottom=0,
                                             top=1, wspace=0, hspace=0)
         return self._gsfig
-    
+
     @gsfig.setter
     def gsfig(self, value):
         self._gsfig = value
@@ -329,7 +334,7 @@ class Template(object):
         if self._watermark is None:
             self._watermark = self.add_watermark()
         return self._watermark
-    
+
     @watermark.setter
     def watermark(self, value):
         self._watermark = value
@@ -339,7 +344,7 @@ class Template(object):
         if self._path_text is None:
             self._path_text = os.path.join(os.getcwd(), self.script_name)
         return self._path_text
-    
+
     @path_text.setter
     def path_text(self, value):
         self._path_text = value
@@ -350,7 +355,7 @@ class Template(object):
             self._gstitleblock = self.gsfig[-(self.bottom+self.t_h) or None :-self.bottom or None,
                                             -(self.right+self.t_w) or None :-self.right or None]
         return self._gstitleblock
-    
+
     @gstitleblock.setter
     def gstitleblock(self, value):
         self._gstitleblock = value
@@ -363,7 +368,7 @@ class Template(object):
                 self.t_h, self.t_w, self.gstitleblock, wspace=0.0, hspace=0.0,
             )
         return self._gstitleblock_subspec
-    
+
     @gstitleblock_subspec.setter
     def gstitleblock_subspec(self, value):
         self._gstitleblock_subspec = value
@@ -399,7 +404,7 @@ class Template(object):
             if 'span' in list(dct.keys()):
                 r0, r, c0, c  = dct['span']
             else:
-                r0, r, c0, c  = self.default_spans[i]['span']             
+                r0, r, c0, c  = self.default_spans[i]['span']
 
             if 'name' in list(dct.keys()):
                 label = dct['name']
@@ -411,7 +416,7 @@ class Template(object):
                                       xticks=[], yticks=[], aspect='equal',
                                       adjustable='datalim')
             axlist.append(ax)
-        
+
         return axlist
 
     def add_page(self):
@@ -426,9 +431,9 @@ class Template(object):
         textobj = self.fig.text(x, y, text, fontsize=5,
                                 horizontalalignment='left',
                                 verticalalignment='center')
-        
+
         return textobj
-    
+
     def populate_titleblock(self):
         for ax in self.fig.get_axes():
             label = ax.get_label()
@@ -436,7 +441,7 @@ class Template(object):
                 if 'name' in dct:
                     if dct['name'] ==  label:
                         if 'text' in dct:
-                            if isinstance(dct['text'],list): 
+                            if isinstance(dct['text'],list):
                                 for elem in dct['text']:
                                     kwargs = copy.deepcopy(elem)
                                     ax.text(**kwargs)
@@ -453,8 +458,8 @@ class Template(object):
                             if 'expand' in dct['image']:
                                 expand = dct['image']['expand']
                             img_ax = insert_image(ax, dct['image']['path'],
-                                                  scale = scale, 
-                                                  dpi = ax.get_figure().get_dpi(), 
+                                                  scale = scale,
+                                                  dpi = ax.get_figure().get_dpi(),
                                                   expand = expand)
                             img_ax.set_label('img_b_{}'.format(i))
                             img_ax.axis('off')
