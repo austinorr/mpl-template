@@ -49,7 +49,7 @@ script:
 
 after_success:
   - if [ ${COVERAGE} = true ]; then
-      coverage run --source template check_template.py;
+      coverage run --source mpl-template check_template.py;
       coverage report -m;
       codecov;
     fi
