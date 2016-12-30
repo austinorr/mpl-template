@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/austinorr/mpl-template.svg)](https://travis-ci.org/austinorr/mpl-template)
+[![codecov](https://codecov.io/gh/austinorr/mpl-template/branch/master/graph/badge.svg)](https://codecov.io/gh/austinorr/mpl-template)
 # mpl-template
 A python class for creating full report figures, including borders, titleblocks, and content, entirely within matplotlib.
 
