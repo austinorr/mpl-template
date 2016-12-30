@@ -5,7 +5,7 @@ matrix:
     - python: 2.7
       env:
         # - COVERAGE=false
-        - TESTERS="pytest mock coverage"
+        - TESTERS="pytest coverage"
         - ARGS="--mpl --verbose"
     - python: 3.4
       env:
