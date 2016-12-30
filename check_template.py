@@ -1,10 +1,8 @@
 import sys
-
 import matplotlib
+import template
 
 matplotlib.use('agg')
-
-import template
 
 status = template.test(*sys.argv[1:])
 
