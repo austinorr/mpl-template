@@ -6,7 +6,7 @@ from template import template
 import matplotlib.pyplot as plt
 
 DEMO_PNG_URL = "https://raw.githubusercontent.com/austinorr/mpl-template/14496e1965e8b360093e0a559ae3f9aba6205a56/template/tests/img/polar_bar_demo.png"
-IMG_TOL = 10
+IMG_TOL = 12
 BASELINE_DIR = "baseline_images"
 SCRIPTNAME = "template/tests/test_template.py"
 
@@ -129,7 +129,7 @@ def test_custom_spans():
             {"span": [13, 16, 30, 40]},
             ]
 
-    testfig = template.Template(figsize=(5, 3), scriptname="tests.py",
+    testfig = template.Template(figsize=(5, 3), scriptname="",
                                 titleblock_content=test)
     testfig.path_text = SCRIPTNAME
     blank = testfig.blank()
@@ -140,7 +140,7 @@ def test_custom_spans():
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_titleblock_on_left():
 
-    testfig = template.Template(figsize=(8.5, 11), scriptname="tests.py")
+    testfig = template.Template(figsize=(8.5, 11), scriptname="")
     testfig.gstitleblock = testfig.gsfig[
         -(testfig.bottom + testfig.t_h) or None:-testfig.bottom or None,
         (testfig.left) or None:-(testfig.left + testfig.t_w) or None
@@ -210,7 +210,7 @@ def test_custom_titleblock():
     ]
 
     testfig = template.Template(figsize=(8.5, 11),
-                                scriptname="tests.py",
+                                scriptname="",
                                 titleblock_content=custom)
 
     testfig.path_text = SCRIPTNAME
@@ -231,7 +231,7 @@ def test_fancy_titleblock():
                     "va": "baseline",
                     "weight": "bold",
                     "x": 0.5,
-                    "y": 0.56,
+                    "y": 0.6,
                 },
                 {
                     "color": (.3, 0.3, 0.3),
@@ -240,7 +240,7 @@ def test_fancy_titleblock():
                     "va": "top",
                     "weight": "light",
                     "x": 0.5,
-                    "y": 0.44,
+                    "y": 0.4,
                 },
             ],
         },
@@ -267,7 +267,7 @@ def test_fancy_titleblock():
     ]
 
     testfig = template.Template(figsize=(8.5, 11),
-                                scriptname="tests.py",
+                                scriptname="",
                                 titleblock_content=fancy)
     testfig.path_text = SCRIPTNAME
     fig = testfig.setup_figure()
