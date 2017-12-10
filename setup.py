@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Setup script for the template package
 #
 # Usage: python setup.py install
