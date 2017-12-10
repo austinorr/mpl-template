@@ -4,23 +4,23 @@ matrix:
   include:
     - python: 2.7
       env:
-        # - COVERAGE=false
-        - TESTERS="pytest coverage"
+        - COVERAGE=false
+        - TESTERS="pytest coverage pytest-mpl"
         - ARGS="--mpl --verbose"
     - python: 3.4
       env:
-        # - COVERAGE=false
-        - TESTERS="pytest coverage"
+        - COVERAGE=false
+        - TESTERS="pytest coverage pytest-mpl"
         - ARGS="--mpl --verbose"
     - python: 3.5
       env:
-        # - COVERAGE=false
-        - TESTERS="pytest coverage"
+        - COVERAGE=false
+        - TESTERS="pytest coverage pytest-mpl"
         - ARGS="--mpl --verbose"
-    - python: 3.5
+    - python: 3.6
       env:
         - COVERAGE=true
-        - TESTERS="pytest coverage"
+        - TESTERS="pytest coverage pytest-mpl"
         - ARGS="--mpl --verbose"
 
 # Install, update, and setup Miniconda
@@ -36,11 +36,9 @@ before_install:
 # We just set up a conda environment with the right Python version.
 # This should not need changing.
 install:
-  - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION numpy matplotlib docopt requests pyyaml nose
+  - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
   - source activate test
   - conda install --yes --channel=conda-forge ${TESTERS}
-  # - if [ ${COVERAGE} = true ]; then conda install scipy --yes; fi
-  - pip install https://github.com/matplotlib/pytest-mpl/zipball/master
   - pip install codecov
   - pip install .
 

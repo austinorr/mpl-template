@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 DESCRIPTION = "mpl-template: matplotlib report template constructor"
 LONG_DESCRIPTION = DESCRIPTION
 NAME = "template"
-VERSION = "0.2.1"
+VERSION = "0.2.2"
 AUTHOR = "Austin Orr (Geosyntec Consultants)"
 AUTHOR_EMAIL = "aorr@geosyntec.com"
 URL = "https://github.com/austinorr"
@@ -26,8 +26,9 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
 ]
-INSTALL_REQUIRES = ['numpy', 'matplotlib', 'pillow', 'pytest']
+INSTALL_REQUIRES = ['matplotlib', 'pillow', 'requests']
 PACKAGE_DATA = {
     'template.tests.baseline_images': ['*png'],
     'template.tests.img': ['*png'],
