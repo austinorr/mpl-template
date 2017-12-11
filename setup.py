@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Setup script for the template package
-#
-# Usage: python setup.py install
-
 import os
 from setuptools import setup, find_packages
 
@@ -12,8 +8,8 @@ DESCRIPTION = "mpl-template: matplotlib report template constructor"
 LONG_DESCRIPTION = DESCRIPTION
 NAME = "template"
 VERSION = "0.2.2"
-AUTHOR = "Austin Orr (Geosyntec Consultants)"
-AUTHOR_EMAIL = "aorr@geosyntec.com"
+AUTHOR = "Austin Orr"
+AUTHOR_EMAIL = "austinmartinorr@gmail.com"
 URL = "https://github.com/austinorr"
 DOWNLOAD_URL = "https://github.com/austinorr/mpl-template.git"
 LICENSE = "BSD 3-clause"

@@ -44,16 +44,20 @@ def _calc_extents(size, scale):
     return -lower, upper
 
 
-def _validate_image_path(path):
-    valid_types = ['.png', '.jpg', '.jpeg']
+def _image_path_or_url(path):
+
     if ('http' in path):
+        valid_types = ['.png', '.jpg', '.jpeg']
         if any(ftype in path for ftype in valid_types):
             r = requests.get(path)
-            path = io.BytesIO(r.content)
+            img_file_obj = io.BytesIO(r.content)
         else:
             raise ValueError(
                 "Supported web image types include: {}".format(valid_types))
-    return path
+        return img_file_obj
+
+    else:
+        return os.path.realpath(path)
 
 
 def _apply_exif_rotation(im):
@@ -143,9 +147,9 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
     width, height = bbox.width, bbox.height
     width *= dpi
     height *= dpi
-    img = _validate_image_path(image_path)
+    img_fp_or_obj = _image_path_or_url(image_path)
 
-    with Image.open(img) as image:
+    with Image.open(img_fp_or_obj) as image:
 
         image = _apply_exif_rotation(image)
         image = image.convert('RGBA')
@@ -486,37 +490,32 @@ class Template(object):
         for ax in self.fig.get_axes():
             label = ax.get_label()
             for i, dct in enumerate(self.titleblock_content):
-                if 'name' in dct:
-                    if dct['name'] == label:
-                        if 'text' in dct:
-                            if isinstance(dct['text'], list):
-                                for elem in dct['text']:
-                                    kwargs = copy.deepcopy(elem)
-                                    if 'transform' not in kwargs:
-                                        kwargs['transform'] = ax.transAxes
-                                    ax.text(**kwargs)
-                            elif isinstance(dct['text'], dict):
-                                kwargs = copy.deepcopy(dct['text'])
+                name = dct.get('name')
+                content = dct.get('text')
+                image = dct.get('image')
+                if name == label:
+                    if content is not None:
+                        if isinstance(content, dict):
+                            content = [content]
+                        if isinstance(content, list):
+                            for elem in content:
+                                kwargs = copy.deepcopy(elem)
+                                if 'transform' not in kwargs:
+                                    kwargs['transform'] = ax.transAxes
                                 ax.text(**kwargs)
-                            else:
-                                raise ValueError(
-                                    '`text` key must map to dict or list of dicts')
-                        if 'image' in dct:
+                        else:
+                            raise ValueError(
+                                '`text` key must map to dict or list of dicts')
+                    if image is not None:
 
-                            scale = dct['image'].get('scale', 1)
-                            expand = dct['image'].get('expand', False)
-                            # scale = 1
-                            # expand = False
-                            # if 'scale' in dct['image']:
-                            #     scale = dct['image']['scale']
-                            # if 'expand' in dct['image']:
-                            #     expand = dct['image']['expand']
-                            img_ax = insert_image(ax, dct['image']['path'],
-                                                  scale=scale,
-                                                  dpi=ax.get_figure().get_dpi(),
-                                                  expand=expand)
-                            img_ax.set_label('img_b_{}'.format(i))
-                            img_ax.axis('off')
+                        scale = image.get('scale', 1)
+                        expand = image.get('expand', False)
+                        img_ax = insert_image(ax, image['path'],
+                                              scale=scale,
+                                              dpi=ax.get_figure().get_dpi(),
+                                              expand=expand)
+                        img_ax.set_label('img_b_{}'.format(i))
+                        img_ax.axis('off')
 
     def setup_figure(self):
 
