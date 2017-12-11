@@ -1,6 +1,4 @@
-# Setup script for the template package
-#
-# Usage: python setup.py install
+# -*- coding: utf-8 -*-
 
 import os
 from setuptools import setup, find_packages
@@ -9,14 +7,14 @@ from setuptools import setup, find_packages
 DESCRIPTION = "mpl-template: matplotlib report template constructor"
 LONG_DESCRIPTION = DESCRIPTION
 NAME = "template"
-VERSION = "0.2.1"
-AUTHOR = "Austin Orr (Geosyntec Consultants)"
-AUTHOR_EMAIL = "aorr@geosyntec.com"
+VERSION = "0.2.2"
+AUTHOR = "Austin Orr"
+AUTHOR_EMAIL = "austinmartinorr@gmail.com"
 URL = "https://github.com/austinorr"
 DOWNLOAD_URL = "https://github.com/austinorr/mpl-template.git"
 LICENSE = "BSD 3-clause"
 PACKAGES = find_packages()
-PLATFORMS = "Python 2.7, 3.4 and later."
+PLATFORMS = "Python 2.7, 3.5+."
 CLASSIFIERS = [
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
@@ -24,10 +22,10 @@ CLASSIFIERS = [
     "Intended Audience :: Science/Research",
     "Topic :: Software Development :: Libraries :: Python Modules",
     'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
 ]
-INSTALL_REQUIRES = ['numpy', 'matplotlib', 'pillow', 'pytest']
+INSTALL_REQUIRES = ['matplotlib']
 PACKAGE_DATA = {
     'template.tests.baseline_images': ['*png'],
     'template.tests.img': ['*png'],

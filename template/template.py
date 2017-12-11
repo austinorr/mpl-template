@@ -1,19 +1,30 @@
-# Created by Austin Orr 4/26/2016
+# -*- coding: utf-8 -*-
+
 from __future__ import division
+
+__all__ = ["insert_image", "Template"]
 
 import os
 import io
-import requests
 import copy
-import warnings
 
-from PIL import Image
-import numpy as np
 import matplotlib as mpl
-import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-__all__ = ["insert_image", "Template"]
+
+def _import_requests():
+    import requests
+    return requests
+
+
+def _import_PIL_TAGS():
+    from PIL.ExifTags import TAGS
+    return TAGS
+
+
+def _import_PIL_Image():
+    from PIL import Image
+    return Image
 
 
 def _calc_extents(size, scale):
@@ -40,21 +51,71 @@ def _calc_extents(size, scale):
     scale : float
         The relative scale of the desired output.
     """
-    lower = (1-scale) * size * (1/scale) / 2.
+    lower = (1 - scale) * size * (1 / scale) / 2.
     upper = size + lower
     return -lower, upper
 
 
-def _validate_image_path(path):
-    valid_types = ['.png', '.jpg', '.jpeg']
+def _image_path_or_url(path):
+
     if ('http' in path):
+        requests = _import_requests()
+
+        valid_types = ['.png', '.jpg', '.jpeg']
         if any(ftype in path for ftype in valid_types):
             r = requests.get(path)
-            path = io.BytesIO(r.content)
+            img_file_obj = io.BytesIO(r.content)
         else:
-            raise ValueError("Supported web image "
-                             "types include: {}".format(valid_types))
-    return path
+            raise ValueError(
+                "Supported web image types include: {}".format(valid_types))
+        return img_file_obj
+
+    else:
+        return os.path.realpath(path)
+
+
+def _apply_exif_rotation(im):
+    TAGS = _import_PIL_TAGS()
+
+    try:
+        exif = {TAGS.get(tag): value for tag, value in im._getexif().items()}
+
+        if 'Orientation' in exif.keys():
+            orientation = exif['Orientation']
+            if orientation == 1:
+                # Nothing
+                i = im.copy()
+            elif orientation == 2:
+                # Vertical Mirror
+                i = im.transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 3:
+                # Rotation 180°
+                i = im.transpose(Image.ROTATE_180)
+            elif orientation == 4:
+                # Horizontal Mirror
+                i = im.transpose(Image.FLIP_TOP_BOTTOM)
+            elif orientation == 5:
+                # Horizontal Mirror + Rotation 90° CCW
+                i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(
+                    Image.ROTATE_90)
+            elif orientation == 6:
+                # Rotation 270°
+                i = im.transpose(Image.ROTATE_270)
+            elif orientation == 7:
+                # Horizontal Mirror + Rotation 270°
+                i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(
+                    Image.ROTATE_270)
+            elif orientation == 8:
+                # Rotation 90°
+                i = im.transpose(Image.ROTATE_90)
+            else:
+                raise Exception('Invalid EXIF Orientation Value')
+        else:
+            i = im.copy()
+        return i
+
+    except (AttributeError, KeyError, IndexError):
+        return im
 
 
 def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
@@ -89,6 +150,8 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
     -----
     Use scale parameter to zoom image relative to axes boundary.
     """
+    Image = _import_PIL_Image()
+
     if 'xticks' not in kwargs:
         kwargs['xticks'] = []
     if 'yticks' not in kwargs:
@@ -97,52 +160,54 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
         kwargs['zorder'] = 1
 
     imgaxes = ax.figure.add_axes(ax.get_position(), **kwargs)
-    fig = ax.get_figure()
-    bbox = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    bbox = ax.get_window_extent().transformed(
+        ax.get_figure().dpi_scale_trans.inverted())
     width, height = bbox.width, bbox.height
     width *= dpi
     height *= dpi
-    img = _validate_image_path(image_path)
+    img_fp_or_obj = _image_path_or_url(image_path)
 
-    with Image.open(img) as image:
+    with Image.open(img_fp_or_obj) as image:
+
+        image = _apply_exif_rotation(image)
         image = image.convert('RGBA')
         wpx, hpx = image.size
-        aspect_im = wpx/hpx
-        aspect_ax = width/height
-        adjy = (hpx/scale)/2
-        adjx = (wpx/scale)/2
+        aspect_im = wpx / hpx
+        aspect_ax = width / height
+        adjy = (hpx / scale) / 2
+        adjx = (wpx / scale) / 2
 
         if scale > 1:
             if expand and (aspect_im < aspect_ax):
-                adjx = (width/height)*adjy
+                adjx = (width / height) * adjy
             if expand and (aspect_im > aspect_ax):
-                adjy = (height/width)*adjx
+                adjy = (height / width) * adjx
 
             image = image.crop(
-                (int(wpx/2-adjx),
-                 int(hpx/2-adjy),
-                 int(wpx/2+adjx),
-                 int(hpx/2+adjy)
+                (int(wpx / 2 - adjx),
+                 int(hpx / 2 - adjy),
+                 int(wpx / 2 + adjx),
+                 int(hpx / 2 + adjy)
                  )
-                )
+            )
 
             if expand:
                 image = image.resize((int(width), int(height)), Image.BICUBIC)
 
             else:
                 if width >= height:
-                    width = int(wpx * (height/hpx))
+                    width = int(wpx * (height / hpx))
                 else:
-                    height = int(hpx * (width/wpx))
+                    height = int(hpx * (width / wpx))
                 image = image.resize((int(width), int(height)), Image.BICUBIC)
 
         else:
             if width >= height:
-                width = int(wpx * (height/hpx))
+                width = int(wpx * (height / hpx))
             else:
-                height = int(hpx * (width/wpx))
-            image = image.resize((int(width*scale), int(height*scale)),
-                                 Image.LANCZOS)
+                height = int(hpx * (width / wpx))
+            image = image.resize(
+                (int(width * scale), int(height * scale)), Image.LANCZOS)
 
             imgaxes.set_xlim(_calc_extents(image.size[0], scale))
             imgaxes.set_ylim(reversed(_calc_extents(image.size[1], scale)))
@@ -156,11 +221,11 @@ def _get_default_tb_spans(rows, cols):
 
     spans = [
         {'span': [0, rows[0], 0, sum(cols)]},
-        {'span': [rows[0], rows[0]+rows[1], 0, cols[0]+cols[1]]},
-        {'span': [rows[0]+rows[1], sum(rows), 0, cols[0]]},
-        {'span': [rows[0]+rows[1], sum(rows), cols[0], cols[0]+cols[1]]},
-        {'span': [rows[0], sum(rows), cols[0]+cols[1], sum(cols)]},
-        ]
+        {'span': [rows[0], rows[0] + rows[1], 0, cols[0] + cols[1]]},
+        {'span': [rows[0] + rows[1], sum(rows), 0, cols[0]]},
+        {'span': [rows[0] + rows[1], sum(rows), cols[0], cols[0] + cols[1]]},
+        {'span': [rows[0], sum(rows), cols[0] + cols[1], sum(cols)]},
+    ]
     return spans
 
 
@@ -204,10 +269,9 @@ class Template(object):
                                 },
                         ],
 
-                            #`image` must refer to dict with `path` key
-                            # (required), and optional keys `scale` and
-                            # `expand` which default to 1 and False,
-                            # respectively.
+                            #`image` must refer to dict with `path` key (required),
+                            # and optional keys `scale` and `expand` which default
+                            # to 1 and False, respectively.
                     'image': {
                         'path':'img//logo.png',
                         'scale': 1,
@@ -216,10 +280,9 @@ class Template(object):
                             #`span` must be a list of integers for the
                             # gridspec columns that the titleblock element will
                             # span in tenths of an inch. The following span
-                            # will give a titleblock element that is 0.8 inches
-                            # tall and 3.2 inches wide. It will be the top left
-                            # element of the block because its height and width
-                            # begin at zero.
+                            # will give a titleblock element that is 0.8 inches tall
+                            # and 3.2 inches wide. It will be the top left element
+                            # of the block because its height and width begin at zero.
                     'span' : [0,8,0,32],
                     },
                    {...#specify keys for next tbk element
@@ -246,7 +309,7 @@ class Template(object):
     and 5 title block objects:
 
     >>> from template import Template
-    >>> t = Template(figsize(8.5,11),scriptpath = "path//to//script.py"
+    >>> t = Template(figsize(8.5, 11), scriptpath="path/to/script.py"
     >>> fig = t.setup_figure()
     >>> fig.show()
     <matplotlib figure object>
@@ -275,8 +338,8 @@ class Template(object):
         if titleblock_rows is None:
             titleblock_rows = (8, 5, 3)
 
-        self.default_spans = _get_default_tb_spans(titleblock_rows,
-                                                   titleblock_cols)
+        self.default_spans = _get_default_tb_spans(
+            titleblock_rows, titleblock_cols)
 
         self.t_w = sum(titleblock_cols)
         self.t_h = sum(titleblock_rows)
@@ -314,7 +377,7 @@ class Template(object):
     @property
     def fig(self):
         if self._fig is None:
-            self.fig = plt.figure(**self._fig_options)
+            self.fig = mpl.pyplot.figure(**self._fig_options)
             if self.is_draft:
                 self.add_watermark()
         return self._fig
@@ -326,11 +389,10 @@ class Template(object):
     @property
     def gsfig(self):
         if self._gsfig is None:
-            row = int(self.fig.get_figheight()*10)
-            col = int(self.fig.get_figwidth()*10)
-            self._gsfig = gridspec.GridSpec(row, col, left=0, right=1,
-                                            bottom=0, top=1, wspace=0,
-                                            hspace=0)
+            row = int(self.fig.get_figheight() * 10)
+            col = int(self.fig.get_figwidth() * 10)
+            self._gsfig = gridspec.GridSpec(row, col, left=0, right=1, bottom=0,
+                                            top=1, wspace=0, hspace=0)
         return self._gsfig
 
     @gsfig.setter
@@ -360,8 +422,8 @@ class Template(object):
     @property
     def gstitleblock(self):
         if self._gstitleblock is None:
-            self._gstitleblock = self.gsfig[-(self.bottom+self.t_h) or None:-self.bottom or None,
-                                            -(self.right+self.t_w) or None:-self.right or None]
+            self._gstitleblock = self.gsfig[-(self.bottom + self.t_h) or None:-self.bottom or None,
+                                            -(self.right + self.t_w) or None:-self.right or None]
         return self._gstitleblock
 
     @gstitleblock.setter
@@ -382,13 +444,13 @@ class Template(object):
         self._gstitleblock_subspec = value
 
     def add_frame(self):
-        _left = self.left / (10.*self.fig.get_figwidth())
-        _right = self.right / (10.*self.fig.get_figwidth())
-        _bottom = self.bottom / (10.*self.fig.get_figheight())
-        _top = self.top / (10.*self.fig.get_figheight())
+        _left = self.left / (10. * self.fig.get_figwidth())
+        _right = self.right / (10. * self.fig.get_figwidth())
+        _bottom = self.bottom / (10. * self.fig.get_figheight())
+        _top = self.top / (10. * self.fig.get_figheight())
         rect = [_left, _bottom, 1 - (_left + _right), 1 - (_bottom + _top)]
 
-        frame = self.fig.add_axes(rect, zorder=100, axisbg='none',
+        frame = self.fig.add_axes(rect, zorder=100, facecolor='none',
                                   xticks=[], yticks=[], label='frame')
         return frame
 
@@ -420,7 +482,7 @@ class Template(object):
                 label = 'b_{}'.format(i)
 
             ax = self.fig.add_subplot(self.gstitleblock_subspec[r0:r, c0:c],
-                                      label=label, zorder=100, axisbg='none',
+                                      label=label, zorder=100, facecolor='none',
                                       xticks=[], yticks=[], aspect='equal',
                                       adjustable='datalim')
             axlist.append(ax)
@@ -428,13 +490,13 @@ class Template(object):
         return axlist
 
     def add_page(self):
-        ax = self.fig.add_axes([0, 0, 1, 1], zorder=1000, axisbg='none',
+        ax = self.fig.add_axes([0, 0, 1, 1], zorder=1000, facecolor='none',
                                xticks=[], yticks=[], label='page')
         return ax
 
     def add_path_text(self):
-        x = self.left/(10.*self.fig.get_figwidth())
-        y = abs((self.bottom-1.5)/(10*self.fig.get_figheight()))
+        x = self.left / (10. * self.fig.get_figwidth())
+        y = abs((self.bottom - 1.5) / (10 * self.fig.get_figheight()))
         text = 'Source:   ' + self.path_text
         textobj = self.fig.text(x, y, text, fontsize=5,
                                 horizontalalignment='left',
@@ -446,35 +508,35 @@ class Template(object):
         for ax in self.fig.get_axes():
             label = ax.get_label()
             for i, dct in enumerate(self.titleblock_content):
-                if 'name' in dct:
-                    if dct['name'] == label:
-                        if 'text' in dct:
-                            if isinstance(dct['text'], list):
-                                for elem in dct['text']:
-                                    kwargs = copy.deepcopy(elem)
-                                    ax.text(**kwargs)
-                            elif isinstance(dct['text'], dict):
-                                kwargs = copy.deepcopy(dct['text'])
+                name = dct.get('name')
+                content = dct.get('text')
+                image = dct.get('image')
+                if name == label:
+                    if content is not None:
+                        if isinstance(content, dict):
+                            content = [content]
+                        if isinstance(content, list):
+                            for elem in content:
+                                kwargs = copy.deepcopy(elem)
+                                if 'transform' not in kwargs:
+                                    kwargs['transform'] = ax.transAxes
                                 ax.text(**kwargs)
-                            else:
-                                raise ValueError('`text` key must map to dict'
-                                                 ' or list of dicts')
-                        if 'image' in dct:
-                            scale = 1
-                            expand = False
-                            if 'scale' in dct['image']:
-                                scale = dct['image']['scale']
-                            if 'expand' in dct['image']:
-                                expand = dct['image']['expand']
-                            fig = ax.get_figure()
-                            img_ax = insert_image(ax, dct['image']['path'],
-                                                  scale=scale,
-                                                  dpi=fig.get_dpi(),
-                                                  expand=expand)
-                            img_ax.set_label('img_b_{}'.format(i))
-                            img_ax.axis('off')
+                        else:
+                            raise ValueError(
+                                '`text` key must map to dict or list of dicts')
+                    if image is not None:
+
+                        scale = image.get('scale', 1)
+                        expand = image.get('expand', False)
+                        img_ax = insert_image(ax, image['path'],
+                                              scale=scale,
+                                              dpi=ax.get_figure().get_dpi(),
+                                              expand=expand)
+                        img_ax.set_label('img_b_{}'.format(i))
+                        img_ax.axis('off')
 
     def setup_figure(self):
+
         frame = self.add_frame()
         block = self.add_titleblock()
         path = self.add_path_text()
@@ -486,7 +548,7 @@ class Template(object):
 
         self.add_frame()
         for ax in self.add_titleblock():
-            ax.text(0.5, 0.5, '"{}"'.format(ax.get_label()), va="center",
-                    ha="center", size=12)
+            ax.text(0.5, 0.5, '"{}"'.format(ax.get_label()),
+                    va="center", ha="center", size=12)
         self.watermark.remove()
         return self.fig
