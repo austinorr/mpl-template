@@ -8,7 +8,7 @@ import os
 import io
 import copy
 
-import matplotlib.pyplot as plt
+import matplotlib as mpl
 import matplotlib.gridspec as gridspec
 
 
@@ -309,7 +309,7 @@ class Template(object):
     and 5 title block objects:
 
     >>> from template import Template
-    >>> t = Template(figsize(8.5,11),scriptpath = "path//to//script.py"
+    >>> t = Template(figsize(8.5, 11), scriptpath="path/to/script.py"
     >>> fig = t.setup_figure()
     >>> fig.show()
     <matplotlib figure object>
@@ -377,7 +377,7 @@ class Template(object):
     @property
     def fig(self):
         if self._fig is None:
-            self.fig = plt.figure(**self._fig_options)
+            self.fig = mpl.pyplot.figure(**self._fig_options)
             if self.is_draft:
                 self.add_watermark()
         return self._fig
