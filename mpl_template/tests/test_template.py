@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
+import os
+from pkg_resources import resource_filename
+
 
 import pytest
 
-from template import template
+from mpl_template import template
 import matplotlib.pyplot as plt
 
 DEMO_PNG_URL = "https://raw.githubusercontent.com/austinorr/mpl-template/14496e1965e8b360093e0a559ae3f9aba6205a56/template/tests/img/polar_bar_demo.png"
+DEMO_PNG_FILE = resource_filename("mpl_template.tests.img", "polar_bar_demo.png")
 IMG_TOL = 12
 BASELINE_DIR = "baseline_images"
-SCRIPTNAME = "template/tests/test_template.py"
-
-"baseline_dir=BASELINE_DIR, tolerance=IMG_TOL"
+SCRIPTNAME = os.path.join("mpl_template", "tests", "test_template.py")
 
 
 @pytest.mark.parametrize(('size', 'scale', 'expected'), [
@@ -78,7 +80,7 @@ def test_insert_image_from_url_zoom_10x_expand():
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file():
 
-    file = "template//tests//img//polar_bar_demo.png"
+    file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
     logo_ax = template.insert_image(
@@ -89,7 +91,7 @@ def test_insert_image_from_file():
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file_shrink_half():
 
-    file = "template//tests//img//polar_bar_demo.png"
+    file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
     logo_ax = template.insert_image(
@@ -100,7 +102,7 @@ def test_insert_image_from_file_shrink_half():
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file_zoom_10x():
 
-    file = "template//tests//img//polar_bar_demo.png"
+    file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
     logo_ax = template.insert_image(
@@ -111,7 +113,7 @@ def test_insert_image_from_file_zoom_10x():
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file_zoom_10x_expand():
 
-    file = "template//tests//img//polar_bar_demo.png"
+    file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
     logo_ax = template.insert_image(
@@ -191,7 +193,7 @@ def test_custom_titleblock():
         {
             'name': 'logo',
             'image': {
-                'path': 'template//tests//img//polar_bar_demo.png',
+                'path': DEMO_PNG_FILE,
                 'scale': 1,
             },
             'span': [0, 32, 16, 32],
@@ -247,7 +249,7 @@ def test_fancy_titleblock():
         {
             'name': 'logo',
             'image': {
-                'path': 'template//tests//img//polar_bar_demo.png',
+                'path': DEMO_PNG_FILE,
                 'scale': 0.8,
             },
         },

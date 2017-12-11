@@ -2,8 +2,8 @@ import sys
 import matplotlib
 matplotlib.use('agg')
 
-import template
+import mpl_template
 
-status = template.test(*sys.argv[1:])
+status = mpl_template.test(*sys.argv[1:])
 
 sys.exit(status)
