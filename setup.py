@@ -7,11 +7,11 @@ with open(os.path.join('mpl_template', '__init__.py')) as info_file:
     version = author = email = ""
     for line in info_file:
         if line.startswith('__version__'):
-            version = line.split("=")[1].replace("'","").strip()
+            version = line.split("=")[1].replace("'", "").strip()
         elif line.startswith('__author__'):
-            author = line.strip().split("=")[1].replace("'","").strip()
+            author = line.strip().split("=")[1].replace("'", "").strip()
         elif line.startswith('__email__'):
-            email = line.strip().split("=")[1].replace("'","").strip()
+            email = line.strip().split("=")[1].replace("'", "").strip()
 
 
 DESCRIPTION = "mpl-template: matplotlib report template constructor"
