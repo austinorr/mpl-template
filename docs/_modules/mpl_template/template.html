@@ -1,0 +1,661 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mpl_template.template &#8212; mpl-template 0.3.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mpl_template.template</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;insert_image&quot;</span><span class="p">,</span> <span class="s2">&quot;Template&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+
+
+<span class="k">def</span> <span class="nf">_import_requests</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
+    <span class="k">return</span> <span class="n">requests</span>
+
+
+<span class="k">def</span> <span class="nf">_import_PIL_TAGS</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">PIL.ExifTags</span> <span class="k">import</span> <span class="n">TAGS</span>
+    <span class="k">return</span> <span class="n">TAGS</span>
+
+
+<span class="k">def</span> <span class="nf">_import_PIL_Image</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+    <span class="k">return</span> <span class="n">Image</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_extents</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the view limits needed to see a</span>
+<span class="sd">    centered image at the desired scale.</span>
+<span class="sd">    E.g.</span>
+<span class="sd">    Before: image spans whole width</span>
+<span class="sd">    scale = 0.5</span>
+<span class="sd">    |________________________|</span>
+<span class="sd">    0                        size</span>
+
+<span class="sd">    After: upper and lower boundaries are</span>
+<span class="sd">    identified to make the original size</span>
+<span class="sd">    appear scaled and centered.</span>
+
+<span class="sd">    |......____________......|</span>
+<span class="sd">    lower  0           size  upper</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    size : int</span>
+<span class="sd">        Number of pixels in x or y dimension</span>
+<span class="sd">    scale : float</span>
+<span class="sd">        The relative scale of the desired output.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">scale</span><span class="p">)</span> <span class="o">*</span> <span class="n">size</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="n">lower</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span>
+
+
+<span class="k">def</span> <span class="nf">_image_path_or_url</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;http&#39;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">requests</span> <span class="o">=</span> <span class="n">_import_requests</span><span class="p">()</span>
+
+        <span class="n">valid_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;.jpeg&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ftype</span> <span class="ow">in</span> <span class="n">path</span> <span class="k">for</span> <span class="n">ftype</span> <span class="ow">in</span> <span class="n">valid_types</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">img_file_obj</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Supported web image types include: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">valid_types</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">img_file_obj</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_apply_exif_rotation</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
+    <span class="n">TAGS</span> <span class="o">=</span> <span class="n">_import_PIL_TAGS</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">exif</span> <span class="o">=</span> <span class="p">{</span><span class="n">TAGS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">im</span><span class="o">.</span><span class="n">_getexif</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="k">if</span> <span class="s1">&#39;Orientation&#39;</span> <span class="ow">in</span> <span class="n">exif</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">orientation</span> <span class="o">=</span> <span class="n">exif</span><span class="p">[</span><span class="s1">&#39;Orientation&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># Nothing</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c1"># Vertical Mirror</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">FLIP_LEFT_RIGHT</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="c1"># Rotation 180°</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">ROTATE_180</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="c1"># Horizontal Mirror</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">FLIP_TOP_BOTTOM</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="c1"># Horizontal Mirror + Rotation 90° CCW</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">FLIP_TOP_BOTTOM</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span>
+                    <span class="n">Image</span><span class="o">.</span><span class="n">ROTATE_90</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="c1"># Rotation 270°</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">ROTATE_270</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                <span class="c1"># Horizontal Mirror + Rotation 270°</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">FLIP_TOP_BOTTOM</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span>
+                    <span class="n">Image</span><span class="o">.</span><span class="n">ROTATE_270</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="c1"># Rotation 90°</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">ROTATE_90</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Invalid EXIF Orientation Value&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">i</span>
+
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">im</span>
+
+
+<div class="viewcode-block" id="insert_image"><a class="viewcode-back" href="../../template.html#mpl_template.template.insert_image">[docs]</a><span class="k">def</span> <span class="nf">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">image_path</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Centers an image within an axes object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : matplotlib.Axes</span>
+<span class="sd">    image_path : str</span>
+<span class="sd">        Path to an existing image file.</span>
+<span class="sd">    scale : float, optional</span>
+<span class="sd">        The relative scale of the desired output.</span>
+<span class="sd">        Values should be positive floats.</span>
+<span class="sd">        E.g. scale = 2 will double the image&#39;s size</span>
+<span class="sd">        relative to the given matplotlib.Axes object.</span>
+<span class="sd">        scale = 0.5 will scale the image to half of the</span>
+<span class="sd">        given matplotlib.Axes object.</span>
+<span class="sd">    dpi : int, optonal (default=300)</span>
+<span class="sd">        The Dots (pixel) Per Inch of the image.</span>
+<span class="sd">    expand : bool, optional (default=False)</span>
+<span class="sd">        If true, the image will expand to fill the axes</span>
+<span class="sd">        in which it is embedded. Use expand = True if the</span>
+<span class="sd">        boundary of the enclosing axes is the desired crop boundary.</span>
+<span class="sd">        Use expand = False if the image should be scaled in-place</span>
+<span class="sd">        with it&#39;s original aspect ratio. This option only affects</span>
+<span class="sd">        images that have been zoomed (scale &gt; 1).</span>
+<span class="sd">    kwargs : keyword arguments to pass to the figure.add_axes()</span>
+<span class="sd">        constructor.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : matplotlib.Axes</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Use scale parameter to zoom image relative to axes boundary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Image</span> <span class="o">=</span> <span class="n">_import_PIL_Image</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="s1">&#39;xticks&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;xticks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="s1">&#39;yticks&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;yticks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="s1">&#39;zorder&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;zorder&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">imgaxes</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span><span class="o">.</span><span class="n">dpi_scale_trans</span><span class="o">.</span><span class="n">inverted</span><span class="p">())</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">width</span> <span class="o">*=</span> <span class="n">dpi</span>
+    <span class="n">height</span> <span class="o">*=</span> <span class="n">dpi</span>
+    <span class="n">img_fp_or_obj</span> <span class="o">=</span> <span class="n">_image_path_or_url</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_fp_or_obj</span><span class="p">)</span> <span class="k">as</span> <span class="n">image</span><span class="p">:</span>
+
+        <span class="n">image</span> <span class="o">=</span> <span class="n">_apply_exif_rotation</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGBA&#39;</span><span class="p">)</span>
+        <span class="n">wpx</span><span class="p">,</span> <span class="n">hpx</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">aspect_im</span> <span class="o">=</span> <span class="n">wpx</span> <span class="o">/</span> <span class="n">hpx</span>
+        <span class="n">aspect_ax</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="n">height</span>
+        <span class="n">adjy</span> <span class="o">=</span> <span class="p">(</span><span class="n">hpx</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">adjx</span> <span class="o">=</span> <span class="p">(</span><span class="n">wpx</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="k">if</span> <span class="n">scale</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">expand</span> <span class="ow">and</span> <span class="p">(</span><span class="n">aspect_im</span> <span class="o">&lt;</span> <span class="n">aspect_ax</span><span class="p">):</span>
+                <span class="n">adjx</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="n">adjy</span>
+            <span class="k">if</span> <span class="n">expand</span> <span class="ow">and</span> <span class="p">(</span><span class="n">aspect_im</span> <span class="o">&gt;</span> <span class="n">aspect_ax</span><span class="p">):</span>
+                <span class="n">adjy</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">adjx</span>
+
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span>
+                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">wpx</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">adjx</span><span class="p">),</span>
+                 <span class="nb">int</span><span class="p">(</span><span class="n">hpx</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">adjy</span><span class="p">),</span>
+                 <span class="nb">int</span><span class="p">(</span><span class="n">wpx</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">adjx</span><span class="p">),</span>
+                 <span class="nb">int</span><span class="p">(</span><span class="n">hpx</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">adjy</span><span class="p">)</span>
+                 <span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">expand</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="p">)),</span> <span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;=</span> <span class="n">height</span><span class="p">:</span>
+                    <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">wpx</span> <span class="o">*</span> <span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">hpx</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hpx</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="n">wpx</span><span class="p">))</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="p">)),</span> <span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;=</span> <span class="n">height</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">wpx</span> <span class="o">*</span> <span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">hpx</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hpx</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="n">wpx</span><span class="p">))</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)),</span> <span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">)</span>
+
+            <span class="n">imgaxes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">_calc_extents</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">scale</span><span class="p">))</span>
+            <span class="n">imgaxes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">_calc_extents</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scale</span><span class="p">)))</span>
+
+    <span class="n">imgaxes</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">imgaxes</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_default_tb_spans</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+
+    <span class="n">spans</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cols</span><span class="p">)]},</span>
+        <span class="p">{</span><span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">]]},</span>
+        <span class="p">{</span><span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]]},</span>
+        <span class="p">{</span><span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">]]},</span>
+        <span class="p">{</span><span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cols</span><span class="p">)]},</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">spans</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_margins</span><span class="p">(</span><span class="n">margins</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">margins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">margins</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">margins</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">margins</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`margins` must contain four integers&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">margins</span>
+
+
+<div class="viewcode-block" id="Template"><a class="viewcode-back" href="../../template.html#mpl_template.template.Template">[docs]</a><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to construct a report figure template using matplotlib</span>
+<span class="sd">    which includes a figure border, script path, and title block.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scriptname : str</span>
+<span class="sd">        Path to the script or notebook that is creating the figure.</span>
+<span class="sd">    margins : tuple of int, optional (default = (4, 4, 4, 4)</span>
+<span class="sd">        A length-4 tuple specifying the left, right, top, and bottom</span>
+<span class="sd">        margins of on the page, respectively</span>
+<span class="sd">    titleblock_content : list of dicts, optional</span>
+<span class="sd">        Title block elements where each element is itself a</span>
+<span class="sd">        dictionary with a `span` keys that determines which rows and</span>
+<span class="sd">        columns the each element will occupy in the titleblock.</span>
+<span class="sd">        E.g. ::</span>
+
+<span class="sd">            tbk = [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &#39;name&#39;: &#39;Title&#39;,</span>
+
+<span class="sd">                    #`text` must be a dict or a list of dicts</span>
+<span class="sd">                    &#39;text&#39;: [</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &#39;s&#39;: &#39;Figure Title&#39;,</span>
+<span class="sd">                            &#39;weight&#39;: &#39;bold&#39;,</span>
+<span class="sd">                        },</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &#39;s&#39;: &#39;Figure Subtitle&#39;,</span>
+<span class="sd">                            &#39;weight&#39;: &#39;light&#39;,</span>
+<span class="sd">                        },</span>
+<span class="sd">                    ],</span>
+
+<span class="sd">                    #`image` must refer to dict with `path` key (required),</span>
+<span class="sd">                    # and optional keys `scale` and `expand` which default</span>
+<span class="sd">                    # to 1 and False, respectively.</span>
+<span class="sd">                    &#39;image&#39;: {</span>
+<span class="sd">                        &#39;path&#39;: &#39;img//logo.png&#39;,</span>
+<span class="sd">                        &#39;scale&#39;: 1,</span>
+<span class="sd">                    },</span>
+
+<span class="sd">                    #`span` must be a list of integers for the</span>
+<span class="sd">                    # gridspec columns that the titleblock element will</span>
+<span class="sd">                    # span in tenths of an inch. The following span</span>
+<span class="sd">                    # will give a titleblock element that is 0.8 inches tall</span>
+<span class="sd">                    # and 3.2 inches wide. It will be the top left element</span>
+<span class="sd">                    # of the block because its height and width begin at zero.</span>
+<span class="sd">                    &#39;span&#39;: [0, 8, 0, 32],</span>
+<span class="sd">                },</span>
+<span class="sd">                {...  # specify keys for next tbk element</span>
+<span class="sd">                 },</span>
+<span class="sd">            ]</span>
+
+
+<span class="sd">    titleblock_cols : tuple of int, optional (default=(16, 16, 8))</span>
+<span class="sd">        The specification (in tenths of an inch) of the rulers for</span>
+<span class="sd">        each column in the title block.</span>
+<span class="sd">    titleblock_rows : tuple of int, optional (default=(8, 5, 3))</span>
+<span class="sd">        The specification (in tenths of an inch) of the rulers for</span>
+<span class="sd">        each rows in the title block.</span>
+<span class="sd">    draft : bool, optional (default=True)</span>
+<span class="sd">        Toggles the inclusion of a draft watermark.</span>
+<span class="sd">    dpi : int, optional (default=300)</span>
+<span class="sd">        Resolution of the final figure in dots per inch.</span>
+<span class="sd">    **figkwargs</span>
+<span class="sd">        Additional keyword arguments passed to ``plt.figure``</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    To produce an empty figure containing a border object,</span>
+<span class="sd">    and 5 title block objects:</span>
+
+<span class="sd">    &gt;&gt;&gt; from template import Template</span>
+<span class="sd">    &gt;&gt;&gt; t = Template(figsize(8.5, 11), scriptpath=&quot;path/to/script.py&quot;</span>
+<span class="sd">    &gt;&gt;&gt; fig = t.setup_figure()</span>
+<span class="sd">    &gt;&gt;&gt; fig.show()</span>
+<span class="sd">    &lt;matplotlib figure object&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">margins</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">titleblock_content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">titleblock_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">titleblock_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">scriptname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">draft</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">figkwargs</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">scriptname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Must enter name of calling script for footnote&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script_name</span> <span class="o">=</span> <span class="n">scriptname</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_margins</span> <span class="o">=</span> <span class="n">_validate_margins</span><span class="p">(</span><span class="n">margins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margins</span>
+
+        <span class="k">if</span> <span class="n">titleblock_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">titleblock_cols</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">titleblock_rows</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">titleblock_rows</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_spans</span> <span class="o">=</span> <span class="n">_get_default_tb_spans</span><span class="p">(</span>
+            <span class="n">titleblock_rows</span><span class="p">,</span> <span class="n">titleblock_cols</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_w</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">titleblock_cols</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_h</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">titleblock_rows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_draft</span> <span class="o">=</span> <span class="n">draft</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gsfig</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_watermark</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path_text</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock_subspec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig_options</span> <span class="o">=</span> <span class="n">figkwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig_options</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dpi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_titleblock_content</span> <span class="o">=</span> <span class="n">titleblock_content</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">margins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_margins</span>
+
+    <span class="nd">@margins</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">margins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_margins</span> <span class="o">=</span> <span class="n">_validate_margins</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_margins</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">titleblock_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titleblock_content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_titleblock_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_spans</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titleblock_content</span>
+
+    <span class="nd">@titleblock_content</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">titleblock_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_titleblock_content</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_fig_options</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_draft</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_watermark</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
+
+    <span class="nd">@fig</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">fig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gsfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gsfig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figheight</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figwidth</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gsfig</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                            <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gsfig</span>
+
+    <span class="nd">@gsfig</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">gsfig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gsfig</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">watermark</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_watermark</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_watermark</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_watermark</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_watermark</span>
+
+    <span class="nd">@watermark</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">watermark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_watermark</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path_text</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">script_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path_text</span>
+
+    <span class="nd">@path_text</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">path_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path_text</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gstitleblock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_h</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                                            <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_w</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock</span>
+
+    <span class="nd">@gstitleblock</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">gstitleblock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock_subspec</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gstitleblock_subspec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock_subspec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock_subspec</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">t_h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gstitleblock</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock_subspec</span>
+
+    <span class="nd">@gstitleblock_subspec</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">gstitleblock_subspec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gstitleblock_subspec</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">add_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">/</span> <span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figwidth</span><span class="p">())</span>
+        <span class="n">_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">/</span> <span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figwidth</span><span class="p">())</span>
+        <span class="n">_bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">/</span> <span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figheight</span><span class="p">())</span>
+        <span class="n">_top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">/</span> <span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figheight</span><span class="p">())</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="p">[</span><span class="n">_left</span><span class="p">,</span> <span class="n">_bottom</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">_left</span> <span class="o">+</span> <span class="n">_right</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">_bottom</span> <span class="o">+</span> <span class="n">_top</span><span class="p">)]</span>
+
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                                  <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;frame&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">frame</span>
+
+    <span class="k">def</span> <span class="nf">add_watermark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;DRAFT&#39;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">/</span> <span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figwidth</span><span class="p">())</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">/</span> <span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figheight</span><span class="p">())</span>
+        <span class="n">watermark</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+                                  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span>
+                                  <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                  <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                                  <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">watermark</span> <span class="o">=</span> <span class="n">watermark</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">watermark</span>
+
+    <span class="k">def</span> <span class="nf">add_titleblock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">axlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dct</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">titleblock_content</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="s1">&#39;span&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">r0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;span&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">r0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_spans</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;span&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;b_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gstitleblock_subspec</span><span class="p">[</span><span class="n">r0</span><span class="p">:</span><span class="n">r</span><span class="p">,</span> <span class="n">c0</span><span class="p">:</span><span class="n">c</span><span class="p">],</span>
+                                      <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                                      <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span>
+                                      <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
+            <span class="n">axlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">axlist</span>
+
+    <span class="k">def</span> <span class="nf">add_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                               <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span>
+
+    <span class="k">def</span> <span class="nf">add_path_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">/</span> <span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figwidth</span><span class="p">())</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_figheight</span><span class="p">()))</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Source:   &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_text</span>
+        <span class="n">textobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                                <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                                <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">textobj</span>
+
+    <span class="k">def</span> <span class="nf">populate_titleblock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_axes</span><span class="p">():</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dct</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">titleblock_content</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">dct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">dct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">)</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">dct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">label</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="n">content</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+                                <span class="n">kwargs</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="s1">&#39;transform&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                                    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span>
+                                <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                                <span class="s1">&#39;`text` key must map to dict or list of dicts&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+                        <span class="n">scale</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">expand</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expand&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                        <span class="n">img_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">image</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span>
+                                              <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+                                              <span class="n">dpi</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span><span class="o">.</span><span class="n">get_dpi</span><span class="p">(),</span>
+                                              <span class="n">expand</span><span class="o">=</span><span class="n">expand</span><span class="p">)</span>
+                        <span class="n">img_ax</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;img_b_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                        <span class="n">img_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_frame</span><span class="p">()</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_titleblock</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_path_text</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">populate_titleblock</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span>
+
+    <span class="k">def</span> <span class="nf">blank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_frame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_titleblock</span><span class="p">():</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_label</span><span class="p">()),</span>
+                    <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">watermark</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">mpl-template</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../template.html"><code class="docutils literal"><span class="pre">Template</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../template.html#insert-image"><code class="docutils literal"><span class="pre">insert_image</span></code></a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Austin Orr.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

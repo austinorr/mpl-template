@@ -134,17 +134,21 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
         relative to the given matplotlib.Axes object.
         scale = 0.5 will scale the image to half of the
         given matplotlib.Axes object.
-    dpi : int, optonal (default = 300)
+    dpi : int, optonal (default=300)
         The Dots (pixel) Per Inch of the image.
-    expand : bool, option (default = False)
+    expand : bool, optional (default=False)
         If true, the image will expand to fill the axes
         in which it is embedded. Use expand = True if the
         boundary of the enclosing axes is the desired crop boundary.
         Use expand = False if the image should be scaled in-place
         with it's original aspect ratio. This option only affects
-        images that have been zoomed (scale>1).
+        images that have been zoomed (scale > 1).
     kwargs : keyword arguments to pass to the figure.add_axes()
         constructor.
+
+    Returns
+    -------
+    ax : matplotlib.Axes
 
     Notes
     -----
@@ -255,50 +259,52 @@ class Template(object):
         columns the each element will occupy in the titleblock.
         E.g. ::
 
-            tbk = [{
-                    'name' : 'Title',
+            tbk = [
+                {
+                    'name': 'Title',
 
-                            #`text` must be a dict or a list of dicts
-                    'text' : [{
-                                's' : 'Figure Title',
-                                'weight' : 'bold',
-                                },
-                              {
-                                's' : 'Figure Subtitle',
-                                'weight' : 'light',
-                                },
-                        ],
-
-                            #`image` must refer to dict with `path` key (required),
-                            # and optional keys `scale` and `expand` which default
-                            # to 1 and False, respectively.
-                    'image': {
-                        'path':'img//logo.png',
-                        'scale': 1,
+                    #`text` must be a dict or a list of dicts
+                    'text': [
+                        {
+                            's': 'Figure Title',
+                            'weight': 'bold',
                         },
+                        {
+                            's': 'Figure Subtitle',
+                            'weight': 'light',
+                        },
+                    ],
 
-                            #`span` must be a list of integers for the
-                            # gridspec columns that the titleblock element will
-                            # span in tenths of an inch. The following span
-                            # will give a titleblock element that is 0.8 inches tall
-                            # and 3.2 inches wide. It will be the top left element
-                            # of the block because its height and width begin at zero.
-                    'span' : [0,8,0,32],
+                    #`image` must refer to dict with `path` key (required),
+                    # and optional keys `scale` and `expand` which default
+                    # to 1 and False, respectively.
+                    'image': {
+                        'path': 'img//logo.png',
+                        'scale': 1,
                     },
-                   {...#specify keys for next tbk element
-                    },
 
-                    ]
+                    #`span` must be a list of integers for the
+                    # gridspec columns that the titleblock element will
+                    # span in tenths of an inch. The following span
+                    # will give a titleblock element that is 0.8 inches tall
+                    # and 3.2 inches wide. It will be the top left element
+                    # of the block because its height and width begin at zero.
+                    'span': [0, 8, 0, 32],
+                },
+                {...  # specify keys for next tbk element
+                 },
+            ]
 
-    titleblock_cols : tuple of int, optional (default = (16, 16, 8))
+
+    titleblock_cols : tuple of int, optional (default=(16, 16, 8))
         The specification (in tenths of an inch) of the rulers for
         each column in the title block.
-    titleblock_rows : tuple of int, optional (default = (8, 5, 3))
+    titleblock_rows : tuple of int, optional (default=(8, 5, 3))
         The specification (in tenths of an inch) of the rulers for
         each rows in the title block.
-    draft : bool, optional (default = True)
+    draft : bool, optional (default=True)
         Toggles the inclusion of a draft watermark.
-    dpi : int, optional (default = 300)
+    dpi : int, optional (default=300)
         Resolution of the final figure in dots per inch.
     **figkwargs
         Additional keyword arguments passed to ``plt.figure``
