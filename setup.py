@@ -37,8 +37,8 @@ CLASSIFIERS = [
 ]
 INSTALL_REQUIRES = ['matplotlib']
 PACKAGE_DATA = {
-    'template.tests.baseline_images': ['*png'],
-    'template.tests.img': ['*png'],
+    'mpl_template.tests.baseline_images': ['*png'],
+    'mpl_template.tests.img': ['*png'],
 }
 
 setup(
