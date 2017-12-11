@@ -36,7 +36,7 @@ before_install:
 # We just set up a conda environment with the right Python version.
 # This should not need changing.
 install:
-  - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
+  - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION requests pillow
   - source activate test
   - conda install --yes --channel=conda-forge ${TESTERS}
   - pip install codecov

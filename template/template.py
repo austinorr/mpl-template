@@ -8,11 +8,23 @@ import os
 import io
 import copy
 
-import requests
-from PIL import Image
-from PIL.ExifTags import TAGS
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+
+
+def _import_requests():
+    import requests
+    return requests
+
+
+def _import_PIL_TAGS():
+    from PIL.ExifTags import TAGS
+    return TAGS
+
+
+def _import_PIL_Image():
+    from PIL import Image
+    return Image
 
 
 def _calc_extents(size, scale):
@@ -47,6 +59,8 @@ def _calc_extents(size, scale):
 def _image_path_or_url(path):
 
     if ('http' in path):
+        requests = _import_requests()
+
         valid_types = ['.png', '.jpg', '.jpeg']
         if any(ftype in path for ftype in valid_types):
             r = requests.get(path)
@@ -61,6 +75,8 @@ def _image_path_or_url(path):
 
 
 def _apply_exif_rotation(im):
+    TAGS = _import_PIL_TAGS()
+
     try:
         exif = {TAGS.get(tag): value for tag, value in im._getexif().items()}
 
@@ -134,6 +150,8 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
     -----
     Use scale parameter to zoom image relative to axes boundary.
     """
+    Image = _import_PIL_Image()
+
     if 'xticks' not in kwargs:
         kwargs['xticks'] = []
     if 'yticks' not in kwargs:

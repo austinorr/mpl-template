@@ -26,7 +26,7 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
 ]
-INSTALL_REQUIRES = ['matplotlib', 'pillow', 'requests']
+INSTALL_REQUIRES = ['matplotlib']
 PACKAGE_DATA = {
     'template.tests.baseline_images': ['*png'],
     'template.tests.img': ['*png'],
