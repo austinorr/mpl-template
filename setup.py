@@ -3,13 +3,23 @@
 import os
 from setuptools import setup, find_packages
 
+with open(os.path.join('mpl_template', '__init__.py')) as info_file:
+    version = author = email = ""
+    for line in info_file:
+        if line.startswith('__version__'):
+            version = line.split("=")[1].replace("'", "").strip()
+        elif line.startswith('__author__'):
+            author = line.strip().split("=")[1].replace("'", "").strip()
+        elif line.startswith('__email__'):
+            email = line.strip().split("=")[1].replace("'", "").strip()
+
 
 DESCRIPTION = "mpl-template: matplotlib report template constructor"
 LONG_DESCRIPTION = DESCRIPTION
-NAME = "template"
-VERSION = "0.2.2"
-AUTHOR = "Austin Orr"
-AUTHOR_EMAIL = "austinmartinorr@gmail.com"
+NAME = "mpl_template"
+VERSION = version
+AUTHOR = author
+AUTHOR_EMAIL = email
 URL = "https://github.com/austinorr"
 DOWNLOAD_URL = "https://github.com/austinorr/mpl-template.git"
 LICENSE = "BSD 3-clause"
@@ -27,8 +37,8 @@ CLASSIFIERS = [
 ]
 INSTALL_REQUIRES = ['matplotlib']
 PACKAGE_DATA = {
-    'template.tests.baseline_images': ['*png'],
-    'template.tests.img': ['*png'],
+    'mpl_template.tests.baseline_images': ['*png'],
+    'mpl_template.tests.img': ['*png'],
 }
 
 setup(

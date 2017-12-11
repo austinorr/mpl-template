@@ -38,11 +38,11 @@ install:
   - pip install .
 
 script:
-  - python check_template.py ${ARGS}
+  - python check_mpl_template.py ${ARGS}
 
 after_success:
   - if [ ${COVERAGE} = true ]; then
-      coverage run --source template check_template.py;
+      coverage run --source template check_mpl_template.py;
       coverage report -m;
       codecov;
     fi
