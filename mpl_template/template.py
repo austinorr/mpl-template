@@ -291,11 +291,9 @@ class Template(object):
                     # of the block because its height and width begin at zero.
                     'span': [0, 8, 0, 32],
                 },
-                {...  # specify keys for next tbk element
-                 },
+                {   # specify keys for next tbk element
+                },
             ]
-
-
     titleblock_cols : tuple of int, optional (default=(16, 16, 8))
         The specification (in tenths of an inch) of the rulers for
         each column in the title block.

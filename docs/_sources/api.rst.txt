@@ -7,7 +7,6 @@
 .. autoclass:: mpl_template.template.Template
 
 
-
 ``insert_image``
 ============================
 
