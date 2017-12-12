@@ -9,6 +9,7 @@ import io
 import copy
 
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 
@@ -382,7 +383,7 @@ class Template(object):
     @property
     def fig(self):
         if self._fig is None:
-            self.fig = mpl.pyplot.figure(**self._fig_options)
+            self.fig = plt.figure(**self._fig_options)
             if self.is_draft:
                 self.add_watermark()
         return self._fig

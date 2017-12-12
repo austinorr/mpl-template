@@ -41,7 +41,7 @@ script:
 
 after_success:
   - if [ ${COVERAGE} = true ]; then
-      pip install codecov
+      pip install codecov;
       coverage run --source mpl_template check_mpl_template.py;
       coverage report -m;
       codecov;
