@@ -46,7 +46,7 @@ for n in range(3):
     plot = ax.plot([math.sin(i * (n + 1)) for i in range(0, 100)])
 ```
 
-![Alt text](example/img/quick_start_mpl_template.png "Example Report Document")
+![Alt text](examples/img/quick_start_mpl_template.png "Example Report Document")
 
 ## Installation
 ### Dependencies
