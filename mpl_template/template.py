@@ -76,6 +76,7 @@ def _image_path_or_url(path):
 
 def _apply_exif_rotation(im):
     TAGS = _import_PIL_TAGS()
+    Image = _import_PIL_Image()
 
     try:
         exif = {TAGS.get(tag): value for tag, value in im._getexif().items()}

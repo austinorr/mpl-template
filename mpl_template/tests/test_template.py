@@ -6,6 +6,7 @@ from pkg_resources import resource_filename
 
 import pytest
 
+from PIL import Image
 from mpl_template import template
 import matplotlib.pyplot as plt
 
@@ -27,6 +28,22 @@ def test_calc_extents(size, scale, expected):
 
     assert abs(lower - expected[0]) < 0.0001
     assert abs(upper - expected[1]) < 0.0001
+
+    
+@pytest.mark.parametrize('filepath', [
+    (resource_filename("mpl_template.tests.img", "grace_hopper_{}.jpeg".format(i))) for i in range(4)
+])
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL, filename='grace_hopper.png', savefig_kwargs={'dpi': 96})
+def test__apply_exif_rotation(filepath):
+    img = Image.open(filepath)
+    im_rot = template._apply_exif_rotation(img)
+    dpi=96
+    fig = plt.figure(dpi=dpi, figsize=(im_rot.width/dpi, im_rot.height/dpi))
+    ax = fig.add_axes([0,0,1,1])
+    _ = plt.imshow(im_rot)
+    plt.axis('off')
+    return fig
+
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
