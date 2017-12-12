@@ -5,12 +5,12 @@ matrix:
     - python: 2.7
       env:
         - COVERAGE=false
-        - TESTERS="pytest coverage pytest-mpl"
+        - TESTERS="pytest pytest-mpl"
         - ARGS="--mpl --verbose"
     - python: 3.5
       env:
         - COVERAGE=false
-        - TESTERS="pytest coverage pytest-mpl"
+        - TESTERS="pytest pytest-mpl"
         - ARGS="--mpl --verbose"
     - python: 3.6
       env:
@@ -34,7 +34,6 @@ install:
   - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION requests pillow
   - source activate test
   - conda install --yes --channel=conda-forge ${TESTERS}
-  - pip install codecov
   - pip install .
 
 script:
@@ -42,7 +41,8 @@ script:
 
 after_success:
   - if [ ${COVERAGE} = true ]; then
-      coverage run --source template check_mpl_template.py;
+      pip install codecov
+      coverage run --source mpl_template check_mpl_template.py;
       coverage report -m;
       codecov;
     fi

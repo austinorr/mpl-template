@@ -1,9 +1,30 @@
+# `mpl-template`
+A python class for creating full report figures, including borders, titleblocks, logos, and content, entirely within matplotlib.
+
 [![Build Status](https://travis-ci.org/austinorr/mpl-template.svg)](https://travis-ci.org/austinorr/mpl-template)
 [![codecov](https://codecov.io/gh/austinorr/mpl-template/branch/master/graph/badge.svg)](https://codecov.io/gh/austinorr/mpl-template)
-# mpl-template
-A python class for creating full report figures, including borders, titleblocks, and content, entirely within matplotlib.
 
-## Dependencies:
-`numpy`, `matplotlib`, `pillow`, `pytest`
+[Sphinx Docs](https://austinorr.github.io/mpl-template/)
 
-[jupyter notebook documentation](https://gist.github.com/austinorr/e2ec865d0f94bbe4fcd59f6f7ebcb575)
+## Installation
+### Dependencies
+requires: `matplotlib`
+optional: `pillow`, `requests`
+tests: `pytest`, `pytest-mpl`
+
+### Official Releases
+TODO: release on pypi
+For now, please install from source.
+
+### Development Builds
+This is a pure-python package, so building from source is easy on all platforms:
+```
+git clone https://github.com/austinorr/mpl-template.git
+cd mpl-template
+pip install -e .
+```
+### Testing
+Testing is done via the `pytest` module from within the package directory.
+`$python check_mpl_template.py --mpl`
+or
+`$pytest --mpl`
