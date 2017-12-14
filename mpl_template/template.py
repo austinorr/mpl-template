@@ -126,7 +126,8 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
 
     Parameters
     ----------
-    ax : matplotlib.Axes
+    ax : ``matplotlib.Axes``
+        the axes into which the image should be inserted.
     image_path : str
         Path to an existing image file.
     scale : float, optional
@@ -155,6 +156,39 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
     Notes
     -----
     Use scale parameter to zoom image relative to axes boundary.
+
+    Examples
+    --------
+
+    Images are inserted centered, scaled, and filling the parent
+    axes object.
+
+    Zoomed out 2x with ``scale=0.5``. Note that the enclosing axes is
+    square, and that the inserted axes is a landscape rectangle that
+    matches the shape of the source file.
+
+    .. plot::
+        :context: reset
+        :include-source: True
+
+        >>> import matplotlib.pyplot as plt
+        >>> from mpl_template import insert_image
+        >>> file = "img/polar_bar_demo.png"
+        >>> fig, ax = plt.subplots(figsize=(3, 3))
+        >>> img_ax = insert_image(ax, file, scale=0.5)
+
+    Zoomed in 2x with ``scale=2``. Note that the use of the ``expand``
+    kwarg causes the zoomed image to fill the enclosing square axes object.
+
+    .. plot::
+        :context: reset
+        :include-source: True
+
+        >>> import matplotlib.pyplot as plt
+        >>> from mpl_template import insert_image
+        >>> file = "img/polar_bar_demo.png"
+        >>> fig, ax = plt.subplots(figsize=(3, 3))
+        >>> img_ax = insert_image(ax, file, scale=2, expand=True)
     """
     Image = _import_PIL_Image()
 
@@ -314,11 +348,15 @@ class Template(object):
     To produce an empty figure containing a border object,
     and 5 title block objects:
 
-    >>> from template import Template
-    >>> t = Template(figsize(8.5, 11), scriptpath="path/to/script.py"
-    >>> fig = t.setup_figure()
-    >>> fig.show()
-    <matplotlib figure object>
+    .. plot::
+        :context: reset
+        :include-source: True
+
+        >>> from mpl_template import Template
+        >>> report_fig = Template(figsize=(8.5, 11), scriptname="path/to/script.py")
+        >>> fig = report_fig.blank()
+
+
     """
 
     def __init__(self,

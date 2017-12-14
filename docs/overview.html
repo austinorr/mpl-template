@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; mpl-template 0.3.0 documentation</title>
+  <title>Purpose of mpl-template &mdash; mpl-template 0.3.0 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="index" title="Index"
               href="genindex.html"/>
-        <link rel="search" title="Search" href="#"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="mpl-template 0.3.0 documentation" href="index.html"/> 
 
   
@@ -71,7 +71,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -139,10 +139,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Purpose of <code class="docutils literal"><span class="pre">mpl-template</span></code></li>
     
     
       <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -154,19 +158,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
 
-  
-  <div id="search-results">
-  
-  </div>
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="purpose-of-mpl-template">
+<h1>Purpose of <code class="docutils literal"><span class="pre">mpl-template</span></code><a class="headerlink" href="#purpose-of-mpl-template" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">matplotlib</span></code> is ubiquitous in the industries of science and engineering as the open source goto package for making publication quality figures. At my company in the consulting engineering industry, we’d commonly produce nice plots in our analysis scripts and insert those plots into a word document or appendix figure template. However, this rapidly becomes tedious if there are many figures to insert into the company’s template.</p>
+<p>This module builds on the <code class="docutils literal"><span class="pre">figure</span></code>, <code class="docutils literal"><span class="pre">axes</span></code>, and <code class="docutils literal"><span class="pre">gridspec</span></code> paradigms built by <code class="docutils literal"><span class="pre">matplotlib</span></code> to create a very capable and flexible API for using matplotlib to include a figure’s titleblock, metadata such as the filepath, neatline, inset images/figures, logo, figure numbering, etc., all entirely with matplotlib.</p>
+<p>Users of the <code class="docutils literal"><span class="pre">Template</span></code> class can specify the paper size (inches), margins (tenths), and titleblock specifications (list of dictionaries) of the final figure.</p>
+<p>The module also includes <code class="docutils literal"><span class="pre">insert_image</span></code>, a helper function to aid in embedding inset images, logos, or any other raster data easily and efficiently.</p>
+</div>
+
 
            </div>
            <div class="articleComments">
@@ -213,7 +246,6 @@
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -229,14 +261,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>
