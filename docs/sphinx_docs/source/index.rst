@@ -6,16 +6,14 @@
 Welcome to mpl-template's documentation!
 ========================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+.. include:: overview.rst
 
-Walkthrough
+Tutorial
 ===========
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   tutorial/Template_Docs.ipynb
+   notebooks/tutorial/Template_Docs.ipynb
 
 
 API References

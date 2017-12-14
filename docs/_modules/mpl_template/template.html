@@ -90,13 +90,12 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorial/Template_Docs.html">Walkthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorial/Template_Docs.html#Purpose">Purpose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorial/Template_Docs.html#Walkthrough">Walkthrough</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/tutorial/Template_Docs.html">Walkthrough</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/tutorial/Template_Docs.html#Advanced-Features">Advanced Features</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html"><code class="docutils literal"><span class="pre">Template</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html#insert-image"><code class="docutils literal"><span class="pre">insert_image</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html"><code class="docutils literal"><span class="pre">Template</span></code> API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#insert-image-api-reference"><code class="docutils literal"><span class="pre">insert_image</span></code> API Reference</a></li>
 </ul>
 
             
@@ -172,6 +171,7 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
 
 
@@ -239,6 +239,7 @@
 
 <span class="k">def</span> <span class="nf">_apply_exif_rotation</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="n">_import_PIL_TAGS</span><span class="p">()</span>
+    <span class="n">Image</span> <span class="o">=</span> <span class="n">_import_PIL_Image</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">exif</span> <span class="o">=</span> <span class="p">{</span><span class="n">TAGS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">im</span><span class="o">.</span><span class="n">_getexif</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -287,7 +288,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ax : matplotlib.Axes</span>
+<span class="sd">    ax : ``matplotlib.Axes``</span>
+<span class="sd">        the axes into which the image should be inserted.</span>
 <span class="sd">    image_path : str</span>
 <span class="sd">        Path to an existing image file.</span>
 <span class="sd">    scale : float, optional</span>
@@ -316,6 +318,39 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    Use scale parameter to zoom image relative to axes boundary.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    Images are inserted centered, scaled, and filling the parent</span>
+<span class="sd">    axes object.</span>
+
+<span class="sd">    Zoomed out 2x with ``scale=0.5``. Note that the enclosing axes is</span>
+<span class="sd">    square, and that the inserted axes is a landscape rectangle that</span>
+<span class="sd">    matches the shape of the source file.</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: reset</span>
+<span class="sd">        :include-source: True</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from mpl_template import insert_image</span>
+<span class="sd">        &gt;&gt;&gt; file = &quot;img/polar_bar_demo.png&quot;</span>
+<span class="sd">        &gt;&gt;&gt; fig, ax = plt.subplots(figsize=(3, 3))</span>
+<span class="sd">        &gt;&gt;&gt; img_ax = insert_image(ax, file, scale=0.5)</span>
+
+<span class="sd">    Zoomed in 2x with ``scale=2``. Note that the use of the ``expand``</span>
+<span class="sd">    kwarg causes the zoomed image to fill the enclosing square axes object.</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: reset</span>
+<span class="sd">        :include-source: True</span>
+
+<span class="sd">        &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; from mpl_template import insert_image</span>
+<span class="sd">        &gt;&gt;&gt; file = &quot;img/polar_bar_demo.png&quot;</span>
+<span class="sd">        &gt;&gt;&gt; fig, ax = plt.subplots(figsize=(3, 3))</span>
+<span class="sd">        &gt;&gt;&gt; img_ax = insert_image(ax, file, scale=2, expand=True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Image</span> <span class="o">=</span> <span class="n">_import_PIL_Image</span><span class="p">()</span>
 
@@ -475,11 +510,15 @@
 <span class="sd">    To produce an empty figure containing a border object,</span>
 <span class="sd">    and 5 title block objects:</span>
 
-<span class="sd">    &gt;&gt;&gt; from template import Template</span>
-<span class="sd">    &gt;&gt;&gt; t = Template(figsize(8.5, 11), scriptpath=&quot;path/to/script.py&quot;</span>
-<span class="sd">    &gt;&gt;&gt; fig = t.setup_figure()</span>
-<span class="sd">    &gt;&gt;&gt; fig.show()</span>
-<span class="sd">    &lt;matplotlib figure object&gt;</span>
+<span class="sd">    .. plot::</span>
+<span class="sd">        :context: reset</span>
+<span class="sd">        :include-source: True</span>
+
+<span class="sd">        &gt;&gt;&gt; from mpl_template import Template</span>
+<span class="sd">        &gt;&gt;&gt; report_fig = Template(figsize=(8.5, 11), scriptname=&quot;path/to/script.py&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; fig = report_fig.blank()</span>
+
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -544,7 +583,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_fig_options</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_fig_options</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_draft</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_watermark</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
