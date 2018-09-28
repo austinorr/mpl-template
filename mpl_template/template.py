@@ -58,6 +58,21 @@ def _calc_extents(size, scale):
 
 
 def _image_path_or_url(path):
+    """
+    Prepares image path or url for loading into format ready for
+    loading by PIL.Image.open()
+
+    Parameters
+    ----------
+    path : string
+        filepath or url to an image file. For images from the web, only
+        the file extensions '.png', '.jpg', and '.jpeg' are supported.
+
+    Returnns
+    --------
+    filepath for images from a file or
+    io.BytesIO object for web images
+    """
 
     if ('http' in path):
         requests = _import_requests()
@@ -76,12 +91,25 @@ def _image_path_or_url(path):
 
 
 def _apply_exif_rotation(im):
+    """Apply exif rotation tag to a PIL image object
+
+    Parameters
+    ----------
+    im : PIL.Image
+        image object that may contain rotation data
+
+    Returns
+    -------
+    PIL.Image
+    """
     TAGS = _import_PIL_TAGS()
     Image = _import_PIL_Image()
 
     try:
         exif = {TAGS.get(tag): value for tag, value in im._getexif().items()}
 
+        # this section adapted from the following SO post:
+        # https://stackoverflow.com/a/1608846/7486933
         if 'Orientation' in exif.keys():
             orientation = exif['Orientation']
             if orientation == 1:
