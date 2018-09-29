@@ -141,13 +141,14 @@ def test_insert_image_from_file_zoom_10x_expand():
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_custom_spans():
-    test = [{"span": [0,  8,  0, 32]},
-            {"span": [13, 16, 16, 30]},
-            {"span": [13, 16,  0, 16]},
-            {"span": [8, 13,  0, 32]},
-            {"span": [0, 13, 32, 40]},
-            {"span": [13, 16, 30, 40]},
-            ]
+    test = [
+        {"span": [0,  .8,  3.2, .8]},
+        {"span": [1.6, 0, 1.4, .3]},
+        {"span": [0, 0,  1.6, .3]},
+        {"span": [0, .3,  3.2, .5]},
+        {"span": [3.2, .3, .8, 1.3]},
+        {"span": [3, 0, 1, .3]},
+    ]
 
     testfig = template.Template(figsize=(5, 3), scriptname="",
                                 titleblock_content=test)
@@ -160,11 +161,12 @@ def test_custom_spans():
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_titleblock_on_left():
 
-    testfig = template.Template(figsize=(8.5, 11), scriptname="")
-    testfig.gstitleblock = testfig.gsfig[
-        -(testfig.bottom + testfig.t_h) or None:-testfig.bottom or None,
-        (testfig.left) or None:-(testfig.left + testfig.t_w) or None
-    ]
+    testfig = template.Template(figsize=(8.5, 11), scriptname="",
+                                titleblock_loc=(.4, .4))
+    # testfig.gstitleblock = testfig.gsfig[
+    #     -(testfig.bottom + testfig.t_h) or None:-testfig.bottom or None,
+    #     (testfig.left) or None:-(testfig.left + testfig.t_w) or None
+    # ]
 
     blank = testfig.blank()
 
@@ -186,7 +188,7 @@ def test_zero_margins():
 def test_custom_titleblock():
     custom = [
         {
-            'span': [0, 32, 0, 16],
+            'span': [0, 0, 1.6, 1.6],
             'name':'Title',
             'text':[
                 {
@@ -214,7 +216,7 @@ def test_custom_titleblock():
                 'path': DEMO_PNG_FILE,
                 'scale': 1,
             },
-            'span': [0, 32, 16, 32],
+            'span': [1.6, 0, 1.6, 1.6],
         },
         {
             'name': 'fignum',
@@ -225,7 +227,7 @@ def test_custom_titleblock():
                 'ha': 'center',
                 'va': 'center',
             },
-            'span': [0, 32, 32, 48],
+            'span': [3.2, 0, .8, 1.6],
         },
     ]
 

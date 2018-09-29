@@ -8,9 +8,7 @@ import os
 import io
 import copy
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 
 
 def _import_requests():
@@ -285,24 +283,31 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
     return imgaxes
 
 
-def _get_default_tb_spans(rows, cols):
+def _get_default_tb_spans():
 
     spans = [
-        {'span': [0, rows[0], 0, sum(cols)]},
-        {'span': [rows[0], rows[0] + rows[1], 0, cols[0] + cols[1]]},
-        {'span': [rows[0] + rows[1], sum(rows), 0, cols[0]]},
-        {'span': [rows[0] + rows[1], sum(rows), cols[0], cols[0] + cols[1]]},
-        {'span': [rows[0], sum(rows), cols[0] + cols[1], sum(cols)]},
+        # define spans by rectangle [left, bottom, width, height], numbers
+        # in inches
+        {'span': [0, 0.8, 4.0, 0.8]},
+        {'span': [0, 0.3, 3.2, 0.5]},
+        {'span': [0,   0, 1.6, 0.3]},
+        {'span': [1.6, 0, 1.6, 0.3]},
+        {'span': [3.2, 0, 0.8, 0.8]},
     ]
+
     return spans
 
 
 def _validate_margins(margins):
     if margins is None:
-        margins = (4, 4, 4, 4)
-    elif (len(margins) != 4 or not all(isinstance(x, int) for x in margins)):
-        raise ValueError("`margins` must contain four integers")
+        margins = (.4, .4, .4, .4)
+    elif len(margins) != 4:
+        raise ValueError("`margins` must contain four values")
     return margins
+
+
+def _list_divide(listlike1, listlike2):
+    return [a / b for a, b in zip(listlike1, listlike2)]
 
 
 class Template(object):
@@ -347,12 +352,9 @@ class Template(object):
                         'scale': 1,
                     },
 
-                    #`span` must be a list of integers for the
-                    # gridspec columns that the titleblock element will
-                    # span in tenths of an inch. The following span
-                    # will give a titleblock element that is 0.8 inches tall
-                    # and 3.2 inches wide. It will be the top left element
-                    # of the block because its height and width begin at zero.
+                    #`span` is a list indicating a rectangle
+                    # with [left, bottom, width, height], numbers
+                    # in inches
                     'span': [0, 8, 0, 32],
                 },
                 {   # specify keys for next tbk element
@@ -390,8 +392,7 @@ class Template(object):
     def __init__(self,
                  margins=None,
                  titleblock_content=None,
-                 titleblock_cols=None,
-                 titleblock_rows=None,
+                 titleblock_loc=None,
                  scriptname=None,
                  draft=True,
                  dpi=300,
@@ -404,28 +405,19 @@ class Template(object):
         self._margins = _validate_margins(margins)
         self.left, self.right, self.top, self.bottom = self.margins
 
-        if titleblock_cols is None:
-            titleblock_cols = (16, 16, 8)
-
-        if titleblock_rows is None:
-            titleblock_rows = (8, 5, 3)
-
-        self.default_spans = _get_default_tb_spans(
-            titleblock_rows, titleblock_cols)
-
-        self.t_w = sum(titleblock_cols)
-        self.t_h = sum(titleblock_rows)
+        self._default_spans = None
         self.is_draft = draft
 
         self._fig = None
         self._gsfig = None
         self._watermark = None
         self._path_text = None
-        self._gstitleblock = None
-        self._gstitleblock_subspec = None
         self._fig_options = figkwargs
         self._fig_options['dpi'] = dpi
         self._titleblock_content = titleblock_content
+        self._titleblock_loc = titleblock_loc
+        self._titleblock_axes = None
+        self._div = None
 
     @property
     def margins(self):
@@ -449,27 +441,34 @@ class Template(object):
     @property
     def fig(self):
         if self._fig is None:
-            self.fig = plt.figure(**self._fig_options)
+            self._fig = plt.figure(**self._fig_options)
             if self.is_draft:
                 self.add_watermark()
         return self._fig
 
-    @fig.setter
-    def fig(self, value):
-        self._fig = value
+    @property
+    def default_spans(self):
+        if self._default_spans is None:
+            self._default_spans = _get_default_tb_spans()
+        return self._default_spans
 
     @property
-    def gsfig(self):
-        if self._gsfig is None:
-            row = int(self.fig.get_figheight() * 10)
-            col = int(self.fig.get_figwidth() * 10)
-            self._gsfig = gridspec.GridSpec(row, col, left=0, right=1, bottom=0,
-                                            top=1, wspace=0, hspace=0)
-        return self._gsfig
+    def titleblock_loc(self):
+        if self._titleblock_loc is None:
+            w = self.fig.get_figwidth()
+            self._titleblock_loc = (w - 4 - self.right, self.bottom)
+        return self._titleblock_loc
 
-    @gsfig.setter
-    def gsfig(self, value):
-        self._gsfig = value
+    @titleblock_loc.setter
+    def titleblock(self, value):
+        self._titleblock_loc = value
+
+    @property
+    def div(self):
+        if self._div is None:
+            w, h = self.fig.get_size_inches()
+            self._div = [w, h, w, h]
+        return self._div
 
     @property
     def watermark(self):
@@ -491,35 +490,11 @@ class Template(object):
     def path_text(self, value):
         self._path_text = value
 
-    @property
-    def gstitleblock(self):
-        if self._gstitleblock is None:
-            self._gstitleblock = self.gsfig[-(self.bottom + self.t_h) or None:-self.bottom or None,
-                                            -(self.right + self.t_w) or None:-self.right or None]
-        return self._gstitleblock
-
-    @gstitleblock.setter
-    def gstitleblock(self, value):
-        self._gstitleblock = value
-        self._gstitleblock_subspec = None
-
-    @property
-    def gstitleblock_subspec(self):
-        if self._gstitleblock_subspec is None:
-            self._gstitleblock_subspec = gridspec.GridSpecFromSubplotSpec(
-                self.t_h, self.t_w, self.gstitleblock, wspace=0.0, hspace=0.0,
-            )
-        return self._gstitleblock_subspec
-
-    @gstitleblock_subspec.setter
-    def gstitleblock_subspec(self, value):
-        self._gstitleblock_subspec = value
-
     def add_frame(self):
-        _left = self.left / (10. * self.fig.get_figwidth())
-        _right = self.right / (10. * self.fig.get_figwidth())
-        _bottom = self.bottom / (10. * self.fig.get_figheight())
-        _top = self.top / (10. * self.fig.get_figheight())
+        _left = self.left / self.fig.get_figwidth()
+        _right = self.right / self.fig.get_figwidth()
+        _bottom = self.bottom / self.fig.get_figheight()
+        _top = self.top / self.fig.get_figheight()
         rect = [_left, _bottom, 1 - (_left + _right), 1 - (_bottom + _top)]
 
         frame = self.fig.add_axes(rect, zorder=100, facecolor='none',
@@ -529,9 +504,9 @@ class Template(object):
     def add_watermark(self, text=None):
         if text is None:
             text = 'DRAFT'
-        x = 5 / (10. * self.fig.get_figwidth())
-        y = 1 - self.top / (10. * self.fig.get_figheight())
-        watermark = self.fig.text(x, y, text, fontsize=24,
+        x = .5 / self.fig.get_figwidth()
+        y = .4 / self.fig.get_figheight()
+        watermark = self.fig.text(x, 1 - y, text, fontsize=24,
                                   color='r', fontname='Arial',
                                   fontweight='bold', zorder=1000,
                                   horizontalalignment='left',
@@ -539,27 +514,35 @@ class Template(object):
         self.watermark = watermark
         return self.watermark
 
+    @property
+    def titleblock_axes(self):
+        return self._titleblock_axes
+
     def add_titleblock(self):
-        axlist = []
+        self._titleblock_axes = []
+        l_off, b_off = self.titleblock_loc
+
         for i, dct in enumerate(self.titleblock_content):
 
             if 'span' in list(dct.keys()):
-                r0, r, c0, c = dct['span']
+                l, b, w, h = dct['span']
             else:
-                r0, r, c0, c = self.default_spans[i]['span']
+                l, b, w, h = self.default_spans[i]['span']
 
             if 'name' in list(dct.keys()):
                 label = dct['name']
             else:
                 label = 'b_{}'.format(i)
 
-            ax = self.fig.add_subplot(self.gstitleblock_subspec[r0:r, c0:c],
-                                      label=label, zorder=100, facecolor='none',
-                                      xticks=[], yticks=[], aspect='equal',
-                                      adjustable='datalim')
-            axlist.append(ax)
+            rect = _list_divide([l + l_off, b + b_off, w, h], self.div)
 
-        return axlist
+            ax = self.fig.add_axes(rect, label=label,
+                                   zorder=100, facecolor='none',
+                                   xticks=[], yticks=[], aspect='equal',
+                                   adjustable='datalim')
+            self._titleblock_axes.append(ax)
+
+        return self.titleblock_axes
 
     def add_page(self):
         ax = self.fig.add_axes([0, 0, 1, 1], zorder=1000, facecolor='none',
@@ -567,8 +550,8 @@ class Template(object):
         return ax
 
     def add_path_text(self):
-        x = self.left / (10. * self.fig.get_figwidth())
-        y = abs((self.bottom - 1.5) / (10 * self.fig.get_figheight()))
+        x = self.left / self.fig.get_figwidth()
+        y = .15 / self.fig.get_figheight()
         text = 'Source:   ' + self.path_text
         textobj = self.fig.text(x, y, text, fontsize=5,
                                 horizontalalignment='left',
@@ -577,35 +560,31 @@ class Template(object):
         return textobj
 
     def populate_titleblock(self):
-        for ax in self.fig.get_axes():
-            label = ax.get_label()
-            for i, dct in enumerate(self.titleblock_content):
-                name = dct.get('name')
-                content = dct.get('text')
-                image = dct.get('image')
-                if name == label:
-                    if content is not None:
-                        if isinstance(content, dict):
-                            content = [content]
-                        if isinstance(content, list):
-                            for elem in content:
-                                kwargs = copy.deepcopy(elem)
-                                if 'transform' not in kwargs:
-                                    kwargs['transform'] = ax.transAxes
-                                ax.text(**kwargs)
-                        else:
-                            raise ValueError(
-                                '`text` key must map to dict or list of dicts')
-                    if image is not None:
+        for i, (ax, dct) in enumerate(zip(self.titleblock_axes, self.titleblock_content)):
+            content = dct.get('text')
+            image = dct.get('image')
+            if content is not None:
+                if isinstance(content, dict):
+                    content = [content]
+                if isinstance(content, list):
+                    for elem in content:
+                        kwargs = copy.deepcopy(elem)
+                        if 'transform' not in kwargs:
+                            kwargs['transform'] = ax.transAxes
+                        ax.text(**kwargs)
+                else:
+                    raise ValueError(
+                        '`text` key must map to dict or list of dicts')
+            if image is not None:
 
-                        scale = image.get('scale', 1)
-                        expand = image.get('expand', False)
-                        img_ax = insert_image(ax, image['path'],
-                                              scale=scale,
-                                              dpi=ax.get_figure().get_dpi(),
-                                              expand=expand)
-                        img_ax.set_label('img_b_{}'.format(i))
-                        img_ax.axis('off')
+                scale = image.get('scale', 1)
+                expand = image.get('expand', False)
+                img_ax = insert_image(ax, image['path'],
+                                      scale=scale,
+                                      dpi=ax.get_figure().get_dpi(),
+                                      expand=expand)
+                img_ax.set_label('img_b_{}'.format(i))
+                img_ax.axis('off')
 
     def setup_figure(self):
 
@@ -615,6 +594,11 @@ class Template(object):
         self.populate_titleblock()
 
         return self.fig
+
+    def add_axes(self, *args, **kwargs):
+        rect = _list_divide(args[0], self.div)
+
+        return self.fig.add_axes(rect, *args[1:], **kwargs)
 
     def blank(self):
 
