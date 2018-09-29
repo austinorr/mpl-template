@@ -18,6 +18,8 @@ matrix:
         - TESTERS="pytest pytest-mpl"
         - ARGS="--mpl --verbose"
     - python: 3.7
+      dist: xenial
+      sudo: true
       env:
         - COVERAGE=true
         - TESTERS="pytest coverage pytest-mpl"
