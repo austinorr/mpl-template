@@ -474,9 +474,7 @@
     "    report_fig.path_text = PATH\n",
     "\n",
     "    attend = sns.load_dataset(\"attention\")\n",
-    "    g = sns.FacetGrid(attend, col=\"subject\", col_wrap=5,\n",
-    "                      size=1.5, ylim=(0, 10)\n",
-    "                      )\n",
+    "    g = sns.FacetGrid(attend, col=\"subject\", col_wrap=5, height=1.5, ylim=(0, 10))\n",
     "    g = g.map(plt.plot, \"solutions\", \"score\", marker=\".\", markersize=10)\n",
     "    g.savefig('img//Facet_Grid.png', dpi=300)\n",
     "    plt.close()\n",
@@ -663,13 +661,6 @@
     "    report_fig.path_text = PATH\n",
     "    fig = report_fig.setup_figure()"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   }
  ],
  "metadata": {

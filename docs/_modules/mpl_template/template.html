@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,50 +11,45 @@
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-
-  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="mpl-template 0.3.0 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="../../index.html" class="icon icon-home"> mpl-template
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> mpl-template
           
 
           
@@ -82,6 +76,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,20 +89,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/tutorial/Template_Docs.html#Advanced-Features">Advanced Features</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html"><code class="docutils literal"><span class="pre">Template</span></code> API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html#insert-image-api-reference"><code class="docutils literal"><span class="pre">insert_image</span></code> API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html"><code class="docutils literal notranslate"><span class="pre">Template</span></code> API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#insert-image-api-reference"><code class="docutils literal notranslate"><span class="pre">insert_image</span></code> API Reference</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">mpl-template</a>
@@ -115,9 +111,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -138,7 +135,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -146,8 +143,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -160,11 +155,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for mpl_template.template</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;insert_image&quot;</span><span class="p">,</span> <span class="s2">&quot;Template&quot;</span><span class="p">]</span>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;insert_image&quot;</span><span class="p">,</span> <span class="s2">&quot;Template&quot;</span><span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">io</span>
@@ -181,12 +172,12 @@
 
 
 <span class="k">def</span> <span class="nf">_import_PIL_TAGS</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PIL.ExifTags</span> <span class="k">import</span> <span class="n">TAGS</span>
+    <span class="kn">from</span> <span class="nn">PIL.ExifTags</span> <span class="kn">import</span> <span class="n">TAGS</span>
     <span class="k">return</span> <span class="n">TAGS</span>
 
 
 <span class="k">def</span> <span class="nf">_import_PIL_Image</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
     <span class="k">return</span> <span class="n">Image</span>
 
 
@@ -220,6 +211,21 @@
 
 
 <span class="k">def</span> <span class="nf">_image_path_or_url</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepares image path or url for loading into format ready for</span>
+<span class="sd">    loading by PIL.Image.open()</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : string</span>
+<span class="sd">        filepath or url to an image file. For images from the web, only</span>
+<span class="sd">        the file extensions &#39;.png&#39;, &#39;.jpg&#39;, and &#39;.jpeg&#39; are supported.</span>
+
+<span class="sd">    Returnns</span>
+<span class="sd">    --------</span>
+<span class="sd">    filepath for images from a file or</span>
+<span class="sd">    io.BytesIO object for web images</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;http&#39;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">):</span>
         <span class="n">requests</span> <span class="o">=</span> <span class="n">_import_requests</span><span class="p">()</span>
@@ -238,12 +244,25 @@
 
 
 <span class="k">def</span> <span class="nf">_apply_exif_rotation</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply exif rotation tag to a PIL image object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    im : PIL.Image</span>
+<span class="sd">        image object that may contain rotation data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    PIL.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="n">_import_PIL_TAGS</span><span class="p">()</span>
     <span class="n">Image</span> <span class="o">=</span> <span class="n">_import_PIL_Image</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">exif</span> <span class="o">=</span> <span class="p">{</span><span class="n">TAGS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span> <span class="n">value</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">im</span><span class="o">.</span><span class="n">_getexif</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
+        <span class="c1"># this section adapted from the following SO post:</span>
+        <span class="c1"># https://stackoverflow.com/a/1608846/7486933</span>
         <span class="k">if</span> <span class="s1">&#39;Orientation&#39;</span> <span class="ow">in</span> <span class="n">exif</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">orientation</span> <span class="o">=</span> <span class="n">exif</span><span class="p">[</span><span class="s1">&#39;Orientation&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -521,7 +540,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">margins</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">titleblock_content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">titleblock_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -761,9 +780,7 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -772,11 +789,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Austin Orr.
+        
+        &copy; Copyright 2017, Austin Orr
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -788,38 +813,15 @@
   </div>
   
 
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.3.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
