@@ -1,7 +1,7 @@
 # `mpl-template`
 A python class for creating full report figures, including borders, titleblocks, logos, and content, entirely within matplotlib.
 
-[![Build Status](https://travis-ci.org/austinorr/mpl-template.svg?branch=master)](https://travis-ci.org/austinorr/mpl-template)
+[![Build Status](https://travis-ci.com/austinorr/mpl-template.svg?branch=master)](https://travis-ci.org/austinorr/mpl-template)
 [![codecov](https://codecov.io/gh/austinorr/mpl-template/branch/master/graph/badge.svg)](https://codecov.io/gh/austinorr/mpl-template)
 
 [Sphinx Docs](https://austinorr.github.io/mpl-template/)

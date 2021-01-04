@@ -12,7 +12,7 @@ matplotlib.use("agg")
 
 DEMO_PNG_URL = "https://raw.githubusercontent.com/austinorr/mpl-template/14496e1965e8b360093e0a559ae3f9aba6205a56/template/tests/img/polar_bar_demo.png"
 DEMO_PNG_FILE = resource_filename("mpl_template.tests.img", "polar_bar_demo.png")
-IMG_TOL = 12
+IMG_TOL = 5
 BASELINE_DIR = "baseline_images"
 SCRIPTNAME = os.path.join("mpl_template", "tests", "test_template.py")
 
