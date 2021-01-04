@@ -1,11 +1,14 @@
 import os
 from pkg_resources import resource_filename
 
-import pytest
-
 from PIL import Image
-from mpl_template import template
+import pytest
+import matplotlib
 import matplotlib.pyplot as plt
+
+from mpl_template import template
+
+matplotlib.use("agg")
 
 DEMO_PNG_URL = "https://raw.githubusercontent.com/austinorr/mpl-template/14496e1965e8b360093e0a559ae3f9aba6205a56/template/tests/img/polar_bar_demo.png"
 DEMO_PNG_FILE = resource_filename("mpl_template.tests.img", "polar_bar_demo.png")
@@ -26,27 +29,24 @@ def test_calc_extents(size, scale, expected):
     assert abs(upper - expected[1]) < 0.0001
 
 
-@pytest.mark.parametrize(
-    "filepath",
-    [
-        (resource_filename("mpl_template.tests.img", "grace_hopper_{}.jpeg".format(i)))
-        for i in range(4)
-    ],
-)
+@pytest.mark.parametrize("i", range(4))
 @pytest.mark.mpl_image_compare(
     baseline_dir=BASELINE_DIR,
     tolerance=IMG_TOL,
     filename="grace_hopper.png",
     savefig_kwargs={"dpi": 96},
 )
-def test__apply_exif_rotation(filepath):
+def test__apply_exif_rotation(i):
+    filepath = resource_filename(
+        "mpl_template.tests.img", "grace_hopper_{}.jpeg".format(i)
+    )
     img = Image.open(filepath)
     im_rot = template._apply_exif_rotation(img)
     dpi = 96
     fig = plt.figure(dpi=dpi, figsize=(im_rot.width / dpi, im_rot.height / dpi))
     ax = fig.add_axes([0, 0, 1, 1])
-    _ = plt.imshow(im_rot)
-    plt.axis("off")
+    _ = ax.imshow(im_rot)
+    ax.axis("off")
     return fig
 
 

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 import sys
-import matplotlib
-matplotlib.use('agg')
 
 import mpl_template
 
