@@ -66,7 +66,5 @@ cd mpl-template
 pip install -e .
 ```
 ### Testing
-Testing is done via the `pytest` module from within the package directory.
-`$python check_mpl_template.py --mpl`
-or
+Testing is done via `pytest`:
 `$pytest --mpl`
