@@ -2,53 +2,37 @@ language: python
 
 matrix:
   include:
-    - python: 2.7
-      env:
-        - COVERAGE=false
-        - TESTERS="pytest pytest-mpl"
-        - ARGS="--mpl --verbose"
     - python: 3.5
       env:
         - COVERAGE=false
-        - TESTERS="pytest pytest-mpl"
-        - ARGS="--mpl --verbose"
+
     - python: 3.6
       env:
         - COVERAGE=false
-        - TESTERS="pytest pytest-mpl"
-        - ARGS="--mpl --verbose"
+
     - python: 3.7
-      dist: xenial
-      sudo: true
+      # dist: xenial
+      # sudo: true
       env:
         - COVERAGE=true
-        - TESTERS="pytest coverage pytest-mpl"
-        - ARGS="--mpl --verbose"
+    
+    - python: 3.8
+      # dist: xenial
+      # sudo: true
+      env:
+        - COVERAGE=true
 
-# Install, update, and setup Miniconda
-# This should not need changing.
-before_install:
-  - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
-  - chmod +x miniconda.sh
-  - ./miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - conda update --yes conda
-  - conda install --yes nomkl
 
-# We just set up a conda environment with the right Python version.
-# This should not need changing.
 install:
-  - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION requests pillow
-  - source activate test
-  - conda install --yes --channel=conda-forge ${TESTERS}
+  - pip install requests pillow pytest pytest-mpl
   - pip install .
 
 script:
-  - python check_mpl_template.py ${ARGS}
+  - python check_mpl_template.py --mpl --verbose
 
 after_success:
   - if [ ${COVERAGE} = true ]; then
-      pip install codecov;
+      pip install coverage codecov;
       coverage run --source mpl_template check_mpl_template.py;
       coverage report -m;
       codecov;
