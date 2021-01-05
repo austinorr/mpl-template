@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
-
 import os
 from setuptools import setup, find_packages
 
-with open(os.path.join('mpl_template', '__init__.py')) as info_file:
+with open(os.path.join("mpl_template", "__init__.py")) as info_file:
     version = author = email = ""
     for line in info_file:
-        if line.startswith('__version__'):
+        if line.startswith("__version__"):
             version = line.split("=")[1].replace("'", "").strip()
-        elif line.startswith('__author__'):
+        elif line.startswith("__author__"):
             author = line.strip().split("=")[1].replace("'", "").strip()
-        elif line.startswith('__email__'):
+        elif line.startswith("__email__"):
             email = line.strip().split("=")[1].replace("'", "").strip()
 
 
@@ -24,21 +22,19 @@ URL = "https://github.com/austinorr"
 DOWNLOAD_URL = "https://github.com/austinorr/mpl-template.git"
 LICENSE = "BSD 3-clause"
 PACKAGES = find_packages()
-PLATFORMS = "Python 2.7, 3.5+."
+PLATFORMS = "Python 3.6+."
 CLASSIFIERS = [
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Intended Audience :: Science/Research",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3.5',
-    'Programming Language :: Python :: 3.6',
+    "Programming Language :: Python :: 3.6",
 ]
-INSTALL_REQUIRES = ['matplotlib']
+INSTALL_REQUIRES = ["matplotlib"]
 PACKAGE_DATA = {
-    'mpl_template.tests.baseline_images': ['*png'],
-    'mpl_template.tests.img': ['*png'],
+    "mpl_template.tests.baseline_images": ["*png"],
+    "mpl_template.tests.img": ["*png"],
 }
 
 setup(
