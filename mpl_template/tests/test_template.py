@@ -69,6 +69,14 @@ def test_insert_image_from_url():
     return fig
 
 
+def test_insert_svg_image_from_url():
+
+    url = "https://matplotlib.org/_static/logo2_compressed.svg"
+    fig, ax = plt.subplots(figsize=(9, 9))
+    with pytest.raises(ValueError):
+        logo_ax = template.insert_image(ax, url, scale=1)
+
+
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_url_shrink_half():
 
@@ -180,6 +188,16 @@ def test_zero_margins():
     return testfig.fig
 
 
+@pytest.mark.parametrize(
+    "bad_margin", [(0, 0, 0), (0, 0, 0, 0.0),]  # 3 margins  # float margins
+)
+def test_bad_margins(bad_margin):
+    with pytest.raises(ValueError):
+        testfig = template.Template(
+            figsize=(8.5, 11), scriptname="tests.py", margins=bad_margin
+        )
+
+
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_custom_titleblock():
     custom = [
@@ -276,3 +294,11 @@ def test_fancy_titleblock():
     fig = testfig.setup_figure()
 
     return testfig.fig
+
+
+def test_template_attrs():
+    obj = template.Template(figsize=(8.5, 11), scriptname="")
+    attrs = [i for i in dir(obj) if not callable(i) and not "_" == i[0]]
+    for attr in attrs:
+        t = template.Template(figsize=(8.5, 11), scriptname="")
+        assert getattr(t, attr, None) is not None
