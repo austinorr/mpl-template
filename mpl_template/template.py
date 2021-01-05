@@ -72,17 +72,16 @@ def _image_path_or_url(path):
     io.BytesIO object for web images
     """
 
+    ext = os.path.splitext(path)[1].replace(".", "")
+    valid_types = ["png", "jpg", "jpeg"]
+
+    if ext not in valid_types:
+        raise ValueError("Supported image types include: {}".format(valid_types))
+
     if "http" in path:
         requests = _import_requests()
-
-        valid_types = [".png", ".jpg", ".jpeg"]
-        if any(ftype in path for ftype in valid_types):
-            r = requests.get(path)
-            img_file_obj = io.BytesIO(r.content)
-        else:
-            raise ValueError(
-                "Supported web image types include: {}".format(valid_types)
-            )
+        r = requests.get(path)
+        img_file_obj = io.BytesIO(r.content)
         return img_file_obj
 
     else:
@@ -103,42 +102,41 @@ def _apply_exif_rotation(im):
     """
     TAGS = _import_PIL_TAGS()
     Image = _import_PIL_Image()
+    i = im.copy()
 
     try:
         exif = {TAGS.get(tag): value for tag, value in im._getexif().items()}
 
         # this section adapted from the following SO post:
         # https://stackoverflow.com/a/1608846/7486933
-        if "Orientation" in exif.keys():
-            orientation = exif["Orientation"]
-            if orientation == 1:
-                # Nothing
-                i = im.copy()
-            elif orientation == 2:
-                # Vertical Mirror
-                i = im.transpose(Image.FLIP_LEFT_RIGHT)
-            elif orientation == 3:
-                # Rotation 180°
-                i = im.transpose(Image.ROTATE_180)
-            elif orientation == 4:
-                # Horizontal Mirror
-                i = im.transpose(Image.FLIP_TOP_BOTTOM)
-            elif orientation == 5:
-                # Horizontal Mirror + Rotation 90° CCW
-                i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.ROTATE_90)
-            elif orientation == 6:
-                # Rotation 270°
-                i = im.transpose(Image.ROTATE_270)
-            elif orientation == 7:
-                # Horizontal Mirror + Rotation 270°
-                i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.ROTATE_270)
-            elif orientation == 8:
-                # Rotation 90°
-                i = im.transpose(Image.ROTATE_90)
-            else:
-                raise Exception("Invalid EXIF Orientation Value")
-        else:
+
+        orientation = exif.get("Orientation")
+        if orientation == 1:
+            # Nothing
             i = im.copy()
+        elif orientation == 2:
+            # Vertical Mirror
+            i = im.transpose(Image.FLIP_LEFT_RIGHT)
+        elif orientation == 3:
+            # Rotation 180°
+            i = im.transpose(Image.ROTATE_180)
+        elif orientation == 4:
+            # Horizontal Mirror
+            i = im.transpose(Image.FLIP_TOP_BOTTOM)
+        elif orientation == 5:
+            # Horizontal Mirror + Rotation 90° CCW
+            i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.ROTATE_90)
+        elif orientation == 6:
+            # Rotation 270°
+            i = im.transpose(Image.ROTATE_270)
+        elif orientation == 7:
+            # Horizontal Mirror + Rotation 270°
+            i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.ROTATE_270)
+        elif orientation == 8:
+            # Rotation 90°
+            i = im.transpose(Image.ROTATE_90)
+        else:  # pragma: no cover
+            raise Exception("Invalid EXIF Orientation Value")
         return i
 
     except (AttributeError, KeyError, IndexError):
@@ -399,7 +397,7 @@ class Template(object):
         **figkwargs
     ):
 
-        if scriptname is None:
+        if scriptname is None:  # pragma: no cover
             raise Exception("Must enter name of calling script for footnote")
         self.script_name = scriptname
 
@@ -433,7 +431,7 @@ class Template(object):
         return self._margins
 
     @margins.setter
-    def margins(self, value):
+    def margins(self, value):  # pragma: no cover
         self._margins = _validate_margins(value)
         self.left, self.right, self.top, self.bottom = self._margins
 
@@ -443,7 +441,7 @@ class Template(object):
             self._titleblock_content = self.default_spans
         return self._titleblock_content
 
-    @titleblock_content.setter
+    @titleblock_content.setter  # pragma: no cover
     def titleblock_content(self, value):
         self._titleblock_content = value
 
@@ -470,7 +468,7 @@ class Template(object):
         return self._gsfig
 
     @gsfig.setter
-    def gsfig(self, value):
+    def gsfig(self, value):  # pragma: no cover
         self._gsfig = value
 
     @property
@@ -516,7 +514,7 @@ class Template(object):
         return self._gstitleblock_subspec
 
     @gstitleblock_subspec.setter
-    def gstitleblock_subspec(self, value):
+    def gstitleblock_subspec(self, value):  # pragma: no cover
         self._gstitleblock_subspec = value
 
     def add_frame(self):
@@ -579,7 +577,7 @@ class Template(object):
 
         return axlist
 
-    def add_page(self):
+    def add_page(self):  # pragma: no cover
         ax = self.fig.add_axes(
             [0, 0, 1, 1],
             zorder=1000,
@@ -622,7 +620,7 @@ class Template(object):
                                 if "transform" not in kwargs:
                                     kwargs["transform"] = ax.transAxes
                                 ax.text(**kwargs)
-                        else:
+                        else:  # pragma: no cover
                             raise ValueError(
                                 "`text` key must map to dict or list of dicts"
                             )
