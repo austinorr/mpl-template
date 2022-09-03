@@ -157,7 +157,7 @@ def insert_image(
     scale: float = 1.0,
     dpi: float = 300.0,
     expand: bool = False,
-    **kwargs
+    **kwargs,
 ) -> axes.Axes:
     """
     Centers an image within an axes object
@@ -248,7 +248,6 @@ def insert_image(
     img_fp_or_obj = _image_path_or_url(image_path)
 
     with Image.open(img_fp_or_obj) as image:
-
         image = _apply_exif_rotation(image)
         image = image.convert("RGBA")
         wpx, hpx = image.size
@@ -302,7 +301,6 @@ def insert_image(
 def _get_default_tb_spans(
     rows: Tuple[int, ...], cols: Tuple[int, ...]
 ) -> List[Dict[str, Any]]:
-
     spans = [
         {"span": [0, rows[0], 0, sum(cols)]},
         {"span": [rows[0], rows[0] + rows[1], 0, cols[0] + cols[1]]},
@@ -314,7 +312,7 @@ def _get_default_tb_spans(
 
 
 def _validate_margins(
-    margins: Optional[Tuple[int, int, int, int]] = None
+    margins: Optional[Tuple[int, int, int, int]] = None,
 ) -> Tuple[int, int, int, int]:
     if margins is None:
         margins = (4, 4, 4, 4)
@@ -414,9 +412,8 @@ class Template(object):
         scriptname=None,
         draft=True,
         dpi: float = 300,
-        **figkwargs
+        **figkwargs,
     ):
-
         if scriptname is None:  # pragma: no cover
             raise Exception("Must enter name of calling script for footnote")
         self.script_name = scriptname
@@ -576,7 +573,6 @@ class Template(object):
     def add_titleblock(self):
         axlist = []
         for i, dct in enumerate(self.titleblock_content):
-
             if "span" in list(dct.keys()):
                 r0, r, c0, c = dct["span"]
             else:
@@ -649,7 +645,6 @@ class Template(object):
                                 "`text` key must map to dict or list of dicts"
                             )
                     if image is not None:
-
                         scale = image.get("scale", 1)
                         expand = image.get("expand", False)
                         img_ax = insert_image(
@@ -663,7 +658,6 @@ class Template(object):
                         img_ax.axis("off")
 
     def setup_figure(self) -> figure.Figure:
-
         frame = self.add_frame()
         block = self.add_titleblock()
         path = self.add_path_text()
@@ -672,7 +666,6 @@ class Template(object):
         return self.fig
 
     def blank(self) -> figure.Figure:
-
         self.add_frame()
         for ax in self.add_titleblock():
             ax.text(
