@@ -1,5 +1,6 @@
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 with open(os.path.join("mpl_template", "__init__.py")) as info_file:
     version = author = email = ""

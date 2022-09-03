@@ -1,32 +1,37 @@
-import os
-import io
 import copy
+import io
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import axes, figure, gridspec
 
 __all__ = ["insert_image", "Template"]
 
 
-def _import_requests():
+try:
     import requests
-
-    return requests
-
-
-def _import_PIL_TAGS():
-    from PIL.ExifTags import TAGS
-
-    return TAGS
+except ImportError:
+    if TYPE_CHECKING:
+        import requests
+    else:
+        requests = None
 
 
-def _import_PIL_Image():
+try:
     from PIL import Image
+    from PIL.ExifTags import TAGS
+    from PIL.Image import Resampling, Transpose  # type:ignore
+except ImportError:
+    if TYPE_CHECKING:
+        from PIL import Image
+        from PIL.ExifTags import TAGS
+        from PIL.Image import Resampling, Transpose  # type:ignore
+    else:
+        TAGS, Image = None, None
 
-    return Image
 
-
-def _calc_extents(size, scale):
+def _calc_extents(size: int, scale: float) -> Tuple[float, float]:
     """
     Calculates the view limits needed to see a
     centered image at the desired scale.
@@ -55,7 +60,7 @@ def _calc_extents(size, scale):
     return -lower, upper
 
 
-def _image_path_or_url(path):
+def _image_path_or_url(path: str) -> Union[str, io.BytesIO]:
     """
     Prepares image path or url for loading into format ready for
     loading by PIL.Image.open()
@@ -72,20 +77,23 @@ def _image_path_or_url(path):
     io.BytesIO object for web images
     """
 
-    ext = os.path.splitext(path)[1].replace(".", "")
+    ext = Path(path).suffix.lstrip(".")
     valid_types = ["png", "jpg", "jpeg"]
 
     if ext not in valid_types:
         raise ValueError("Supported image types include: {}".format(valid_types))
 
     if "http" in path:
-        requests = _import_requests()
+        if requests is None:
+            raise ImportError(
+                "the `requests` library is required to load images via url."
+            )
         r = requests.get(path)
         img_file_obj = io.BytesIO(r.content)
         return img_file_obj
 
     else:
-        return os.path.realpath(path)
+        return str(Path(path).resolve())
 
 
 def _apply_exif_rotation(im):
@@ -100,8 +108,8 @@ def _apply_exif_rotation(im):
     -------
     PIL.Image
     """
-    TAGS = _import_PIL_TAGS()
-    Image = _import_PIL_Image()
+    if TAGS is None or Image is None:
+        raise ImportError("The `pillow` library is required to manipulate images.")
     i = im.copy()
 
     try:
@@ -116,25 +124,25 @@ def _apply_exif_rotation(im):
             i = im.copy()
         elif orientation == 2:
             # Vertical Mirror
-            i = im.transpose(Image.FLIP_LEFT_RIGHT)
+            i = im.transpose(Transpose.FLIP_LEFT_RIGHT)
         elif orientation == 3:
             # Rotation 180°
-            i = im.transpose(Image.ROTATE_180)
+            i = im.transpose(Transpose.ROTATE_180)
         elif orientation == 4:
             # Horizontal Mirror
-            i = im.transpose(Image.FLIP_TOP_BOTTOM)
+            i = im.transpose(Transpose.FLIP_TOP_BOTTOM)
         elif orientation == 5:
             # Horizontal Mirror + Rotation 90° CCW
-            i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.ROTATE_90)
+            i = im.transpose(Transpose.FLIP_TOP_BOTTOM).transpose(Transpose.ROTATE_90)
         elif orientation == 6:
             # Rotation 270°
-            i = im.transpose(Image.ROTATE_270)
+            i = im.transpose(Transpose.ROTATE_270)
         elif orientation == 7:
             # Horizontal Mirror + Rotation 270°
-            i = im.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.ROTATE_270)
+            i = im.transpose(Transpose.FLIP_TOP_BOTTOM).transpose(Transpose.ROTATE_270)
         elif orientation == 8:
             # Rotation 90°
-            i = im.transpose(Image.ROTATE_90)
+            i = im.transpose(Transpose.ROTATE_90)
         else:  # pragma: no cover
             raise Exception("Invalid EXIF Orientation Value")
         return i
@@ -143,7 +151,14 @@ def _apply_exif_rotation(im):
         return im
 
 
-def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
+def insert_image(
+    ax: axes.Axes,
+    image_path: str,
+    scale: float = 1.0,
+    dpi: float = 300.0,
+    expand: bool = False,
+    **kwargs
+) -> axes.Axes:
     """
     Centers an image within an axes object
 
@@ -213,7 +228,8 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
         >>> fig, ax = plt.subplots(figsize=(3, 3))
         >>> img_ax = insert_image(ax, file, scale=2, expand=True)
     """
-    Image = _import_PIL_Image()
+    if TAGS is None or Image is None:
+        raise ImportError("The `pillow` library is required to manipulate images.")
 
     if "xticks" not in kwargs:
         kwargs["xticks"] = []
@@ -257,14 +273,14 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
             )
 
             if expand:
-                image = image.resize((int(width), int(height)), Image.BICUBIC)
+                image = image.resize((int(width), int(height)), Resampling.BICUBIC)
 
             else:
                 if width >= height:
                     width = int(wpx * (height / hpx))
                 else:
                     height = int(hpx * (width / wpx))
-                image = image.resize((int(width), int(height)), Image.BICUBIC)
+                image = image.resize((int(width), int(height)), Resampling.BICUBIC)
 
         else:
             if width >= height:
@@ -272,7 +288,7 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
             else:
                 height = int(hpx * (width / wpx))
             image = image.resize(
-                (int(width * scale), int(height * scale)), Image.LANCZOS
+                (int(width * scale), int(height * scale)), Resampling.LANCZOS
             )
 
             imgaxes.set_xlim(_calc_extents(image.size[0], scale))
@@ -283,7 +299,9 @@ def insert_image(ax, image_path, scale=1, dpi=300, expand=False, **kwargs):
     return imgaxes
 
 
-def _get_default_tb_spans(rows, cols):
+def _get_default_tb_spans(
+    rows: Tuple[int, ...], cols: Tuple[int, ...]
+) -> List[Dict[str, Any]]:
 
     spans = [
         {"span": [0, rows[0], 0, sum(cols)]},
@@ -295,7 +313,9 @@ def _get_default_tb_spans(rows, cols):
     return spans
 
 
-def _validate_margins(margins):
+def _validate_margins(
+    margins: Optional[Tuple[int, int, int, int]] = None
+) -> Tuple[int, int, int, int]:
     if margins is None:
         margins = (4, 4, 4, 4)
     elif len(margins) != 4 or not all(isinstance(x, int) for x in margins):
@@ -387,13 +407,13 @@ class Template(object):
 
     def __init__(
         self,
-        margins=None,
+        margins: Optional[Tuple[int, int, int, int]] = None,
         titleblock_content=None,
         titleblock_cols=None,
         titleblock_rows=None,
         scriptname=None,
         draft=True,
-        dpi=300,
+        dpi: float = 300,
         **figkwargs
     ):
 
@@ -446,9 +466,9 @@ class Template(object):
         self._titleblock_content = value
 
     @property
-    def fig(self):
+    def fig(self) -> figure.Figure:
         if self._fig is None:
-            self.fig = plt.figure(**self._fig_options)
+            self._fig = plt.figure(**self._fig_options)
             if self.is_draft:
                 self.add_watermark()
         return self._fig
@@ -484,7 +504,7 @@ class Template(object):
     @property
     def path_text(self):
         if self._path_text is None:
-            self._path_text = os.path.join(os.getcwd(), self.script_name)
+            self._path_text = str(Path.cwd() / self.script_name)
         return self._path_text
 
     @path_text.setter
@@ -509,7 +529,11 @@ class Template(object):
     def gstitleblock_subspec(self):
         if self._gstitleblock_subspec is None:
             self._gstitleblock_subspec = gridspec.GridSpecFromSubplotSpec(
-                self.t_h, self.t_w, self.gstitleblock, wspace=0.0, hspace=0.0,
+                self.t_h,
+                self.t_w,
+                self.gstitleblock,
+                wspace=0.0,
+                hspace=0.0,
             )
         return self._gstitleblock_subspec
 
@@ -638,7 +662,7 @@ class Template(object):
                         img_ax.set_label("img_b_{}".format(i))
                         img_ax.axis("off")
 
-    def setup_figure(self):
+    def setup_figure(self) -> figure.Figure:
 
         frame = self.add_frame()
         block = self.add_titleblock()
@@ -647,7 +671,7 @@ class Template(object):
 
         return self.fig
 
-    def blank(self):
+    def blank(self) -> figure.Figure:
 
         self.add_frame()
         for ax in self.add_titleblock():
