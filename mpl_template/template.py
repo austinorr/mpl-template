@@ -11,7 +11,7 @@ __all__ = ["insert_image", "Template"]
 
 try:
     import requests
-except ImportError:
+except ImportError:  # pragma: no cover
     if TYPE_CHECKING:
         import requests
     else:
@@ -22,7 +22,7 @@ try:
     from PIL import Image
     from PIL.ExifTags import TAGS
     from PIL.Image import Resampling, Transpose  # type:ignore
-except ImportError:
+except ImportError:  # pragma: no cover
     if TYPE_CHECKING:
         from PIL import Image
         from PIL.ExifTags import TAGS
@@ -84,7 +84,7 @@ def _image_path_or_url(path: str) -> Union[str, io.BytesIO]:
         raise ValueError("Supported image types include: {}".format(valid_types))
 
     if "http" in path:
-        if requests is None:
+        if requests is None:  # pragma: no cover
             raise ImportError(
                 "the `requests` library is required to load images via url."
             )
@@ -108,7 +108,7 @@ def _apply_exif_rotation(im):
     -------
     PIL.Image
     """
-    if TAGS is None or Image is None:
+    if TAGS is None or Image is None:  # pragma: no cover
         raise ImportError("The `pillow` library is required to manipulate images.")
     i = im.copy()
 
@@ -228,7 +228,7 @@ def insert_image(
         >>> fig, ax = plt.subplots(figsize=(3, 3))
         >>> img_ax = insert_image(ax, file, scale=2, expand=True)
     """
-    if TAGS is None or Image is None:
+    if TAGS is None or Image is None:  # pragma: no cover
         raise ImportError("The `pillow` library is required to manipulate images.")
 
     if "xticks" not in kwargs:
