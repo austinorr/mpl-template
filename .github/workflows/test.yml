@@ -49,6 +49,7 @@ jobs:
       - name: Run coverage
         if: contains(env.USING_COVERAGE, matrix.python-version)
         run: |
+          pip install coverage
           coverage run --branch -m pytest --mpl --verbose
           coverage report -mi
           coverage xml
