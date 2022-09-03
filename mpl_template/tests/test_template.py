@@ -1,10 +1,10 @@
-import os
-from pkg_resources import resource_filename
+from pathlib import Path
 
-from PIL import Image
-import pytest
 import matplotlib
 import matplotlib.pyplot as plt
+import pytest
+from PIL import Image
+from pkg_resources import resource_filename
 
 from mpl_template import template
 
@@ -14,7 +14,7 @@ DEMO_PNG_URL = "https://raw.githubusercontent.com/austinorr/mpl-template/14496e1
 DEMO_PNG_FILE = resource_filename("mpl_template.tests.img", "polar_bar_demo.png")
 IMG_TOL = 10
 BASELINE_DIR = "baseline_images"
-SCRIPTNAME = os.path.join("mpl_template", "tests", "test_template.py")
+SCRIPTNAME = str(Path("mpl_template") / "tests" / "test_template.py")
 
 
 @pytest.mark.parametrize(
@@ -189,7 +189,11 @@ def test_zero_margins():
 
 
 @pytest.mark.parametrize(
-    "bad_margin", [(0, 0, 0), (0, 0, 0, 0.0),]  # 3 margins  # float margins
+    "bad_margin",
+    [
+        (0, 0, 0),
+        (0, 0, 0, 0.0),
+    ],  # 3 margins  # float margins
 )
 def test_bad_margins(bad_margin):
     with pytest.raises(ValueError):
@@ -226,12 +230,21 @@ def test_custom_titleblock():
         },
         {
             "name": "logo",
-            "image": {"path": DEMO_PNG_FILE, "scale": 1,},
+            "image": {
+                "path": DEMO_PNG_FILE,
+                "scale": 1,
+            },
             "span": [0, 32, 16, 32],
         },
         {
             "name": "fignum",
-            "text": {"s": "5", "x": 0.5, "y": 0.5, "ha": "center", "va": "center",},
+            "text": {
+                "s": "5",
+                "x": 0.5,
+                "y": 0.5,
+                "ha": "center",
+                "va": "center",
+            },
             "span": [0, 32, 32, 48],
         },
     ]
@@ -271,7 +284,13 @@ def test_fancy_titleblock():
                 },
             ],
         },
-        {"name": "logo", "image": {"path": DEMO_PNG_FILE, "scale": 0.8,},},
+        {
+            "name": "logo",
+            "image": {
+                "path": DEMO_PNG_FILE,
+                "scale": 0.8,
+            },
+        },
         {},  # placeholders for empty default boxes
         {},
         {
