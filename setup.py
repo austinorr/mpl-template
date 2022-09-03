@@ -23,14 +23,14 @@ URL = "https://github.com/austinorr"
 DOWNLOAD_URL = "https://github.com/austinorr/mpl-template.git"
 LICENSE = "BSD 3-clause"
 PACKAGES = find_packages()
-PLATFORMS = "Python 3.6+."
+PLATFORMS = "Python 3.8+."
 CLASSIFIERS = [
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Intended Audience :: Science/Research",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.8",
 ]
 INSTALL_REQUIRES = ["matplotlib"]
 PACKAGE_DATA = {
