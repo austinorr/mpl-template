@@ -27,6 +27,8 @@ jobs:
   test:
     env:
       USING_COVERAGE: "3.9"
+    env:
+      USING_COVERAGE: "3.9"
     strategy:
       fail-fast: false
       matrix:
