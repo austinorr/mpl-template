@@ -12,4 +12,3 @@
 ==============================
 
 .. autofunction:: mpl_template.template.insert_image
-

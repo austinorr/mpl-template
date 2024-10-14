@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # mpl-template documentation build configuration file, created by
 # sphinx-quickstart on Mon Dec 11 11:35:22 2017.
