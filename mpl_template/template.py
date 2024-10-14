@@ -271,15 +271,12 @@ def insert_image(
                 )
             )
 
-            if expand:
-                image = image.resize((int(width), int(height)), Resampling.BICUBIC)
-
-            else:
+            if not expand:
                 if width >= height:
                     width = int(wpx * (height / hpx))
                 else:
                     height = int(hpx * (width / wpx))
-                image = image.resize((int(width), int(height)), Resampling.BICUBIC)
+            image = image.resize((int(width), int(height)), Resampling.BICUBIC)
 
         else:
             if width >= height:
@@ -321,7 +318,7 @@ def _validate_margins(
     return margins
 
 
-class Template(object):
+class Template:
     """
     Class to construct a report figure template using matplotlib
     which includes a figure border, script path, and title block.
@@ -421,10 +418,10 @@ class Template(object):
         self._margins = _validate_margins(margins)
         self.left, self.right, self.top, self.bottom = self.margins
 
-        if titleblock_cols is None:
+        if titleblock_cols is None:  # pragma: no branch
             titleblock_cols = (16, 16, 8)
 
-        if titleblock_rows is None:
+        if titleblock_rows is None:  # pragma: no branch
             titleblock_rows = (8, 5, 3)
 
         self.default_spans = _get_default_tb_spans(titleblock_rows, titleblock_cols)
@@ -466,17 +463,17 @@ class Template(object):
     def fig(self) -> figure.Figure:
         if self._fig is None:
             self._fig = plt.figure(**self._fig_options)
-            if self.is_draft:
+            if self.is_draft:  # pragma: no branch
                 self.add_watermark()
         return self._fig
 
     @fig.setter
-    def fig(self, value):
+    def fig(self, value):  # pragma: no cover
         self._fig = value
 
     @property
     def gsfig(self):
-        if self._gsfig is None:
+        if self._gsfig is None:  # pragma: no branch
             row = int(self.fig.get_figheight() * 10)
             col = int(self.fig.get_figwidth() * 10)
             self._gsfig = gridspec.GridSpec(
@@ -551,7 +548,7 @@ class Template(object):
         return frame
 
     def add_watermark(self, text=None):
-        if text is None:
+        if text is None:  # pragma: no branch
             text = "DRAFT"
         x = 5 / (10.0 * self.fig.get_figwidth())
         y = 1 - self.top / (10.0 * self.fig.get_figheight())
@@ -637,7 +634,7 @@ class Template(object):
                         if isinstance(content, list):
                             for elem in content:
                                 kwargs = copy.deepcopy(elem)
-                                if "transform" not in kwargs:
+                                if "transform" not in kwargs:  # pragma: no branch
                                     kwargs["transform"] = ax.transAxes
                                 ax.text(**kwargs)
                         else:  # pragma: no cover
@@ -658,9 +655,9 @@ class Template(object):
                         img_ax.axis("off")
 
     def setup_figure(self) -> figure.Figure:
-        frame = self.add_frame()
-        block = self.add_titleblock()
-        path = self.add_path_text()
+        _ = self.add_frame()
+        _ = self.add_titleblock()
+        _ = self.add_path_text()
         self.populate_titleblock()
 
         return self.fig

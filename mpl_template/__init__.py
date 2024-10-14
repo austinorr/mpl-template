@@ -1,5 +1,5 @@
-from .template import *
+from .template import Template, insert_image
 
-__version__ = "0.3.0"
-__author__ = "Austin Orr"
-__email__ = "austinmartinorr@gmail.com"
+__version__ = "0.4.0"
+
+__all__ = ["insert_image", "Template"]

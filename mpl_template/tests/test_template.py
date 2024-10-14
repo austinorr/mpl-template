@@ -4,14 +4,14 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 from PIL import Image
-from pkg_resources import resource_filename
+from importlib.resources import files
 
 from mpl_template import template
 
 matplotlib.use("agg")
 
 DEMO_PNG_URL = "https://raw.githubusercontent.com/austinorr/mpl-template/14496e1965e8b360093e0a559ae3f9aba6205a56/template/tests/img/polar_bar_demo.png"
-DEMO_PNG_FILE = resource_filename("mpl_template.tests.img", "polar_bar_demo.png")
+DEMO_PNG_FILE = str(files("mpl_template.tests.img") / "polar_bar_demo.png")
 IMG_TOL = 10
 BASELINE_DIR = "baseline_images"
 SCRIPTNAME = str(Path("mpl_template") / "tests" / "test_template.py")
@@ -22,7 +22,6 @@ SCRIPTNAME = str(Path("mpl_template") / "tests" / "test_template.py")
     [(100, 0.5, (-50, 150)), (20, 1.5, (10 / 3.0, 20 - 10 / 3.0))],
 )
 def test_calc_extents(size, scale, expected):
-
     lower, upper = template._calc_extents(size, scale)
 
     assert abs(lower - expected[0]) < 0.0001
@@ -37,9 +36,7 @@ def test_calc_extents(size, scale, expected):
     savefig_kwargs={"dpi": 96},
 )
 def test__apply_exif_rotation(i):
-    filepath = resource_filename(
-        "mpl_template.tests.img", "grace_hopper_{}.jpeg".format(i)
-    )
+    filepath = str(files("mpl_template.tests.img") / "grace_hopper_{}.jpeg".format(i))
     img = Image.open(filepath)
     im_rot = template._apply_exif_rotation(img)
     dpi = 96
@@ -52,95 +49,85 @@ def test__apply_exif_rotation(i):
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_blank():
-
     testfig = template.Template(figsize=(8.5, 11), scriptname="")
     testfig.path_text = SCRIPTNAME
-    blank = testfig.blank()
+    _ = testfig.blank()
 
     return testfig.fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_url():
-
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, url, scale=1)
+    _ = template.insert_image(ax, url, scale=1)
     return fig
 
 
 def test_insert_svg_image_from_url():
-
     url = "https://matplotlib.org/_static/logo2_compressed.svg"
     fig, ax = plt.subplots(figsize=(9, 9))
     with pytest.raises(ValueError):
-        logo_ax = template.insert_image(ax, url, scale=1)
+        _ = template.insert_image(ax, url, scale=1)
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_url_shrink_half():
-
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, url, scale=0.5)
+    _ = template.insert_image(ax, url, scale=0.5)
     return fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_url_zoom_10x():
-
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, url, scale=10)
+    _ = template.insert_image(ax, url, scale=10)
     return fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_url_zoom_10x_expand():
-
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, url, scale=10, expand=True)
+    _ = template.insert_image(ax, url, scale=10, expand=True)
     return fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file():
-
     file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, file, scale=1)
+    _ = template.insert_image(ax, file, scale=1)
     return fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file_shrink_half():
-
     file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, file, scale=0.5)
+    _ = template.insert_image(ax, file, scale=0.5)
     return fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file_zoom_10x():
-
     file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, file, scale=10)
+    _ = template.insert_image(ax, file, scale=10)
     return fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_insert_image_from_file_zoom_10x_expand():
-
     file = DEMO_PNG_FILE
 
     fig, ax = plt.subplots(figsize=(9, 9))
-    logo_ax = template.insert_image(ax, file, scale=10, expand=True)
+    _ = template.insert_image(ax, file, scale=10, expand=True)
     return fig
 
 
@@ -157,33 +144,31 @@ def test_custom_spans():
 
     testfig = template.Template(figsize=(5, 3), scriptname="", titleblock_content=test)
     testfig.path_text = SCRIPTNAME
-    blank = testfig.blank()
+    _ = testfig.blank()
 
     return testfig.fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_titleblock_on_left():
-
     testfig = template.Template(figsize=(8.5, 11), scriptname="")
     testfig.gstitleblock = testfig.gsfig[
         -(testfig.bottom + testfig.t_h) or None : -testfig.bottom or None,
         (testfig.left) or None : -(testfig.left + testfig.t_w) or None,
     ]
 
-    blank = testfig.blank()
+    _ = testfig.blank()
 
     return testfig.fig
 
 
 @pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
 def test_zero_margins():
-
     testfig = template.Template(
         figsize=(8.5, 11), scriptname="tests.py", margins=(0, 0, 0, 0)
     )
 
-    blank = testfig.blank()
+    _ = testfig.blank()
 
     return testfig.fig
 
@@ -197,7 +182,7 @@ def test_zero_margins():
 )
 def test_bad_margins(bad_margin):
     with pytest.raises(ValueError):
-        testfig = template.Template(
+        _ = template.Template(
             figsize=(8.5, 11), scriptname="tests.py", margins=bad_margin
         )
 
@@ -254,7 +239,7 @@ def test_custom_titleblock():
     )
 
     testfig.path_text = SCRIPTNAME
-    fig = testfig.setup_figure()
+    _ = testfig.setup_figure()
 
     return testfig.fig
 
@@ -310,7 +295,7 @@ def test_fancy_titleblock():
         figsize=(8.5, 11), scriptname="", titleblock_content=fancy
     )
     testfig.path_text = SCRIPTNAME
-    fig = testfig.setup_figure()
+    _ = testfig.setup_figure()
 
     return testfig.fig
 
