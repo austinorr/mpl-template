@@ -240,7 +240,7 @@ def insert_image(
 
     imgaxes = ax.figure.add_axes(ax.get_position(), **kwargs)
     bbox = ax.get_window_extent().transformed(
-        ax.get_figure().dpi_scale_trans.inverted()
+        ax.get_figure().dpi_scale_trans.inverted()  # type: ignore
     )
     width, height = bbox.width, bbox.height
     width *= dpi
@@ -287,8 +287,10 @@ def insert_image(
                 (int(width * scale), int(height * scale)), Resampling.LANCZOS
             )
 
-            imgaxes.set_xlim(_calc_extents(image.size[0], scale))
-            imgaxes.set_ylim(reversed(_calc_extents(image.size[1], scale)))
+            left, right = _calc_extents(image.size[0], scale)
+            imgaxes.set_xlim(left, right)
+            bottom, top = reversed(_calc_extents(image.size[1], scale))
+            imgaxes.set_ylim(bottom, top)
 
     imgaxes.imshow(image, aspect="equal")
 
