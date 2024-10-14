@@ -1,10 +1,10 @@
 # `mpl-template`
 A python class for creating full report figures, including borders, titleblocks, logos, and content, entirely within matplotlib.
 
-[![Build Status](https://github.com/austinorr/mpl-template/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/austinorr/mpl-template/actions/workflows/test.yml)
+[![Build Status](https://github.com/austinorr/mpl-template/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/austinorr/mpl-template/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/austinorr/mpl-template/branch/master/graph/badge.svg)](https://codecov.io/gh/austinorr/mpl-template)
 
-[Sphinx Docs](https://austinorr.github.io/mpl-template/)
+[Docs](https://austinorr.github.io/mpl-template/)
 
 ## Quick start
 
@@ -52,7 +52,7 @@ for n in range(3):
 ### Dependencies
 requires: `matplotlib`
 optional: `pillow`, `requests`
-tests: `pytest`, `pytest-mpl`
+tests: `pytest`, `pytest-mpl`, `pytest-cov`
 
 ### Official Releases
 TODO: release on pypi
