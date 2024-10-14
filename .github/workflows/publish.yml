@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+    environment:
+      name: publish
     steps:
       - name: Dump GitHub context
         env:
