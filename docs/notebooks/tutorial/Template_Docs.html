@@ -1,39 +1,27 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Walkthrough &mdash; mpl-template 0.3.0 documentation</title>
-
-
-
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walkthrough &mdash; mpl-template 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
 
-
-
-
-
-
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-
-
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=6c02275b"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Template API Reference" href="../../api.html" />
@@ -41,51 +29,24 @@
 </head>
 
 <body class="wy-body-for-nav">
-
-
   <div class="wy-grid-for-nav">
-
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
 
 
 
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> mpl-template
-
-
-
+          <a href="../../index.html" class="icon icon-home">
+            mpl-template
           </a>
-
-
-
-
-              <div class="version">
-                0.3
-              </div>
-
-
-
-
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-
-        </div>
-
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-
-
-
-
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Walkthrough</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Basics">Basics</a></li>
@@ -114,357 +75,46 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#insert-image-api-reference"><code class="docutils literal notranslate"><span class="pre">insert_image</span></code> API Reference</a></li>
 </ul>
 
-
-
         </div>
-
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-
-      <nav class="wy-nav-top" aria-label="top navigation">
-
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">mpl-template</a>
-
       </nav>
 
-
       <div class="wy-nav-content">
-
         <div class="rst-content">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-
-      <li>Walkthrough</li>
-
-
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Walkthrough</li>
       <li class="wy-breadcrumbs-aside">
-
-
             <a href="../../_sources/notebooks/tutorial/Template_Docs.ipynb.txt" rel="nofollow"> View page source</a>
-
-
       </li>
-
   </ul>
-
-
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-div.rendered_html th {
-  font-weight: bold;
-}
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<div class="section" id="Walkthrough">
-<h1>Walkthrough<a class="headerlink" href="#Walkthrough" title="Permalink to this headline">¶</a></h1>
+  <section id="Walkthrough">
+<h1>Walkthrough<a class="headerlink" href="#Walkthrough" title="Link to this heading"></a></h1>
 <p>The following is a detailed orientation on the <code class="docutils literal notranslate"><span class="pre">Template</span></code> class and <code class="docutils literal notranslate"><span class="pre">insert_image</span></code> functions.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">copy</span><span class="o">,</span> <span class="nn">os</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gs</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">mpl_template</span> <span class="kn">import</span> <span class="n">Template</span><span class="p">,</span> <span class="n">insert_image</span>
 
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="c1"># make the inline output identical to the PDF.</span>
+<span class="c1"># # make the inline output identical to the PDF.</span>
 <span class="o">%</span><span class="k">config</span> InlineBackend.print_figure_kwargs = {&#39;bbox_inches&#39;:None}
 </pre></div>
 </div>
@@ -473,25 +123,23 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SCRIPT</span> <span class="o">=</span> <span class="s2">&quot;Template_Docs.ipynb&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SCRIPT</span> <span class="o">=</span> <span class="s2">&quot;Template_Docs.ipynb&quot;</span>
 <span class="n">PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="o">*</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]),</span> <span class="n">SCRIPT</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="Basics">
-<h2>Basics<a class="headerlink" href="#Basics" title="Permalink to this headline">¶</a></h2>
+<section id="Basics">
+<h2>Basics<a class="headerlink" href="#Basics" title="Link to this heading"></a></h2>
 <p>The Builtin template layout is revealed with the blank() method of the Template object. This method labels the axes names that make up the default figure axes elements. These elements will contain the title block contents.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">)</span>
 
 <span class="n">blank_fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">blank</span><span class="p">()</span>
-<span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>      <span class="c1"># This is a helper function that is useful when</span>
-                                  <span class="c1"># working with %matplotlib inline</span>
+<span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>  <span class="c1"># This is a helper function that is useful when</span>
+<span class="c1"># working with %matplotlib inline</span>
 </pre></div>
 </div>
 </div>
@@ -502,10 +150,10 @@ div.rendered_html tbody tr:hover {
 <img alt="../../_images/notebooks_tutorial_Template_Docs_4_0.png" src="../../_images/notebooks_tutorial_Template_Docs_4_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Titleblock">
-<h2>Titleblock<a class="headerlink" href="#Titleblock" title="Permalink to this headline">¶</a></h2>
-<p>The titeleblock boxes are each matplotlib.axes.Axes() instances that have been created with gridspec.GridSpecFromSubplotSpec. The titleblock is stored as a list of dicts, and the widths and heights of the Axes objects are controlled using a list of dicts which contain a <code class="docutils literal notranslate"><span class="pre">'span'</span></code> key. For Example:</p>
+</section>
+<section id="Titleblock">
+<h2>Titleblock<a class="headerlink" href="#Titleblock" title="Link to this heading"></a></h2>
+<p>The titeleblock boxes are each matplotlib.axes.Axes() instances that have been created with <code class="docutils literal notranslate"><span class="pre">gridspec.GridSpecFromSubplotSpec</span></code>. The titleblock is stored as a list of dicts, and the widths and heights of the Axes objects are controlled using a list of dicts which contain a <code class="docutils literal notranslate"><span class="pre">'span'</span></code> key. For Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user_specified</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]},</span>
     <span class="p">{</span><span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]},</span>
@@ -513,9 +161,9 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <p>would create two boxes stacked on top of each other, both of them .5 inches tall and 1 inch wide.</p>
-<div class="section" id="User-Defined-Titleblock">
-<h3>User Defined Titleblock<a class="headerlink" href="#User-Defined-Titleblock" title="Permalink to this headline">¶</a></h3>
-<p>Populating the figure axes objects above is simple with a loop, and a function to perform the logic for each axes element. there is a helper method called <code class="docutils literal notranslate"><span class="pre">populate_titleblock()</span></code> to assist with this task, or the user may specify their own function for special cases.</p>
+<section id="User-Defined-Titleblock">
+<h3>User Defined Titleblock<a class="headerlink" href="#User-Defined-Titleblock" title="Link to this heading"></a></h3>
+<p>Populating the figure axes objects above is simple with a loop, and a function to perform the logic for each axes element. There is a helper method called <code class="docutils literal notranslate"><span class="pre">populate_titleblock()</span></code> to assist with this task, or the user may specify their own function for special cases.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">titleblock_</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
@@ -573,65 +221,65 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">TBK</span> <span class="o">=</span> <span class="p">[</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TBK</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">{</span>
-                <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;Example Figure&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
-                <span class="s1">&#39;va&#39;</span><span class="p">:</span> <span class="s1">&#39;baseline&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Figure&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.54</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="p">{</span>
-                <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;Weyland-Yutani&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="s1">&#39;light&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.46</span><span class="p">,</span>
-                <span class="s1">&#39;va&#39;</span><span class="p">:</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="mi">3</span><span class="p">),</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Weyland-Yutani&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;light&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.46</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
             <span class="p">},</span>
-        <span class="p">]</span>
+        <span class="p">],</span>
     <span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;logo&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;img//logo.png&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">75</span><span class="p">,</span>
-        <span class="p">},</span>
-     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;project&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;USCSS $Nostromo$&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;va&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;logo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img//logo.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;June 2122&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;va&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;project&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;USCSS $Nostromo$&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;fignum&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;Figure</span><span class="se">\n\n</span><span class="si">{:02d}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-                <span class="s1">&#39;va&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;June 2122&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fignum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Figure</span><span class="se">\n\n</span><span class="si">{:02d}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
 <span class="p">]</span>
@@ -642,8 +290,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">titleblock_content</span><span class="o">=</span><span class="n">TBK</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">titleblock_content</span><span class="o">=</span><span class="n">TBK</span><span class="p">)</span>
 <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
 <span class="c1"># typically the path is populated via the required `scriptname` kwarg</span>
 <span class="c1"># but it can be overwritten with this `path_text` property</span>
@@ -668,8 +315,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_axes</span><span class="p">():</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_axes</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_label</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -689,25 +335,26 @@ img_b_1
 page
 </pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Under-The-Hood">
-<h2>Under The Hood<a class="headerlink" href="#Under-The-Hood" title="Permalink to this headline">¶</a></h2>
-<p><p>The template object works by breaking down the figure into a grid of 0.1” squares and using matplotlib’s GridSpec to define the axes objects that make up the title block boxes and border. This means that the code is extremely flexible for changing things like margins, titleblock width, and inserting multiple axes into compliated layouts. However, this also means that a user must call GridSpec() or GridSpecFromSubplotSpec() in order to populate the figure.</p>
-<p><p>Below is a 1” by 1” example to illustrate the underlying grid of the template.</p>
+</section>
+</section>
+<section id="Under-The-Hood">
+<h2>Under The Hood<a class="headerlink" href="#Under-The-Hood" title="Link to this heading"></a></h2>
+<p>The template object works by breaking down the figure into a grid of 0.1” squares and using matplotlib’s GridSpec to define the axes objects that make up the title block boxes and border. This means that the code is extremely flexible for changing things like margins, titleblock width, and inserting multiple axes into compliated layouts. However, this also means that a user must call <code class="docutils literal notranslate"><span class="pre">GridSpec()</span></code> or <code class="docutils literal notranslate"><span class="pre">GridSpecFromSubplotSpec()</span></code> in order to populate the figure.</p>
+<p>Below is a 1” by 1” example to illustrate the underlying grid of the template.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
 <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">draft</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="mi">10</span><span class="p">):</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
-                                    <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
-                                    <span class="p">)</span>
-
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
+        <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -718,31 +365,34 @@ page
 <img alt="../../_images/notebooks_tutorial_Template_Docs_11_0.png" src="../../_images/notebooks_tutorial_Template_Docs_11_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Inserting-a-Plot">
-<h2>Inserting a Plot<a class="headerlink" href="#Inserting-a-Plot" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Inserting-a-Plot">
+<h2>Inserting a Plot<a class="headerlink" href="#Inserting-a-Plot" title="Link to this heading"></a></h2>
 <p>A simple plot example is shown below that uses several methods to get locations of useful figure features.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
-<span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Plot Example&quot;</span>
-<span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
+<span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Plot Example&quot;</span>
+<span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">)</span>
-<span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span><span class="o">=</span><span class="n">PATH</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>   <span class="c1"># `setup_figure` performs add_frame(), add_titleblock(),</span>
-                                  <span class="c1"># add_path_text() and populate_titleblock(). It is the</span>
-                                  <span class="c1"># recommended way to create figures with the Template class</span>
+<span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
+<span class="p">)</span>  <span class="c1"># `setup_figure` performs add_frame(), add_titleblock(),</span>
+<span class="c1"># add_path_text() and populate_titleblock(). It is the</span>
+<span class="c1"># recommended way to create figures with the Template class</span>
 
 <span class="c1"># create a sub-gridspec that will be used for the main image</span>
 <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
-<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">top</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">8</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)]</span>
+<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+    <span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">8</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>
+<span class="p">]</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
-<span class="n">plot</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">5</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">)])</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">)])</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
@@ -755,26 +405,25 @@ page
 <img alt="../../_images/notebooks_tutorial_Template_Docs_13_0.png" src="../../_images/notebooks_tutorial_Template_Docs_13_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Inserting-an-Image">
-<h2>Inserting an Image<a class="headerlink" href="#Inserting-an-Image" title="Permalink to this headline">¶</a></h2>
-<p>The template has an additional built in method for inserting images that are centered in the axes object and properly antialiased for the final resolution of the figure. The default value for saving/exporting figures using the Template module is 300 dpi. The insert_image() method also ensures that there is no stretching or other modification to the image that is being inserted.</p>
+</section>
+<section id="Inserting-an-Image">
+<h2>Inserting an Image<a class="headerlink" href="#Inserting-an-Image" title="Link to this heading"></a></h2>
+<p>The template has an additional built in method for inserting images that are centered in the axes object and properly antialiased for the final resolution of the figure. The default value for saving/exporting figures using the Template module is 300 dpi. The <code class="docutils literal notranslate"><span class="pre">insert_image()</span></code> method also ensures that there is no stretching or other modification to the image that is being inserted.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
-<span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Image Example&quot;</span>
-<span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
+<span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Image Example&quot;</span>
+<span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
-<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
-                      <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">)</span>
+<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">)</span>
 
 <span class="c1"># create a sub-gridspec that will be used for the main image</span>
 <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
-<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">top</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">8</span><span class="p">),</span>
-                        <span class="mi">3</span> <span class="o">+</span> <span class="n">left</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+    <span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">8</span><span class="p">),</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">]</span>
 
 <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
@@ -786,7 +435,7 @@ page
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">im_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;img//95_confidence.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_dpi</span><span class="p">())</span>
-<span class="n">im_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;on&#39;</span><span class="p">)</span>
+<span class="n">im_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;on&quot;</span><span class="p">)</span>
 <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -798,26 +447,25 @@ page
 <img alt="../../_images/notebooks_tutorial_Template_Docs_15_0.png" src="../../_images/notebooks_tutorial_Template_Docs_15_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Plots-with-Insets">
-<h2>Plots with Insets<a class="headerlink" href="#Plots-with-Insets" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Plots-with-Insets">
+<h2>Plots with Insets<a class="headerlink" href="#Plots-with-Insets" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
-<span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Inset Example&quot;</span>
-<span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
+<span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Inset Example&quot;</span>
+<span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
-<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-                      <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
-                      <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
-                     <span class="p">)</span>
+<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+    <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
 
-<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">top</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span>
-                        <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)]</span>
+<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)]</span>
 <span class="n">gs_timeseries</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">main</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
@@ -829,14 +477,14 @@ page
     <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
     <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-<span class="n">inset</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">3</span> <span class="o">+</span> <span class="n">top</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
-                         <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">):</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="n">inset</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+    <span class="mi">3</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">]</span>
 
-<span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
-    <span class="n">inset</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">inset</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
 
 <span class="n">img</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">inset_ax</span><span class="p">,</span> <span class="s2">&quot;img//Template_Inset.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">img</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;on&#39;</span><span class="p">)</span>
+<span class="n">img</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;on&quot;</span><span class="p">)</span>
 <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -848,58 +496,63 @@ page
 <img alt="../../_images/notebooks_tutorial_Template_Docs_17_0.png" src="../../_images/notebooks_tutorial_Template_Docs_17_0.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="Advanced-Features">
-<h1>Advanced Features<a class="headerlink" href="#Advanced-Features" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Compatability-with-Seaborn">
-<h2>Compatability with Seaborn<a class="headerlink" href="#Compatability-with-Seaborn" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="Advanced-Features">
+<h1>Advanced Features<a class="headerlink" href="#Advanced-Features" title="Link to this heading"></a></h1>
+<section id="Compatability-with-Seaborn">
+<h2>Compatability with Seaborn<a class="headerlink" href="#Compatability-with-Seaborn" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">):</span>
         <span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
-        <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Seaborn Loop Example&quot;</span>
-        <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Seaborn Loop Example&quot;</span>
+        <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
 
-        <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-                              <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
-                              <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
-                              <span class="p">)</span>
+        <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+            <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+            <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
 
         <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
-        <span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">top</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span>
-                                <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)]</span>
-        <span class="n">gs_timeseries</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
-                                                   <span class="n">main</span><span class="p">,</span>
-                                                   <span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-                                                   <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-                                                   <span class="p">)</span>
+        <span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+            <span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">gs_timeseries</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span>
+            <span class="mi">4</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">,</span>
+            <span class="n">main</span><span class="p">,</span>
+            <span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+            <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
             <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs_timeseries</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> \
-                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
             <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
             <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-        <span class="n">inset</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">3</span> <span class="o">+</span> <span class="n">top</span><span class="p">:</span><span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
-                                 <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">):</span><span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)]</span>
+        <span class="n">inset</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+            <span class="mi">3</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="p">]</span>
 
-        <span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">inset</span><span class="p">,</span>
-                                   <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                   <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
-                                   <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
-                                   <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
-                                   <span class="p">)</span>
+        <span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
+            <span class="n">inset</span><span class="p">,</span>
+            <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">img</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">inset_ax</span><span class="p">,</span> <span class="s2">&quot;img//Template_Inset.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
@@ -920,42 +573,41 @@ page
 <img alt="../../_images/notebooks_tutorial_Template_Docs_19_1.png" src="../../_images/notebooks_tutorial_Template_Docs_19_1.png" />
 </div>
 </div>
-<div class="section" id="FacetGrid">
-<h3>FacetGrid<a class="headerlink" href="#FacetGrid" title="Permalink to this headline">¶</a></h3>
+<section id="FacetGrid">
+<h3>FacetGrid<a class="headerlink" href="#FacetGrid" title="Link to this heading"></a></h3>
 <p>Seaborn’s facetgrid cannot be made directly compatable with this module (to my knowledge) because of it’s implicit call to <a class="reference external" href="https://github.com/mwaskom/seaborn/blob/master/seaborn/axisgrid.py#L310">plt.subplots()</a> or <a class="reference external" href="https://github.com/mwaskom/seaborn/blob/master/seaborn/axisgrid.py#L319">plt.figure()</a> to generate the figure necessary to produce multiple axes in a subplot axes grid. For now, creating a temporary png file of the facet grid and loading it as an image is one way around this
-limitation.</p>
+limitation. Update: <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> has added a <code class="docutils literal notranslate"><span class="pre">subfigure</span></code> api that might make this possible, but it’s compatibly with this package is (presently) untested.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">):</span>
     <span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
-    <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Seaborn FacetGrid Example&quot;</span>
-    <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+    <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Seaborn FacetGrid Example&quot;</span>
+    <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 
-    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-                          <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
-                          <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
-                          <span class="p">)</span>
+    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+        <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+        <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+        <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
 
     <span class="n">attend</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;attention&quot;</span><span class="p">)</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">attend</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">,</span> <span class="s2">&quot;solutions&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;img//Facet_Grid.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;img//Facet_Grid.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
-    <span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="n">top</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-                            <span class="n">left</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span><span class="p">)]</span>
+    <span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">left</span><span class="p">:</span><span class="o">-</span><span class="p">(</span><span class="n">right</span><span class="p">)]</span>
 
     <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
 
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">g_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;img//Facet_Grid.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
-    <span class="n">g_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">g_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;img//Facet_Grid.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">g_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 
     <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
@@ -968,22 +620,21 @@ limitation.</p>
 <img alt="../../_images/notebooks_tutorial_Template_Docs_21_0.png" src="../../_images/notebooks_tutorial_Template_Docs_21_0.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="Custom-Titleblock-Specifications">
-<h2>Custom Titleblock Specifications<a class="headerlink" href="#Custom-Titleblock-Specifications" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="Custom-Titleblock-Specifications">
+<h2>Custom Titleblock Specifications<a class="headerlink" href="#Custom-Titleblock-Specifications" title="Link to this heading"></a></h2>
 <p>The Template Module is highly customizable using the <code class="docutils literal notranslate"><span class="pre">titleblock_content</span></code>, <code class="docutils literal notranslate"><span class="pre">titleblock_rows</span></code> and <code class="docutils literal notranslate"><span class="pre">titleblock_cols</span></code> kwargs when constructing the object. The rows and columns should be tuples specifying the high level grid structure of the titleblock, and the titleblock content should contain a list of dictionaries (one for each box) with a <code class="docutils literal notranslate"><span class="pre">'span'</span></code> key.</p>
-<p>Spans are given as gridspec lists of indices of the grids to span. The pattern for gridspec is [r0:r,c0:c] where r0 is the top of the vertical span of <em>rows</em>, and c0 is the left element of the horizontal span of the <em>columns</em>. The span list should provide these indices in order, e.g. [r0,r,c0,c].</p>
+<p>Spans are given as gridspec lists of indices of the grids to span. The pattern for gridspec is [r0:r,c0:c] where r0 is the top of the vertical span of <em>rows</em>, and c0 is the left element of the horizontal span of the <em>columns</em>. The span list should provide these indices in order, e.g. [r0,r,c0,c].</p>
 <p>Defaults are shown below:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Default titleblock_cols = (16, 16, 8)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Default titleblock_rows = (8, 5, 3)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Default titleblock_cols = (16, 16, 8)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Default titleblock_rows = (8, 5, 3)&quot;</span><span class="p">)</span>
 <span class="n">report_fig</span><span class="o">.</span><span class="n">default_spans</span>
 </pre></div>
 </div>
@@ -1016,22 +667,24 @@ Default titleblock_rows = (8, 5, 3)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">):</span>
     <span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
-    <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; Wide Titleblock on Left&quot;</span>
-    <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; Wide Titleblock on Left&quot;</span>
+    <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 
-    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
-                          <span class="n">titleblock_rows</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-                          <span class="n">titleblock_cols</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
-                          <span class="n">margins</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
-                          <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
-                          <span class="p">)</span>
+    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+        <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+        <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+        <span class="n">titleblock_rows</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+        <span class="n">titleblock_cols</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="n">margins</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+        <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
-    <span class="n">report_fig</span><span class="o">.</span><span class="n">gstitleblock</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">bottom</span> <span class="o">+</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span> <span class="o">-</span><span class="n">report_fig</span><span class="o">.</span><span class="n">bottom</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
-                                               <span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span> <span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span>
-                                               <span class="p">]</span>
+    <span class="n">report_fig</span><span class="o">.</span><span class="n">gstitleblock</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+        <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">bottom</span> <span class="o">+</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span> <span class="p">:</span> <span class="o">-</span><span class="n">report_fig</span><span class="o">.</span><span class="n">bottom</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span> <span class="p">:</span> <span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">]</span>
 
     <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
     <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
@@ -1050,29 +703,25 @@ Default titleblock_rows = (8, 5, 3)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">new_spans</span> <span class="o">=</span> <span class="p">[</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_spans</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">]},</span>
     <span class="p">{</span><span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">30</span><span class="p">]},</span>
     <span class="p">{</span><span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">]},</span>
     <span class="p">{</span><span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">]},</span>
     <span class="p">{</span><span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">40</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]}</span>
+    <span class="p">{</span><span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]},</span>
 <span class="p">]</span>
 
 <span class="n">update</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dct</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">update</span><span class="p">):</span>
     <span class="n">dct</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_spans</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-<span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">):</span>
     <span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">update</span><span class="p">)</span>
-    <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Custom Titleblock Example&quot;</span>
-    <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">tbk</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Custom Titleblock Example&quot;</span>
+    <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tbk</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="s2">&quot;s&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 
-    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-                          <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
-                          <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span>
-                          <span class="p">)</span>
+    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">)</span>
     <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
     <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
@@ -1086,19 +735,18 @@ Default titleblock_rows = (8, 5, 3)
 <img alt="../../_images/notebooks_tutorial_Template_Docs_27_0.png" src="../../_images/notebooks_tutorial_Template_Docs_27_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Fully-Custom-Titleblock">
-<h2>Fully Custom Titleblock<a class="headerlink" href="#Fully-Custom-Titleblock" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Fully-Custom-Titleblock">
+<h2>Fully Custom Titleblock<a class="headerlink" href="#Fully-Custom-Titleblock" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">fully_custom</span> <span class="o">=</span> <span class="p">[</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fully_custom</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">{</span>
                 <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Test Custom Block&quot;</span><span class="p">,</span>
@@ -1108,7 +756,7 @@ Default titleblock_rows = (8, 5, 3)
                 <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.52</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="p">{</span>
-                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
                 <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Blank Example&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
@@ -1117,34 +765,34 @@ Default titleblock_rows = (8, 5, 3)
                 <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">],</span>
-
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;logo&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;img//logo.png&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">6</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;logo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img//logo.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
         <span class="p">},</span>
-        <span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;fignum&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span>
-                 <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span>
-                 <span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;va&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                 <span class="p">},</span>
-
-        <span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">],</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fignum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">],</span>
     <span class="p">},</span>
 <span class="p">]</span>
 
-<span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">):</span>
-    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-                          <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
-                          <span class="n">titleblock_content</span><span class="o">=</span><span class="n">fully_custom</span><span class="p">,</span>
-                          <span class="p">)</span>
+<span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">):</span>
+    <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+        <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+        <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+        <span class="n">titleblock_content</span><span class="o">=</span><span class="n">fully_custom</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
 </pre></div>
@@ -1157,63 +805,38 @@ Default titleblock_rows = (8, 5, 3)
 <img alt="../../_images/notebooks_tutorial_Template_Docs_29_0.png" src="../../_images/notebooks_tutorial_Template_Docs_29_0.png" />
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-
           </div>
-          <footer>
-
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-
-        <a href="../../api.html" class="btn btn-neutral float-right" title="Template API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-
-
-        <a href="../../index.html" class="btn btn-neutral float-left" title="mpl-template: Report-ready figure templating with matplotlib" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../index.html" class="btn btn-neutral float-left" title="mpl-template: Report-ready figure templating with matplotlib" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../api.html" class="btn btn-neutral float-right" title="Template API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-
-        &copy; Copyright 2017, Austin Orr
-
-    </p>
+    <p>&#169; Copyright 2017, Austin Orr.</p>
   </div>
 
-
-
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
 
+</footer>
         </div>
       </div>
-
     </section>
-
   </div>
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-
-
-
-
 
 </body>
 </html>

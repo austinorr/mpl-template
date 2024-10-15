@@ -1,200 +1,101 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Template API Reference &mdash; mpl-template 0.3.0 documentation</title>
-
-
-
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template API Reference &mdash; mpl-template 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
 
 
-
-
-
-
-
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-
-
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=6c02275b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Walkthrough" href="notebooks/tutorial/Template_Docs.html" />
 </head>
 
 <body class="wy-body-for-nav">
-
-
   <div class="wy-grid-for-nav">
-
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
 
 
 
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> mpl-template
-
-
-
+          <a href="index.html" class="icon icon-home">
+            mpl-template
           </a>
-
-
-
-
-              <div class="version">
-                0.3
-              </div>
-
-
-
-
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-
-        </div>
-
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-
-
-
-
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/tutorial/Template_Docs.html">Walkthrough</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/tutorial/Template_Docs.html#Advanced-Features">Advanced Features</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">Template</span></code> API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#insert-image-api-reference"><code class="docutils literal notranslate"><span class="pre">insert_image</span></code> API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">Template</span></code> API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mpl_template.template.Template"><code class="docutils literal notranslate"><span class="pre">Template</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#insert-image-api-reference"><code class="docutils literal notranslate"><span class="pre">insert_image</span></code> API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mpl_template.template.insert_image"><code class="docutils literal notranslate"><span class="pre">insert_image()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
-
-
         </div>
-
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-
-      <nav class="wy-nav-top" aria-label="top navigation">
-
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">mpl-template</a>
-
       </nav>
 
-
       <div class="wy-nav-content">
-
         <div class="rst-content">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-
-      <li><code class="docutils literal notranslate"><span class="pre">Template</span></code> API Reference</li>
-
-
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">Template</span></code> API Reference</li>
       <li class="wy-breadcrumbs-aside">
-
-
             <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
-
-
       </li>
-
   </ul>
-
-
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<div class="section" id="template-api-reference">
-<span id="template-auto"></span><h1><code class="docutils literal notranslate"><span class="pre">Template</span></code> API Reference<a class="headerlink" href="#template-api-reference" title="Permalink to this headline">¶</a></h1>
+  <section id="template-api-reference">
+<span id="template-auto"></span><h1><code class="docutils literal notranslate"><span class="pre">Template</span></code> API Reference<a class="headerlink" href="#template-api-reference" title="Link to this heading"></a></h1>
 <dl class="py class">
-<dt id="mpl_template.template.Template">
-<em class="property">class </em><code class="sig-prename descclassname">mpl_template.template.</code><code class="sig-name descname">Template</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">margins</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">titleblock_content</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">titleblock_cols</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">titleblock_rows</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scriptname</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">draft</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">figkwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpl_template/template.html#Template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mpl_template.template.Template" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mpl_template.template.Template">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mpl_template.template.</span></span><span class="sig-name descname"><span class="pre">Template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">margins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titleblock_content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titleblock_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titleblock_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scriptname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">figkwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpl_template/template.html#Template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpl_template.template.Template" title="Link to this definition"></a></dt>
 <dd><p>Class to construct a report figure template using matplotlib
 which includes a figure border, script path, and title block.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scriptname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to the script or notebook that is creating the figure.</p></li>
-<li><p><strong>margins</strong> (<em>tuple of int</em><em>, </em><em>optional</em><em> (</em><em>default =</em><em> (</em><em>4</em><em>, </em><em>4</em><em>, </em><em>4</em><em>, </em><em>4</em><em>)</em>) – A length-4 tuple specifying the left, right, top, and bottom
+<li><p><strong>scriptname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Path to the script or notebook that is creating the figure.</p></li>
+<li><p><strong>margins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><em>tuple</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default =</em><em> (</em><em>4</em><em>, </em><em>4</em><em>, </em><em>4</em><em>, </em><em>4</em><em>)</em>) – A length-4 tuple specifying the left, right, top, and bottom
 margins of on the page, respectively</p></li>
-<li><p><strong>titleblock_content</strong> (<em>list of dicts</em><em>, </em><em>optional</em>) – <p>Title block elements where each element is itself a
+<li><p><strong>titleblock_content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><em>list</em></a><em> of </em><em>dicts</em><em>, </em><em>optional</em>) – <p>Title block elements where each element is itself a
 dictionary with a <cite>span</cite> keys that determines which rows and
 columns the each element will occupy in the titleblock.
 E.g.</p>
@@ -236,12 +137,12 @@ E.g.</p>
 </pre></div>
 </div>
 </p></li>
-<li><p><strong>titleblock_cols</strong> (<em>tuple of int</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>(</em><em>16</em><em>, </em><em>16</em><em>, </em><em>8</em><em>)</em><em>)</em>) – The specification (in tenths of an inch) of the rulers for
+<li><p><strong>titleblock_cols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><em>tuple</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=</em><em>(</em><em>16</em><em>, </em><em>16</em><em>, </em><em>8</em><em>)</em><em>)</em>) – The specification (in tenths of an inch) of the rulers for
 each column in the title block.</p></li>
-<li><p><strong>titleblock_rows</strong> (<em>tuple of int</em><em>, </em><em>optional</em><em> (</em><em>default=</em><em>(</em><em>8</em><em>, </em><em>5</em><em>, </em><em>3</em><em>)</em><em>)</em>) – The specification (in tenths of an inch) of the rulers for
+<li><p><strong>titleblock_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><em>tuple</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=</em><em>(</em><em>8</em><em>, </em><em>5</em><em>, </em><em>3</em><em>)</em><em>)</em>) – The specification (in tenths of an inch) of the rulers for
 each rows in the title block.</p></li>
-<li><p><strong>draft</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Toggles the inclusion of a draft watermark.</p></li>
-<li><p><strong>dpi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=300</em><em>)</em>) – Resolution of the final figure in dots per inch.</p></li>
+<li><p><strong>draft</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Toggles the inclusion of a draft watermark.</p></li>
+<li><p><strong>dpi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=300</em><em>)</em>) – Resolution of the final figure in dots per inch.</p></li>
 <li><p><strong>**figkwargs</strong> – Additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">plt.figure</span></code></p></li>
 </ul>
 </dd>
@@ -254,32 +155,32 @@ and 5 title block objects:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">blank</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href=".//api-1.py">Source code</a>, <a class="reference external" href=".//api-1.png">png</a>, <a class="reference external" href=".//api-1.hires.png">hires.png</a>, <a class="reference external" href=".//api-1.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/api-1.png" src="_images/api-1.png" />
-</div>
+<p>(<a class="reference download internal" download="" href="_downloads/64cdcd56f94f8e667ded0c5f5893839b/api-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/a5c9a93625fec5298e20c27aba4d9a35/api-1.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/9e46079d8d79e0ff79c453eb5113be5b/api-1.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/06ccbbd0c041413edf92a486cf420073/api-1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/api-1.png" class="plot-directive" src="_images/api-1.png" />
+</figure>
 </dd></dl>
 
-</div>
-<div class="section" id="insert-image-api-reference">
-<h1><code class="docutils literal notranslate"><span class="pre">insert_image</span></code> API Reference<a class="headerlink" href="#insert-image-api-reference" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="insert-image-api-reference">
+<h1><code class="docutils literal notranslate"><span class="pre">insert_image</span></code> API Reference<a class="headerlink" href="#insert-image-api-reference" title="Link to this heading"></a></h1>
 <dl class="py function">
-<dt id="mpl_template.template.insert_image">
-<code class="sig-prename descclassname">mpl_template.template.</code><code class="sig-name descname">insert_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">image_path</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">expand</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mpl_template/template.html#insert_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mpl_template.template.insert_image" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mpl_template.template.insert_image">
+<span class="sig-prename descclassname"><span class="pre">mpl_template.template.</span></span><span class="sig-name descname"><span class="pre">insert_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Axes</span></span></span><a class="reference internal" href="_modules/mpl_template/template.html#insert_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mpl_template.template.insert_image" title="Link to this definition"></a></dt>
 <dd><p>Centers an image within an axes object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ax</strong> (<code class="docutils literal notranslate"><span class="pre">matplotlib.Axes</span></code>) – the axes into which the image should be inserted.</p></li>
-<li><p><strong>image_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to an existing image file.</p></li>
-<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – The relative scale of the desired output.
+<li><p><strong>image_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Path to an existing image file.</p></li>
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a><em>, </em><em>optional</em>) – The relative scale of the desired output.
 Values should be positive floats.
 E.g. scale = 2 will double the image’s size
 relative to the given matplotlib.Axes object.
 scale = 0.5 will scale the image to half of the
 given matplotlib.Axes object.</p></li>
-<li><p><strong>dpi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optonal</em><em> (</em><em>default=300</em><em>)</em>) – The Dots (pixel) Per Inch of the image.</p></li>
-<li><p><strong>expand</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – If true, the image will expand to fill the axes
+<li><p><strong>dpi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optonal</em><em> (</em><em>default=300</em><em>)</em>) – The Dots (pixel) Per Inch of the image.</p></li>
+<li><p><strong>expand</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – If true, the image will expand to fill the axes
 in which it is embedded. Use expand = True if the
 boundary of the enclosing axes is the desired crop boundary.
 Use expand = False if the image should be scaled in-place
@@ -288,10 +189,10 @@ images that have been zoomed (scale &gt; 1).</p></li>
 <li><p><strong>kwargs</strong> (<em>keyword arguments to pass to the figure.add_axes</em><em>(</em><em>)</em>) – constructor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ax</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>matplotlib.Axes</p>
 </dd>
 </dl>
@@ -310,10 +211,10 @@ matches the shape of the source file.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href=".//api-2.py">Source code</a>, <a class="reference external" href=".//api-2.png">png</a>, <a class="reference external" href=".//api-2.hires.png">hires.png</a>, <a class="reference external" href=".//api-2.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/api-2.png" src="_images/api-2.png" />
-</div>
+<p>(<a class="reference download internal" download="" href="_downloads/352e9685df5f6ec52e91c88710a7efee/api-2.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/7e4ee7c2895cb69f0314e63171a92eb2/api-2.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/ad5f3c227b17e7d378dbd9aa1d8400d4/api-2.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/598066b5ada01e638fb320fe9ee5190f/api-2.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/api-2.png" class="plot-directive" src="_images/api-2.png" />
+</figure>
 <p>Zoomed in 2x with <code class="docutils literal notranslate"><span class="pre">scale=2</span></code>. Note that the use of the <code class="docutils literal notranslate"><span class="pre">expand</span></code>
 kwarg causes the zoomed image to fill the enclosing square axes object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -323,66 +224,42 @@ kwarg causes the zoomed image to fill the enclosing square axes object.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">img_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(<a class="reference external" href=".//api-3.py">Source code</a>, <a class="reference external" href=".//api-3.png">png</a>, <a class="reference external" href=".//api-3.hires.png">hires.png</a>, <a class="reference external" href=".//api-3.pdf">pdf</a>)</p>
-<div class="figure align-default">
-<img alt="_images/api-3.png" src="_images/api-3.png" />
-</div>
+<p>(<a class="reference download internal" download="" href="_downloads/4621112975d0141aecaa9b8c5af477cf/api-3.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/5d437c4702c6aba18e9f4548465fd95e/api-3.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/72ed800c349f28eee3b9cd3d69aaa370/api-3.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/a9ead4fa61e3de6bd4f6261463b30ced/api-3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/api-3.png" class="plot-directive" src="_images/api-3.png" />
+</figure>
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
-
           </div>
-          <footer>
-
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-
-
-        <a href="notebooks/tutorial/Template_Docs.html" class="btn btn-neutral float-left" title="Walkthrough" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="notebooks/tutorial/Template_Docs.html" class="btn btn-neutral float-left" title="Walkthrough" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-
-        &copy; Copyright 2017, Austin Orr
-
-    </p>
+    <p>&#169; Copyright 2017, Austin Orr.</p>
   </div>
 
-
-
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     provided by <a href="https://readthedocs.org">Read the Docs</a>.
 
-</footer>
 
+</footer>
         </div>
       </div>
-
     </section>
-
   </div>
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-
-
-
-
 
 </body>
 </html>

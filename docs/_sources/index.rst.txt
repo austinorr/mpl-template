@@ -6,10 +6,10 @@
 mpl-template: Report-ready figure templating with matplotlib
 ============================================================
 
-.. image:: https://travis-ci.com/austinorr/mpl-template.svg
-    :target: https://travis-ci.com/austinorr/mpl-template
+.. image:: https://github.com/austinorr/mpl-template/actions/workflows/test.yml/badge.svg?branch=main
+    :target: https://github.com/austinorr/mpl-template
 
-.. image:: https://codecov.io/gh/austinorr/mpl-template/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/austinorr/mpl-template/branch/main/graph/badge.svg
   :target: https://codecov.io/gh/austinorr/mpl-template
 
 https://github.com/austinorr/mpl-template
