@@ -34,6 +34,7 @@ dev = [
     "ruff>=0.1.4",
     "pre-commit>=3.3",
 ]
+docs = ["sphinx", "nbsphinx", "sphinx-rtd-theme", "seaborn"]
 
 [project.urls]
 Homepage = "https://github.com/austinorr/mpl-template"
