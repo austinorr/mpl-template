@@ -46,7 +46,7 @@ for n in range(3):
     plot = ax.plot([math.sin(i * (n + 1)) for i in range(0, 100)])
 ```
 
-![Alt text](sphinx_docs/source/img/quick_start_mpl_template.png "Example Report Document")
+![Example Report Document](https://raw.githubusercontent.com/austinorr/mpl-template/refs/heads/main/sphinx_docs/source/img/quick_start_mpl_template.png "Example Report Document")
 
 ## Installation
 ### Dependencies
