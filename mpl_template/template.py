@@ -311,10 +311,11 @@ def _get_default_tb_spans(
 
 
 def _validate_margins(
-    margins: Optional[Tuple[int, int, int, int]] = None,
+    margins: Optional[Tuple[int, int, int, int]] = None, base=10.0
 ) -> Tuple[int, int, int, int]:
     if margins is None:
-        margins = (4, 4, 4, 4)
+        _m = int(0.4 * base)
+        margins = (_m, _m, _m, _m)
     elif len(margins) != 4 or not all(isinstance(x, int) for x in margins):
         raise ValueError("`margins` must contain four integers")
     return margins
@@ -381,6 +382,8 @@ class Template:
         each rows in the title block.
     draft : bool, optional (default=True)
         Toggles the inclusion of a draft watermark.
+    base : int, optional (default=10)
+        Number of gridspec rows and columns per inch.
     dpi : int, optional (default=300)
         Resolution of the final figure in dots per inch.
     **figkwargs
@@ -410,6 +413,7 @@ class Template:
         titleblock_rows=None,
         scriptname=None,
         draft=True,
+        base=None,
         dpi: float = 300,
         **figkwargs,
     ):
@@ -417,14 +421,23 @@ class Template:
             raise Exception("Must enter name of calling script for footnote")
         self.script_name = scriptname
 
-        self._margins = _validate_margins(margins)
+        self._base = 10.0 if base is None else float(base)
+        self._margins = _validate_margins(margins, self._base)
         self.left, self.right, self.top, self.bottom = self.margins
 
         if titleblock_cols is None:  # pragma: no branch
-            titleblock_cols = (16, 16, 8)
+            titleblock_cols = (
+                int(1.6 * self._base),
+                int(1.6 * self._base),
+                int(0.8 * self._base),
+            )
 
         if titleblock_rows is None:  # pragma: no branch
-            titleblock_rows = (8, 5, 3)
+            titleblock_rows = (
+                int(0.8 * self._base),
+                int(0.5 * self._base),
+                int(0.3 * self._base),
+            )
 
         self.default_spans = _get_default_tb_spans(titleblock_rows, titleblock_cols)
 
@@ -441,6 +454,10 @@ class Template:
         self._fig_options = figkwargs
         self._fig_options["dpi"] = dpi
         self._titleblock_content = titleblock_content
+
+    @property
+    def base(self):
+        return self._base
 
     @property
     def margins(self):
@@ -476,8 +493,8 @@ class Template:
     @property
     def gsfig(self):
         if self._gsfig is None:  # pragma: no branch
-            row = int(self.fig.get_figheight() * 10)
-            col = int(self.fig.get_figwidth() * 10)
+            row = int(self.fig.get_figheight() * self.base)
+            col = int(self.fig.get_figwidth() * self.base)
             self._gsfig = gridspec.GridSpec(
                 row, col, left=0, right=1, bottom=0, top=1, wspace=0, hspace=0
             )
@@ -538,10 +555,12 @@ class Template:
         self._gstitleblock_subspec = value
 
     def add_frame(self):
-        _left = self.left / (10.0 * self.fig.get_figwidth())
-        _right = self.right / (10.0 * self.fig.get_figwidth())
-        _bottom = self.bottom / (10.0 * self.fig.get_figheight())
-        _top = self.top / (10.0 * self.fig.get_figheight())
+        fheight = self.base * self.fig.get_figheight()
+        fwidth = self.base * self.fig.get_figwidth()
+        _left = self.left / fwidth
+        _right = self.right / fwidth
+        _bottom = self.bottom / fheight
+        _top = self.top / fheight
         rect = [_left, _bottom, 1 - (_left + _right), 1 - (_bottom + _top)]
 
         frame = self.fig.add_axes(
@@ -552,8 +571,8 @@ class Template:
     def add_watermark(self, text=None):
         if text is None:  # pragma: no branch
             text = "DRAFT"
-        x = 5 / (10.0 * self.fig.get_figwidth())
-        y = 1 - self.top / (10.0 * self.fig.get_figheight())
+        x = (0.5 * self.base) / (self.base * self.fig.get_figwidth())
+        y = 1 - self.top / (self.base * self.fig.get_figheight())
         watermark = self.fig.text(
             x,
             y,
@@ -608,8 +627,10 @@ class Template:
         return ax
 
     def add_path_text(self):
-        x = self.left / (10.0 * self.fig.get_figwidth())
-        y = abs((self.bottom - 1.5) / (10 * self.fig.get_figheight()))
+        x = self.left / (self.base * self.fig.get_figwidth())
+        y = abs(
+            (self.bottom - 0.15 * self.base) / (self.base * self.fig.get_figheight())
+        )
         text = "Source:   " + self.path_text
         textobj = self.fig.text(
             x,
@@ -626,7 +647,7 @@ class Template:
         for ax in self.fig.get_axes():
             label = ax.get_label()
             for i, dct in enumerate(self.titleblock_content):
-                name = dct.get("name")
+                name = dct.get("name", "b_{}".format(i))
                 content = dct.get("text")
                 image = dct.get("image")
                 if name == label:
