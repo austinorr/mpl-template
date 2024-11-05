@@ -131,8 +131,11 @@ def test_insert_image_from_file_zoom_10x_expand():
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
-def test_custom_spans():
+@pytest.mark.mpl_image_compare(
+    baseline_dir=BASELINE_DIR, tolerance=IMG_TOL, filename="test_custom_spans.png"
+)
+@pytest.mark.parametrize("base", [None, 10])
+def test_custom_spans(base):
     test = [
         {"span": [0, 8, 0, 32]},
         {"span": [13, 16, 16, 30]},
@@ -142,16 +145,45 @@ def test_custom_spans():
         {"span": [13, 16, 30, 40]},
     ]
 
-    testfig = template.Template(figsize=(5, 3), scriptname="", titleblock_content=test)
+    testfig = template.Template(
+        figsize=(5, 3), scriptname="", titleblock_content=test, base=base
+    )
     testfig.path_text = SCRIPTNAME
     _ = testfig.blank()
 
     return testfig.fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
-def test_titleblock_on_left():
-    testfig = template.Template(figsize=(8.5, 11), scriptname="")
+@pytest.mark.mpl_image_compare(
+    baseline_dir=BASELINE_DIR, tolerance=IMG_TOL, filename="test_custom_spans.png"
+)
+def test_custom_spans_100():
+    test = [
+        {"span": [0, 80, 0, 320]},
+        {"span": [130, 160, 160, 300]},
+        {"span": [130, 160, 0, 160]},
+        {"span": [80, 130, 0, 320]},
+        {"span": [0, 130, 320, 400]},
+        {"span": [130, 160, 300, 400]},
+    ]
+
+    testfig = template.Template(
+        figsize=(5, 3), scriptname="", titleblock_content=test, base=100
+    )
+    testfig.path_text = SCRIPTNAME
+    _ = testfig.blank()
+
+    return testfig.fig
+
+
+@pytest.mark.mpl_image_compare(
+    baseline_dir=BASELINE_DIR,
+    tolerance=IMG_TOL,
+    filename="test_titleblock_on_left.png",
+)
+@pytest.mark.parametrize("base", [None, 10, 100])
+def test_titleblock_on_left(base):
+    testfig = template.Template(figsize=(8.5, 11), scriptname="", base=base)
     testfig.gstitleblock = testfig.gsfig[
         -(testfig.bottom + testfig.t_h) or None : -testfig.bottom or None,
         (testfig.left) or None : -(testfig.left + testfig.t_w) or None,
@@ -244,8 +276,13 @@ def test_custom_titleblock():
     return testfig.fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
-def test_fancy_titleblock():
+@pytest.mark.parametrize("base", [None, 10, 100])
+@pytest.mark.mpl_image_compare(
+    baseline_dir=BASELINE_DIR,
+    tolerance=IMG_TOL,
+    filename="test_fancy_titleblock.png",
+)
+def test_fancy_titleblock(base):
     fancy = [
         {
             "name": "title",
@@ -292,7 +329,7 @@ def test_fancy_titleblock():
     ]
 
     testfig = template.Template(
-        figsize=(8.5, 11), scriptname="", titleblock_content=fancy
+        figsize=(8.5, 11), scriptname="", titleblock_content=fancy, base=base
     )
     testfig.path_text = SCRIPTNAME
     _ = testfig.setup_figure()
