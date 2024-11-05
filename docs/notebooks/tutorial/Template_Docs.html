@@ -6,16 +6,16 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Walkthrough &mdash; mpl-template 0.4.0 documentation</title>
+  <title>Walkthrough &mdash; mpl-template 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
 
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=6c02275b"></script>
+      <script src="../../_static/documentation_options.js?v=1dd76d02"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -67,6 +67,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Custom-Titleblock-Specifications">Custom Titleblock Specifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Fully-Custom-Titleblock">Fully Custom Titleblock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Just-for-fun...">Just for fun…</a></li>
 </ul>
 </li>
 </ul>
@@ -247,7 +248,7 @@
     <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;logo&quot;</span><span class="p">,</span>
         <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img//logo.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img/logo.png&quot;</span><span class="p">,</span>
             <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
@@ -340,6 +341,7 @@ page
 <section id="Under-The-Hood">
 <h2>Under The Hood<a class="headerlink" href="#Under-The-Hood" title="Link to this heading"></a></h2>
 <p>The template object works by breaking down the figure into a grid of 0.1” squares and using matplotlib’s GridSpec to define the axes objects that make up the title block boxes and border. This means that the code is extremely flexible for changing things like margins, titleblock width, and inserting multiple axes into compliated layouts. However, this also means that a user must call <code class="docutils literal notranslate"><span class="pre">GridSpec()</span></code> or <code class="docutils literal notranslate"><span class="pre">GridSpecFromSubplotSpec()</span></code> in order to populate the figure.</p>
+<p>By default, the template will use 10 as the base and create the gridspec with 0.1” increments for the row and column. This makes the ‘unit’s of the row and column index for the spec in ‘integer tenths of an inch’. If higher precision is required, you can use base=100, but <em>all</em> of the subplot specs will then have to use ‘integer hundredths of an inch’.</p>
 <p>Below is a 1” by 1” example to illustrate the underlying grid of the template.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -348,13 +350,28 @@ page
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
 <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">draft</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="mi">10</span><span class="p">):</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
-        <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-        <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
-        <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
-    <span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">base</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">base</span><span class="p">)):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
+            <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="n">r</span> <span class="p">:</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="p">:</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+            <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="c1"># and an example subplot selection that spans multiple</span>
+<span class="c1"># rows and columns of the grid.</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
+    <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">],</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="n">spine</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;C2&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -365,12 +382,48 @@ page
 <img alt="../../_images/notebooks_tutorial_Template_Docs_11_0.png" src="../../_images/notebooks_tutorial_Template_Docs_11_0.png" />
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span>
+<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">draft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">base</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">base</span><span class="p">)):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
+            <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="n">r</span> <span class="p">:</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="p">:</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+            <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
+        <span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
+    <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="n">spine</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;C2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_tutorial_Template_Docs_12_0.png" src="../../_images/notebooks_tutorial_Template_Docs_12_0.png" />
+</div>
+</div>
 </section>
 <section id="Inserting-a-Plot">
 <h2>Inserting a Plot<a class="headerlink" href="#Inserting-a-Plot" title="Link to this heading"></a></h2>
 <p>A simple plot example is shown below that uses several methods to get locations of useful figure features.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
@@ -379,9 +432,9 @@ page
 
 <span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span> <span class="n">titleblock_content</span><span class="o">=</span><span class="n">tbk</span><span class="p">)</span>
 <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
-<span class="p">)</span>  <span class="c1"># `setup_figure` performs add_frame(), add_titleblock(),</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
+<span class="c1"># `setup_figure` performs add_frame(), add_titleblock(),</span>
 <span class="c1"># add_path_text() and populate_titleblock(). It is the</span>
 <span class="c1"># recommended way to create figures with the Template class</span>
 
@@ -402,7 +455,7 @@ page
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_13_0.png" src="../../_images/notebooks_tutorial_Template_Docs_13_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_14_0.png" src="../../_images/notebooks_tutorial_Template_Docs_14_0.png" />
 </div>
 </div>
 </section>
@@ -410,7 +463,7 @@ page
 <h2>Inserting an Image<a class="headerlink" href="#Inserting-an-Image" title="Link to this heading"></a></h2>
 <p>The template has an additional built in method for inserting images that are centered in the axes object and properly antialiased for the final resolution of the figure. The default value for saving/exporting figures using the Template module is 300 dpi. The <code class="docutils literal notranslate"><span class="pre">insert_image()</span></code> method also ensures that there is no stretching or other modification to the image that is being inserted.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
@@ -434,7 +487,7 @@ page
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">im_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;img//95_confidence.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_dpi</span><span class="p">())</span>
+<span class="n">im_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;img/95_confidence.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_dpi</span><span class="p">())</span>
 <span class="n">im_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;on&quot;</span><span class="p">)</span>
 <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
@@ -444,14 +497,14 @@ page
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_15_0.png" src="../../_images/notebooks_tutorial_Template_Docs_15_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_16_0.png" src="../../_images/notebooks_tutorial_Template_Docs_16_0.png" />
 </div>
 </div>
 </section>
 <section id="Plots-with-Insets">
 <h2>Plots with Insets<a class="headerlink" href="#Plots-with-Insets" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tbk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">TBK</span><span class="p">)</span>
@@ -465,7 +518,10 @@ page
 <span class="p">)</span>
 <span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
 
-<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)]</span>
+<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+    <span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span>
+    <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">),</span>
+<span class="p">]</span>
 <span class="n">gs_timeseries</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">main</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
@@ -478,13 +534,15 @@ page
     <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="n">inset</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
-    <span class="mi">3</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="mi">3</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
 <span class="p">]</span>
 
-<span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">inset</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+<span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">inset</span><span class="p">)</span>
+<span class="n">inset_ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
-<span class="n">img</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">inset_ax</span><span class="p">,</span> <span class="s2">&quot;img//Template_Inset.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">img</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;on&quot;</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">inset_ax</span><span class="p">,</span> <span class="s2">&quot;img/Template_Inset.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
 <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -493,7 +551,7 @@ page
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_17_0.png" src="../../_images/notebooks_tutorial_Template_Docs_17_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_18_0.png" src="../../_images/notebooks_tutorial_Template_Docs_18_0.png" />
 </div>
 </div>
 </section>
@@ -503,7 +561,7 @@ page
 <section id="Compatability-with-Seaborn">
 <h2>Compatability with Seaborn<a class="headerlink" href="#Compatability-with-Seaborn" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -523,7 +581,8 @@ page
 
         <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
         <span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
-            <span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)</span>
+            <span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span>
+            <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">),</span>
         <span class="p">]</span>
         <span class="n">gs_timeseries</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span>
             <span class="mi">4</span><span class="p">,</span>
@@ -543,18 +602,13 @@ page
 
         <span class="n">inset</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
             <span class="mi">3</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
-            <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="n">right</span><span class="p">,</span>
         <span class="p">]</span>
 
-        <span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span>
-            <span class="n">inset</span><span class="p">,</span>
-            <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">inset_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">inset</span><span class="p">)</span>
+        <span class="n">inset_ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
-        <span class="n">img</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">inset_ax</span><span class="p">,</span> <span class="s2">&quot;img//Template_Inset.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">inset_ax</span><span class="p">,</span> <span class="s2">&quot;img/Template_Inset.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -563,14 +617,14 @@ page
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_19_0.png" src="../../_images/notebooks_tutorial_Template_Docs_19_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_20_0.png" src="../../_images/notebooks_tutorial_Template_Docs_20_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_19_1.png" src="../../_images/notebooks_tutorial_Template_Docs_19_1.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_20_1.png" src="../../_images/notebooks_tutorial_Template_Docs_20_1.png" />
 </div>
 </div>
 <section id="FacetGrid">
@@ -578,7 +632,7 @@ page
 <p>Seaborn’s facetgrid cannot be made directly compatable with this module (to my knowledge) because of it’s implicit call to <a class="reference external" href="https://github.com/mwaskom/seaborn/blob/master/seaborn/axisgrid.py#L310">plt.subplots()</a> or <a class="reference external" href="https://github.com/mwaskom/seaborn/blob/master/seaborn/axisgrid.py#L319">plt.figure()</a> to generate the figure necessary to produce multiple axes in a subplot axes grid. For now, creating a temporary png file of the facet grid and loading it as an image is one way around this
 limitation. Update: <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> has added a <code class="docutils literal notranslate"><span class="pre">subfigure</span></code> api that might make this possible, but it’s compatibly with this package is (presently) untested.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">):</span>
@@ -596,7 +650,7 @@ limitation. Update: <code class="docutils literal notranslate"><span class="pre"
     <span class="n">attend</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;attention&quot;</span><span class="p">)</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">attend</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
     <span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">,</span> <span class="s2">&quot;solutions&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;img//Facet_Grid.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;img/Facet_Grid.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
@@ -605,9 +659,7 @@ limitation. Update: <code class="docutils literal notranslate"><span class="pre"
     <span class="n">fig</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">setup_figure</span><span class="p">()</span>
 
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="n">g_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;img//Facet_Grid.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
-    <span class="n">g_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="n">g_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;img/Facet_Grid.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="n">page</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 </pre></div>
@@ -617,7 +669,7 @@ limitation. Update: <code class="docutils literal notranslate"><span class="pre"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_21_0.png" src="../../_images/notebooks_tutorial_Template_Docs_21_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_22_0.png" src="../../_images/notebooks_tutorial_Template_Docs_22_0.png" />
 </div>
 </div>
 </section>
@@ -628,7 +680,7 @@ limitation. Update: <code class="docutils literal notranslate"><span class="pre"
 <p>Spans are given as gridspec lists of indices of the grids to span. The pattern for gridspec is [r0:r,c0:c] where r0 is the top of the vertical span of <em>rows</em>, and c0 is the left element of the horizontal span of the <em>columns</em>. The span list should provide these indices in order, e.g. [r0,r,c0,c].</p>
 <p>Defaults are shown below:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">)</span>
@@ -649,7 +701,7 @@ Default titleblock_rows = (8, 5, 3)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -664,7 +716,7 @@ Default titleblock_rows = (8, 5, 3)
 <p>Defaults can be adjusted with the <code class="docutils literal notranslate"><span class="pre">titleblock_rows</span></code> and <code class="docutils literal notranslate"><span class="pre">titleblock_cols</span></code>. It’s even possible to align the titleblock anywhere on the figure using gridspec.</p>
 <p>The titleblock can be moved using the <code class="docutils literal notranslate"><span class="pre">gstitleblock</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">template.Template()</span></code> class.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sns</span><span class="o">.</span><span class="n">axes_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">):</span>
@@ -695,12 +747,12 @@ Default titleblock_rows = (8, 5, 3)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_25_0.png" src="../../_images/notebooks_tutorial_Template_Docs_25_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_26_0.png" src="../../_images/notebooks_tutorial_Template_Docs_26_0.png" />
 </div>
 </div>
 <p>It’s also possible to blend the definitions of spans and use an existing titleblock specification to populate the adjusted boxes. Notice that the specifications from the <code class="docutils literal notranslate"><span class="pre">TBK</span></code> occupy different cells than before because their spans have been defined differently by <code class="docutils literal notranslate"><span class="pre">new_spans</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_spans</span> <span class="o">=</span> <span class="p">[</span>
@@ -732,20 +784,20 @@ Default titleblock_rows = (8, 5, 3)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_27_0.png" src="../../_images/notebooks_tutorial_Template_Docs_27_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_28_0.png" src="../../_images/notebooks_tutorial_Template_Docs_28_0.png" />
 </div>
 </div>
 </section>
 <section id="Fully-Custom-Titleblock">
 <h2>Fully Custom Titleblock<a class="headerlink" href="#Fully-Custom-Titleblock" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fully_custom</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span>
         <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">{</span>
                 <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
@@ -769,7 +821,7 @@ Default titleblock_rows = (8, 5, 3)
     <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;logo&quot;</span><span class="p">,</span>
         <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img//logo.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img/logo.png&quot;</span><span class="p">,</span>
             <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
@@ -802,7 +854,454 @@ Default titleblock_rows = (8, 5, 3)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_tutorial_Template_Docs_29_0.png" src="../../_images/notebooks_tutorial_Template_Docs_29_0.png" />
+<img alt="../../_images/notebooks_tutorial_Template_Docs_30_0.png" src="../../_images/notebooks_tutorial_Template_Docs_30_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fully_custom</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Title Text</span><span class="se">\n</span><span class="s2">Custom Title Block&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.52</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Weyland-Yutani</span><span class="se">\n</span><span class="s2">USCSS $Nostromo$&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;light&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;logo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img/logo.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;DATE&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;fontstyle&quot;</span><span class="p">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;June-2122&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;proj&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;PROJECT NO.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;fontstyle&quot;</span><span class="p">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;210001&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fignum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;FIGURE NO.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;fontstyle&quot;</span><span class="p">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+
+<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+    <span class="n">titleblock_content</span><span class="o">=</span><span class="n">fully_custom</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_frame</span><span class="p">()</span>
+<span class="n">tblk_axlist</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_titleblock</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">populate_titleblock</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_path_text</span><span class="p">()</span>
+
+<span class="c1"># create a sub-gridspec that will be used for the main image</span>
+<span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
+<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+    <span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">8</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">gs_timeseries</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">main</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs_timeseries</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+    <span class="n">plot</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_tutorial_Template_Docs_31_0.png" src="../../_images/notebooks_tutorial_Template_Docs_31_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fully_custom</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Title Text</span><span class="se">\n</span><span class="s2">Custom Title Block&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.52</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;Weyland-Yutani&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;light&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;logo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img/logo.png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;June-2122&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;proj&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;PROJECT NO.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;fontstyle&quot;</span><span class="p">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;210001&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ship&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;SHIP&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;fontstyle&quot;</span><span class="p">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;USCSS $Nostromo$&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;review&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;COMMAND&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;fontstyle&quot;</span><span class="p">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;---/---&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fignum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;FIGURE NO.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;fontstyle&quot;</span><span class="p">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+
+<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+    <span class="n">titleblock_content</span><span class="o">=</span><span class="n">fully_custom</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="n">PATH</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_frame</span><span class="p">()</span>
+<span class="n">tblk_axlist</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_titleblock</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">populate_titleblock</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_path_text</span><span class="p">()</span>
+
+<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span><span class="p">),</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">left</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)]</span>
+<span class="n">gs_timeseries</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">main</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs_timeseries</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">inset</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+    <span class="mi">3</span> <span class="o">+</span> <span class="n">top</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">+</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="n">right</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">inset_ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">inset</span><span class="p">)</span>
+<span class="n">inset_ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">inset_ax</span><span class="p">,</span> <span class="s2">&quot;img/Template_Inset.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_tutorial_Template_Docs_32_0.png" src="../../_images/notebooks_tutorial_Template_Docs_32_0.png" />
+</div>
+</div>
+</section>
+<section id="Just-for-fun...">
+<h2>Just for fun…<a class="headerlink" href="#Just-for-fun..." title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fully_custom</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">26</span><span class="p">],</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;  Brand + Style&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontweight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">77</span><span class="p">],</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;  Weyland-Yutani&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontweight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">63</span><span class="p">],</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;BRAND GUIDELINES&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontname&quot;</span><span class="p">:</span> <span class="s2">&quot;Arial&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+            <span class="s2">&quot;fontweight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontdict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stretch&quot;</span><span class="p">:</span> <span class="s2">&quot;condensed&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">77</span><span class="p">],</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;06.21</span><span class="se">\n</span><span class="s2">2122&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontname&quot;</span><span class="p">:</span> <span class="s2">&quot;Arial&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontsize&quot;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
+            <span class="s2">&quot;fontweight&quot;</span><span class="p">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fontdict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stretch&quot;</span><span class="p">:</span> <span class="s2">&quot;condensed&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;ha&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;va&quot;</span><span class="p">:</span> <span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+
+<span class="n">report_fig</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="n">scriptname</span><span class="o">=</span><span class="n">SCRIPT</span><span class="p">,</span>
+    <span class="n">titleblock_rows</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+    <span class="n">titleblock_cols</span><span class="o">=</span><span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+    <span class="n">titleblock_content</span><span class="o">=</span><span class="n">fully_custom</span><span class="p">,</span>
+    <span class="n">draft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">report_fig</span><span class="o">.</span><span class="n">path_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;#19302d&quot;</span><span class="p">)</span>
+
+
+<span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">margins</span>
+<span class="n">report_fig</span><span class="o">.</span><span class="n">gstitleblock</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span>
+    <span class="o">-</span><span class="p">(</span><span class="n">bottom</span> <span class="o">+</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="n">bottom</span><span class="p">,</span>
+    <span class="o">-</span><span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">t_w</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="n">left</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">tblk_axlist</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">add_titleblock</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">populate_titleblock</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">tblk_axlist</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">spine</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+        <span class="n">spine</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+
+<span class="c1">#  create a sub-gridspec that will be used for the main image</span>
+<span class="n">main</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">report_fig</span><span class="o">.</span><span class="n">t_h</span> <span class="o">+</span> <span class="n">bottom</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="p">:]</span>
+
+<span class="n">hero_ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+<span class="n">hero_ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+<span class="n">hero_img_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span>
+    <span class="n">hero_ax</span><span class="p">,</span>
+    <span class="s2">&quot;img/alien_landscape.jpg&quot;</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span>
+    <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">#  create a sub-gridspec that will be used to overlay the logo</span>
+<span class="n">logo_gs</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">gsfig</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span> <span class="mi">58</span><span class="p">:</span><span class="mi">80</span><span class="p">]</span>
+
+<span class="n">logo_ax</span> <span class="o">=</span> <span class="n">report_fig</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">logo_gs</span><span class="p">)</span>
+<span class="n">logo_ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">logo_img_ax</span> <span class="o">=</span> <span class="n">insert_image</span><span class="p">(</span><span class="n">logo_ax</span><span class="p">,</span> <span class="s2">&quot;img/logo.png&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_tutorial_Template_Docs_34_0.png" src="../../_images/notebooks_tutorial_Template_Docs_34_0.png" />
 </div>
 </div>
 </section>
