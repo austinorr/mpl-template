@@ -175,7 +175,7 @@ def insert_image(
         relative to the given matplotlib.Axes object.
         scale = 0.5 will scale the image to half of the
         given matplotlib.Axes object.
-    dpi : int, optonal (default=300)
+    dpi : int, optional (default=300)
         The Dots (pixel) Per Inch of the image.
     expand : bool, optional (default=False)
         If true, the image will expand to fill the axes
@@ -231,12 +231,7 @@ def insert_image(
     if TAGS is None or Image is None:  # pragma: no cover
         raise ImportError("The `pillow` library is required to manipulate images.")
 
-    if "xticks" not in kwargs:
-        kwargs["xticks"] = []
-    if "yticks" not in kwargs:
-        kwargs["yticks"] = []
-    if "zorder" not in kwargs:
-        kwargs["zorder"] = 1
+    kwargs = {"xticks": [], "yticks": [], "zorder": 1} | kwargs
 
     imgaxes = ax.figure.add_axes(ax.get_position(), **kwargs)
     bbox = ax.get_window_extent().transformed(
@@ -579,7 +574,7 @@ class Template:
             text,
             fontsize=24,
             color="r",
-            fontname="Arial",
+            fontname="sans-serif",
             fontweight="bold",
             zorder=1000,
             horizontalalignment="left",
@@ -685,16 +680,18 @@ class Template:
 
         return self.fig
 
-    def blank(self) -> figure.Figure:
+    def blank(self, with_labels=True) -> figure.Figure:
         self.add_frame()
-        for ax in self.add_titleblock():
-            ax.text(
-                0.5,
-                0.5,
-                '"{}"'.format(ax.get_label()),
-                va="center",
-                ha="center",
-                size=12,
-            )
+        axes = self.add_titleblock()
+        if with_labels:
+            for ax in axes:
+                ax.text(
+                    0.5,
+                    0.5,
+                    '"{}"'.format(ax.get_label()),
+                    va="center",
+                    ha="center",
+                    size=12,
+                )
         self.watermark.remove()
         return self.fig

@@ -12,7 +12,6 @@ matplotlib.use("agg")
 
 DEMO_PNG_URL = "https://raw.githubusercontent.com/austinorr/mpl-template/14496e1965e8b360093e0a559ae3f9aba6205a56/template/tests/img/polar_bar_demo.png"
 DEMO_PNG_FILE = str(files("mpl_template.tests.img") / "polar_bar_demo.png")
-IMG_TOL = 10
 BASELINE_DIR = "baseline_images"
 SCRIPTNAME = str(Path("mpl_template") / "tests" / "test_template.py")
 
@@ -31,7 +30,7 @@ def test_calc_extents(size, scale, expected):
 @pytest.mark.parametrize("i", range(4))
 @pytest.mark.mpl_image_compare(
     baseline_dir=BASELINE_DIR,
-    tolerance=IMG_TOL,
+    tolerance=3,
     filename="grace_hopper.png",
     savefig_kwargs={"dpi": 96},
 )
@@ -47,16 +46,19 @@ def test__apply_exif_rotation(i):
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(
+    baseline_dir=BASELINE_DIR,
+    tolerance=4,  # higher tolerance since this one includes freetype text
+)
 def test_blank():
-    testfig = template.Template(figsize=(8.5, 11), scriptname="")
+    testfig = template.Template(figsize=(5, 3), scriptname="")
     testfig.path_text = SCRIPTNAME
     _ = testfig.blank()
 
     return testfig.fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_url():
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
@@ -71,7 +73,7 @@ def test_insert_svg_image_from_url():
         _ = template.insert_image(ax, url, scale=1)
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_url_shrink_half():
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
@@ -79,7 +81,7 @@ def test_insert_image_from_url_shrink_half():
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_url_zoom_10x():
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
@@ -87,7 +89,7 @@ def test_insert_image_from_url_zoom_10x():
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_url_zoom_10x_expand():
     url = DEMO_PNG_URL
     fig, ax = plt.subplots(figsize=(9, 9))
@@ -95,7 +97,7 @@ def test_insert_image_from_url_zoom_10x_expand():
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_file():
     file = DEMO_PNG_FILE
 
@@ -104,7 +106,7 @@ def test_insert_image_from_file():
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_file_shrink_half():
     file = DEMO_PNG_FILE
 
@@ -113,7 +115,7 @@ def test_insert_image_from_file_shrink_half():
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_file_zoom_10x():
     file = DEMO_PNG_FILE
 
@@ -122,7 +124,7 @@ def test_insert_image_from_file_zoom_10x():
     return fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, remove_text=True)
 def test_insert_image_from_file_zoom_10x_expand():
     file = DEMO_PNG_FILE
 
@@ -132,7 +134,7 @@ def test_insert_image_from_file_zoom_10x_expand():
 
 
 @pytest.mark.mpl_image_compare(
-    baseline_dir=BASELINE_DIR, tolerance=IMG_TOL, filename="test_custom_spans.png"
+    baseline_dir=BASELINE_DIR, filename="test_custom_spans.png"
 )
 @pytest.mark.parametrize("base", [None, 10])
 def test_custom_spans(base):
@@ -149,13 +151,13 @@ def test_custom_spans(base):
         figsize=(5, 3), scriptname="", titleblock_content=test, base=base
     )
     testfig.path_text = SCRIPTNAME
-    _ = testfig.blank()
+    _ = testfig.blank(with_labels=False)
 
     return testfig.fig
 
 
 @pytest.mark.mpl_image_compare(
-    baseline_dir=BASELINE_DIR, tolerance=IMG_TOL, filename="test_custom_spans.png"
+    baseline_dir=BASELINE_DIR, filename="test_custom_spans.png"
 )
 def test_custom_spans_100():
     test = [
@@ -171,14 +173,13 @@ def test_custom_spans_100():
         figsize=(5, 3), scriptname="", titleblock_content=test, base=100
     )
     testfig.path_text = SCRIPTNAME
-    _ = testfig.blank()
+    _ = testfig.blank(with_labels=False)
 
     return testfig.fig
 
 
 @pytest.mark.mpl_image_compare(
     baseline_dir=BASELINE_DIR,
-    tolerance=IMG_TOL,
     filename="test_titleblock_on_left.png",
 )
 @pytest.mark.parametrize("base", [None, 10, 100])
@@ -186,21 +187,21 @@ def test_titleblock_on_left(base):
     testfig = template.Template(figsize=(8.5, 11), scriptname="", base=base)
     testfig.gstitleblock = testfig.gsfig[
         -(testfig.bottom + testfig.t_h) or None : -testfig.bottom or None,
-        (testfig.left) or None : -(testfig.left + testfig.t_w) or None,
+        (testfig.left) or None : (testfig.left + testfig.t_w) or None,
     ]
 
-    _ = testfig.blank()
+    _ = testfig.blank(with_labels=False)
 
     return testfig.fig
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR)
 def test_zero_margins():
     testfig = template.Template(
-        figsize=(8.5, 11), scriptname="tests.py", margins=(0, 0, 0, 0)
+        figsize=(5, 3), scriptname="tests.py", margins=(0, 0, 0, 0)
     )
 
-    _ = testfig.blank()
+    _ = testfig.blank(with_labels=False)
 
     return testfig.fig
 
@@ -219,7 +220,7 @@ def test_bad_margins(bad_margin):
         )
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR, tolerance=IMG_TOL)
+@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR)
 def test_custom_titleblock():
     custom = [
         {
@@ -267,7 +268,7 @@ def test_custom_titleblock():
     ]
 
     testfig = template.Template(
-        figsize=(8.5, 11), scriptname="", titleblock_content=custom
+        figsize=(5, 3), scriptname="", titleblock_content=custom
     )
 
     testfig.path_text = SCRIPTNAME
@@ -279,7 +280,6 @@ def test_custom_titleblock():
 @pytest.mark.parametrize("base", [None, 10, 100])
 @pytest.mark.mpl_image_compare(
     baseline_dir=BASELINE_DIR,
-    tolerance=IMG_TOL,
     filename="test_fancy_titleblock.png",
 )
 def test_fancy_titleblock(base):
@@ -329,7 +329,7 @@ def test_fancy_titleblock(base):
     ]
 
     testfig = template.Template(
-        figsize=(8.5, 11), scriptname="", titleblock_content=fancy, base=base
+        figsize=(5, 3), scriptname="", titleblock_content=fancy, base=base
     )
     testfig.path_text = SCRIPTNAME
     _ = testfig.setup_figure()
