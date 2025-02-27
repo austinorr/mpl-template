@@ -27,6 +27,7 @@ dynamic = ["version"]
 all = ["requests", "pillow"]
 dev = [
     "mpl-template[all]",
+    "matplotlib>=3.10,<3.11", # pins freetype version
     "coverage>=6.0.0",
     "pytest>=7.0.0",
     "pytest-cov>=4.1",
