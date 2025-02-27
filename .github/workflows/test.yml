@@ -45,7 +45,12 @@ jobs:
           pip install -U pip
           pip install .[dev]
       - name: Run tests
-        run: pytest --mpl --verbose
+        run: pytest --mpl --verbose --mpl-generate-summary=html --mpl-results-path=./results
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: pytest-mpl results
+          path: ./results # or path/to/artifact
       - name: Run coverage
         if: contains(env.USING_COVERAGE, matrix.python-version)
         run: |
