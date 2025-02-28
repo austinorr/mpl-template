@@ -220,7 +220,10 @@ def test_bad_margins(bad_margin):
         )
 
 
-@pytest.mark.mpl_image_compare(baseline_dir=BASELINE_DIR)
+@pytest.mark.mpl_image_compare(
+    baseline_dir=BASELINE_DIR,
+    tolerance=8,  # increase tolerance for fonts
+)
 def test_custom_titleblock():
     custom = [
         {
@@ -280,6 +283,7 @@ def test_custom_titleblock():
 @pytest.mark.parametrize("base", [None, 10, 100])
 @pytest.mark.mpl_image_compare(
     baseline_dir=BASELINE_DIR,
+    tolerance=8,  # increase tolerance for fonts
     filename="test_fancy_titleblock.png",
 )
 def test_fancy_titleblock(base):
