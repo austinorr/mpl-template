@@ -356,6 +356,12 @@ class Template:
                     'image': {
                         'path': 'img//logo.png',
                         'scale': 1,
+                        'axes': {
+                            # these are passed to the figure.add_axes() as kwargs
+                            # and applied to the axes with the image, not the outer
+                            # frame element.
+                            # 'zorder': 110,
+                        }
                     },
 
                     #`span` must be a list of integers for the
@@ -365,6 +371,11 @@ class Template:
                     # and 3.2 inches wide. It will be the top left element
                     # of the block because its height and width begin at zero.
                     'span': [0, 8, 0, 32],
+                    'axes': {
+                        # these are passed to the figure.add_axes() as kwargs
+                        # and applied to the titleblock frame element
+                        # 'facecolor': 'white',
+                    }
                 },
                 {   # specify keys for next tbk element
                 },
@@ -449,10 +460,15 @@ class Template:
         self._fig_options = figkwargs
         self._fig_options["dpi"] = dpi
         self._titleblock_content = titleblock_content
+        self._titleblock_axes = []
 
     @property
     def base(self):
         return self._base
+
+    @property
+    def titleblock_axes(self):
+        return self._titleblock_axes
 
     @property
     def margins(self):
@@ -584,31 +600,36 @@ class Template:
         return self.watermark
 
     def add_titleblock(self):
-        axlist = []
+        if len(self.titleblock_axes) > 0:
+            return self.titleblock_axes
+
         for i, dct in enumerate(self.titleblock_content):
-            if "span" in list(dct.keys()):
+            label = dct.get("name", "b_{}".format(i))
+
+            kwargs = {
+                "zorder": 100,
+                "facecolor": "none",
+                "xticks": [],
+                "yticks": [],
+                "aspect": "equal",
+                "adjustable": "datalim",
+            }
+
+            kwargs.update(dct.get("axes", {}))
+
+            if "span" in dct:
                 r0, r, c0, c = dct["span"]
             else:
                 r0, r, c0, c = self.default_spans[i]["span"]
 
-            if "name" in list(dct.keys()):
-                label = dct["name"]
-            else:
-                label = "b_{}".format(i)
-
             ax = self.fig.add_subplot(
                 self.gstitleblock_subspec[r0:r, c0:c],
                 label=label,
-                zorder=100,
-                facecolor="none",
-                xticks=[],
-                yticks=[],
-                aspect="equal",
-                adjustable="datalim",
+                **kwargs,
             )
-            axlist.append(ax)
+            self.titleblock_axes.append(ax)
 
-        return axlist
+        return self.titleblock_axes
 
     def add_page(self):  # pragma: no cover
         ax = self.fig.add_axes(
@@ -639,38 +660,39 @@ class Template:
         return textobj
 
     def populate_titleblock(self):
-        for ax in self.fig.get_axes():
-            label = ax.get_label()
-            for i, dct in enumerate(self.titleblock_content):
-                name = dct.get("name", "b_{}".format(i))
-                content = dct.get("text")
-                image = dct.get("image")
-                if name == label:
-                    if content is not None:
-                        if isinstance(content, dict):
-                            content = [content]
-                        if isinstance(content, list):
-                            for elem in content:
-                                kwargs = copy.deepcopy(elem)
-                                if "transform" not in kwargs:  # pragma: no branch
-                                    kwargs["transform"] = ax.transAxes
-                                ax.text(**kwargs)
-                        else:  # pragma: no cover
-                            raise ValueError(
-                                "`text` key must map to dict or list of dicts"
-                            )
-                    if image is not None:
-                        scale = image.get("scale", 1)
-                        expand = image.get("expand", False)
-                        img_ax = insert_image(
-                            ax,
-                            image["path"],
-                            scale=scale,
-                            dpi=ax.get_figure().get_dpi(),
-                            expand=expand,
-                        )
-                        img_ax.set_label("img_b_{}".format(i))
-                        img_ax.axis("off")
+        for i, (ax, dct) in enumerate(
+            zip(self.titleblock_axes, self.titleblock_content)
+        ):
+            assert ax.get_label() == dct.get(
+                "name", "b_{}".format(i)
+            ), "Axes are out of order."
+
+            content = dct.get("text")
+            image = dct.get("image")
+            if content is not None:
+                if isinstance(content, dict):
+                    content = [content]
+                if isinstance(content, list):
+                    for elem in content:
+                        kwargs = copy.deepcopy(elem)
+                        if "transform" not in kwargs:  # pragma: no branch
+                            kwargs["transform"] = ax.transAxes
+                        ax.text(**kwargs)
+                else:  # pragma: no cover
+                    raise ValueError("`text` key must map to dict or list of dicts")
+            if image is not None:
+                scale = image.get("scale", 1)
+                expand = image.get("expand", False)
+                img_ax = insert_image(
+                    ax,
+                    image["path"],
+                    scale=scale,
+                    dpi=ax.get_figure().get_dpi(),
+                    expand=expand,
+                    **image.get("axes", {}),
+                )
+                img_ax.set_label("img_b_{}".format(i))
+                img_ax.axis("off")
 
     def setup_figure(self) -> figure.Figure:
         _ = self.add_frame()
