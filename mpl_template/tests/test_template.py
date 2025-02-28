@@ -316,6 +316,9 @@ def test_fancy_titleblock(base):
                 "path": DEMO_PNG_FILE,
                 "scale": 0.8,
             },
+            "axes": {
+                "facecolor": "white",
+            },
         },
         {},  # placeholders for empty default boxes
         {},
