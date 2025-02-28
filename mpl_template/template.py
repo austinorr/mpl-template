@@ -358,9 +358,9 @@ class Template:
                         'scale': 1,
                         'axes': {
                             # these are passed to the figure.add_axes() as kwargs
-                            # and applied to the axes with the image, not the outer
+                            # and applied to the axes of the image, not the outer
                             # frame element.
-                            # 'zorder': 110,
+                            'zorder': 110,
                         }
                     },
 
@@ -374,7 +374,7 @@ class Template:
                     'axes': {
                         # these are passed to the figure.add_axes() as kwargs
                         # and applied to the titleblock frame element
-                        # 'facecolor': 'white',
+                        'facecolor': 'white',
                     }
                 },
                 {   # specify keys for next tbk element
