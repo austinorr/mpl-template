@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Template API Reference &mdash; mpl-template 0.5.0 documentation</title>
+  <title>Template API Reference &mdash; mpl-template 0.5.1a documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -14,7 +14,7 @@
 
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="_static/documentation_options.js?v=d5545266"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -121,6 +121,12 @@ E.g.</p>
         <span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;img//logo.png&#39;</span><span class="p">,</span>
             <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;axes&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="c1"># these are passed to the figure.add_axes() as kwargs</span>
+                <span class="c1"># and applied to the axes of the image, not the outer</span>
+                <span class="c1"># frame element.</span>
+                <span class="s1">&#39;zorder&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span>
+            <span class="p">}</span>
         <span class="p">},</span>
 
         <span class="c1">#`span` must be a list of integers for the</span>
@@ -130,6 +136,11 @@ E.g.</p>
         <span class="c1"># and 3.2 inches wide. It will be the top left element</span>
         <span class="c1"># of the block because its height and width begin at zero.</span>
         <span class="s1">&#39;span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+        <span class="s1">&#39;axes&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1"># these are passed to the figure.add_axes() as kwargs</span>
+            <span class="c1"># and applied to the titleblock frame element</span>
+            <span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
     <span class="p">},</span>
     <span class="p">{</span>   <span class="c1"># specify keys for next tbk element</span>
     <span class="p">},</span>
@@ -180,7 +191,7 @@ E.g. scale = 2 will double the image’s size
 relative to the given matplotlib.Axes object.
 scale = 0.5 will scale the image to half of the
 given matplotlib.Axes object.</p></li>
-<li><p><strong>dpi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optonal</em><em> (</em><em>default=300</em><em>)</em>) – The Dots (pixel) Per Inch of the image.</p></li>
+<li><p><strong>dpi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em><em> (</em><em>default=300</em><em>)</em>) – The Dots (pixel) Per Inch of the image.</p></li>
 <li><p><strong>expand</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – If true, the image will expand to fill the axes
 in which it is embedded. Use expand = True if the
 boundary of the enclosing axes is the desired crop boundary.

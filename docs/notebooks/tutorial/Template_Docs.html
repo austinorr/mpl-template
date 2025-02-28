@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Walkthrough &mdash; mpl-template 0.5.0 documentation</title>
+  <title>Walkthrough &mdash; mpl-template 0.5.1a documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
@@ -15,7 +15,7 @@
 
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../../_static/documentation_options.js?v=d5545266"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -202,8 +202,18 @@
             <span class="c1"># fill enclosing axes object.</span>
             <span class="c1"># If False, image is zoomed and cropped</span>
             <span class="c1"># to original aspect ratio.</span>
-        <span class="p">},</span>
+            <span class="s1">&#39;axes&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="c1"># these are passed to the figure.add_axes() as kwargs</span>
+            <span class="c1"># and applied to the axes with the image, not the outer</span>
+            <span class="c1"># frame element. E.g,. if the frame has a facecolor set</span>
+            <span class="c1"># we can ensure the image is in front by setting the</span>
+            <span class="c1"># zorder of the image here with { &#39;zorder&#39;: 110}</span>
 
+        <span class="p">},</span>
+        <span class="s1">&#39;axes&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="c1"># these are passed to the figure.add_axes() as kwargs</span>
+        <span class="c1"># and applied to the titleblock frame element.</span>
+        <span class="c1"># e.g., {&#39;facecolor&#39;: &#39;white&#39;, zorder: 100}</span>
     <span class="p">},</span>
     <span class="p">{},</span>      <span class="c1"># Box 2</span>
     <span class="p">{},</span>      <span class="c1"># Box 3 etc...</span>
@@ -823,8 +833,14 @@ Default titleblock_rows = (8, 5, 3)
         <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;img/logo.png&quot;</span><span class="p">,</span>
             <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="s2">&quot;axes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;zorder&quot;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span>
+            <span class="p">},</span>
         <span class="p">},</span>
         <span class="s2">&quot;span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+        <span class="s2">&quot;axes&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fignum&quot;</span><span class="p">,</span>
