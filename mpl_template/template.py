@@ -663,9 +663,9 @@ class Template:
         for i, (ax, dct) in enumerate(
             zip(self.titleblock_axes, self.titleblock_content)
         ):
-            assert ax.get_label() == dct.get(
-                "name", "b_{}".format(i)
-            ), "Axes are out of order."
+            assert ax.get_label() == dct.get("name", "b_{}".format(i)), (
+                "Axes are out of order."
+            )
 
             content = dct.get("text")
             image = dct.get("image")
