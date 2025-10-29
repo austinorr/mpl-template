@@ -224,9 +224,12 @@ def insert_image(
 
     kwargs = {"xticks": [], "yticks": [], "zorder": 1} | kwargs
 
-    imgaxes = ax.figure.add_axes(ax.get_position(), **kwargs)
+    imgaxes = ax.figure.add_axes(
+        ax.get_position(),  # type: ignore
+        **kwargs,
+    )
     bbox = ax.get_window_extent().transformed(
-        ax.get_figure().dpi_scale_trans.inverted()  # type: ignore
+        ax.get_figure().dpi_scale_trans.inverted(),  # type: ignore
     )
     width, height = bbox.width, bbox.height
     width *= dpi
@@ -563,7 +566,7 @@ class Template:
         _right = self.right / fwidth
         _bottom = self.bottom / fheight
         _top = self.top / fheight
-        rect = [_left, _bottom, 1 - (_left + _right), 1 - (_bottom + _top)]
+        rect = (_left, _bottom, 1 - (_left + _right), 1 - (_bottom + _top))
 
         frame = self.fig.add_axes(
             rect, zorder=100, facecolor="none", xticks=[], yticks=[], label="frame"
@@ -624,7 +627,7 @@ class Template:
 
     def add_page(self):  # pragma: no cover
         ax = self.fig.add_axes(
-            [0, 0, 1, 1],
+            (0, 0, 1, 1),
             zorder=1000,
             facecolor="none",
             xticks=[],
@@ -652,7 +655,7 @@ class Template:
 
     def populate_titleblock(self):
         for i, (ax, dct) in enumerate(
-            zip(self.titleblock_axes, self.titleblock_content)
+            zip(self.titleblock_axes, self.titleblock_content, strict=True)
         ):
             assert ax.get_label() == dct.get("name", "b_{}".format(i)), (
                 "Axes are out of order."

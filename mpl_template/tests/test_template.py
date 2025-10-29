@@ -1,10 +1,10 @@
+from importlib.resources import files
 from pathlib import Path
 
 import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 from PIL import Image
-from importlib.resources import files
 
 from mpl_template import template
 
@@ -40,7 +40,7 @@ def test__apply_exif_rotation(i):
     im_rot = template._apply_exif_rotation(img)
     dpi = 96
     fig = plt.figure(dpi=dpi, figsize=(im_rot.width / dpi, im_rot.height / dpi))
-    ax = fig.add_axes([0, 0, 1, 1])
+    ax = fig.add_axes((0, 0, 1, 1))
     _ = ax.imshow(im_rot)
     ax.axis("off")
     return fig
