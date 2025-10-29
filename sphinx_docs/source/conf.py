@@ -20,7 +20,7 @@
 from mpl_template import __version__
 
 # General information about the project.
-project = "mpl-template"
+project = f'mpl-template<br /><span style="font-size:.7rem">v{__version__}</span>'
 copyright = "2017, Austin Orr"
 author = "Austin Orr"
 
