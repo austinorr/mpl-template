@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+
 from mpl_template import insert_image
 
 file = "img/polar_bar_demo.png"
