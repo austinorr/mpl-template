@@ -206,6 +206,19 @@ def test_zero_margins():
     return testfig.fig
 
 
+def test_const_titleblock_elements():
+    testfig = template.Template(
+        figsize=(5, 3),
+        scriptname="tests.py",
+    )
+
+    _ = testfig.blank(with_labels=False)
+
+    n_ax = len(testfig.fig.axes)
+    _ = testfig.add_titleblock()
+    assert n_ax == len(testfig.fig.axes)
+
+
 @pytest.mark.parametrize(
     "bad_margin",
     [
