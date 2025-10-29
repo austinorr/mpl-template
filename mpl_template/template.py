@@ -96,59 +96,50 @@ def _image_path_or_url(path: str) -> Union[str, io.BytesIO]:
         return str(Path(path).resolve())
 
 
-def _apply_exif_rotation(im):
+def _apply_exif_rotation(im: Image.Image):
     """Apply exif rotation tag to a PIL image object
 
     Parameters
     ----------
-    im : PIL.Image
+    im : PIL.Image.Image
         image object that may contain rotation data
 
     Returns
     -------
-    PIL.Image
+    PIL.Image.Image
     """
-    if TAGS is None or Image is None:  # pragma: no cover
-        raise ImportError("The `pillow` library is required to manipulate images.")
-    i = im.copy()
 
-    try:
-        exif = {TAGS.get(tag): value for tag, value in im._getexif().items()}
+    exif = {TAGS.get(tag): value for tag, value in im.getexif().items()}
 
-        # this section adapted from the following SO post:
-        # https://stackoverflow.com/a/1608846/7486933
+    # this section adapted from the following SO post:
+    # https://stackoverflow.com/a/1608846/7486933
 
-        orientation = exif.get("Orientation")
-        if orientation == 1:
-            # Nothing
-            i = im.copy()
-        elif orientation == 2:
-            # Vertical Mirror
-            i = im.transpose(Transpose.FLIP_LEFT_RIGHT)
-        elif orientation == 3:
-            # Rotation 180°
-            i = im.transpose(Transpose.ROTATE_180)
-        elif orientation == 4:
-            # Horizontal Mirror
-            i = im.transpose(Transpose.FLIP_TOP_BOTTOM)
-        elif orientation == 5:
-            # Horizontal Mirror + Rotation 90° CCW
-            i = im.transpose(Transpose.FLIP_TOP_BOTTOM).transpose(Transpose.ROTATE_90)
-        elif orientation == 6:
-            # Rotation 270°
-            i = im.transpose(Transpose.ROTATE_270)
-        elif orientation == 7:
-            # Horizontal Mirror + Rotation 270°
-            i = im.transpose(Transpose.FLIP_TOP_BOTTOM).transpose(Transpose.ROTATE_270)
-        elif orientation == 8:
-            # Rotation 90°
-            i = im.transpose(Transpose.ROTATE_90)
-        else:  # pragma: no cover
-            raise Exception("Invalid EXIF Orientation Value")
-        return i
-
-    except (AttributeError, KeyError, IndexError):
+    orientation = exif.get("Orientation")
+    if orientation in [None, 1]:
         return im
+    if orientation == 2:
+        # Vertical Mirror
+        return im.transpose(Transpose.FLIP_LEFT_RIGHT)
+    if orientation == 3:
+        # Rotation 180°
+        return im.transpose(Transpose.ROTATE_180)
+    if orientation == 4:
+        # Horizontal Mirror
+        return im.transpose(Transpose.FLIP_TOP_BOTTOM)
+    if orientation == 5:
+        # Horizontal Mirror + Rotation 90° CCW
+        return im.transpose(Transpose.FLIP_TOP_BOTTOM).transpose(Transpose.ROTATE_90)
+    if orientation == 6:
+        # Rotation 270°
+        return im.transpose(Transpose.ROTATE_270)
+    if orientation == 7:
+        # Horizontal Mirror + Rotation 270°
+        return im.transpose(Transpose.FLIP_TOP_BOTTOM).transpose(Transpose.ROTATE_270)
+    if orientation == 8:
+        # Rotation 90°
+        return im.transpose(Transpose.ROTATE_90)
+
+    raise Exception("Invalid EXIF Orientation Value")  # pragma: no cover
 
 
 def insert_image(
